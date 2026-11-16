@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<!-- Studio Pribadi by Suhu Digital V1.0 (16 Nov 2026). Aplikasi pribadi untuk konten tiga akun TikTok (Rio, Mia, Nara + kolaborasi).
+     Mesin pembuat prompt diambil langsung dari Sugi Studio (kreator.html dan serba-bisa.html di repo Sugimation, cabang main),
+     jadi setiap perbaikan Sugi otomatis ikut. Setiap video berjalan di bingkai sendiri (maks. 3 bersamaan); AI dari bingkai
+     dititipkan ke halaman utama lewat pesan (cara yang terbukti di Satu Pintu). -->
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Studio Pribadi by Suhu Digital V1.0</title>
+<style>
+  :root { --krem:#FAF3E3; --krem2:#F3E8D0; --garis:#E9DCC2; --emas:#C9A24D; --emas2:#9A7425; --coklat:#3B2A1A; --coklat2:#7A6244; --putih:#FFFDF8; --merah:#B4472F; --hijau:#3F7A43; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--krem); color: var(--coklat); font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; font-size: 16px; line-height: 1.45; }
+  button { font: inherit; color: inherit; cursor: pointer; }
+  .serif { font-family: Georgia, "Times New Roman", serif; }
+  .emasgrad { background-image: linear-gradient(135deg, #E9CF8A 0%, #C9A24D 45%, #A9832F 70%, #E2C47A 100%); }
+  #sp-kepala { position: sticky; top: 0; z-index: 30; background: var(--putih); border-bottom: 1px solid var(--garis); box-shadow: 0 1px 6px rgba(59,42,26,.06); }
+  .kepala-in { position: relative; max-width: 760px; margin: 0 auto; height: 64px; }
+  .logo { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); text-align: center; background: none; border: 0; padding: 0; line-height: 1.05; }
+  .logo-w { display: block; font-family: Georgia, serif; font-weight: 700; font-size: 19px; letter-spacing: .06em; }
+  .logo-w b { background: linear-gradient(135deg,#B8892E,#E0C06E 50%,#9A7425); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .logo-ai { display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 10px; font-weight: 700; letter-spacing: .12em; color: var(--emas2); margin: 2px 0; }
+  .logo-ai::before, .logo-ai::after { content: ""; width: 18px; height: 1px; background: var(--emas); }
+  .logo-ai em { font-style: normal; color: var(--coklat); padding: 0 5px; border-radius: 4px; background-image: linear-gradient(135deg,#E9CF8A,#C9A24D 50%,#E2C47A); }
+  .logo-by { display: block; font-size: 9px; letter-spacing: .2em; color: var(--coklat2); font-weight: 600; }
+  .kepala-kanan { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); }
+  #sp-tab { position: sticky; top: 64px; z-index: 29; display: none; gap: 6px; overflow-x: auto; padding: 6px 8px; background: #2F2115; }
+  body.di-bingkai #sp-tab { top: 0; }
+  body.di-bingkai #sp-kepala, body.di-bingkai #sp-isi { display: none; }
+  .tab { flex: 0 0 auto; display: inline-flex; align-items: center; gap: 6px; border: 1px solid #6B5235; background: #3B2A1A; color: #F3E8D0; border-radius: 999px; padding: 5px 12px; font-size: 13px; font-weight: 600; white-space: nowrap; min-height: 34px; }
+  .tab.aktif { border-color: var(--emas); background-image: linear-gradient(135deg,#E9CF8A,#C9A24D 50%,#E2C47A); color: var(--coklat); }
+  .tab .x { margin-left: 2px; opacity: .75; padding: 0 2px; }
+  #sp-bingkai iframe { position: fixed; left: 0; right: 0; bottom: 0; top: 46px; width: 100%; height: calc(100% - 46px); border: 0; background: var(--krem); visibility: hidden; }
+  #sp-bingkai iframe.kini { visibility: visible; }
+  body:not(.di-bingkai) #sp-bingkai iframe { visibility: hidden !important; pointer-events: none; }
+  #sp-isi { max-width: 760px; margin: 0 auto; padding: 18px 14px 60px; }
+  h1 { font-family: Georgia, serif; font-size: 24px; margin: 6px 0 4px; text-align: center; }
+  h2 { font-family: Georgia, serif; font-size: 21px; margin: 4px 0 2px; }
+  h3 { font-size: 16px; margin: 0 0 8px; display: flex; align-items: center; gap: 8px; }
+  .sub { color: var(--coklat2); font-size: 14px; margin: 0 0 14px; }
+  .tengah { text-align: center; }
+  .kotak { background: var(--putih); border: 1px solid var(--garis); border-radius: 18px; padding: 14px; margin-top: 14px; box-shadow: 0 1px 4px rgba(59,42,26,.05); }
+  .num { flex: 0 0 auto; width: 26px; height: 26px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 800; color: var(--coklat); background-image: linear-gradient(135deg,#E9CF8A,#C9A24D 50%,#E2C47A); box-shadow: inset 0 0 0 1px rgba(154,116,37,.5); }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  @media (max-width: 460px) { .grid2.sempit1 { grid-template-columns: 1fr; } }
+  .kartu { display: flex; align-items: center; gap: 12px; width: 100%; text-align: left; background: var(--putih); border: 1px solid var(--garis); border-radius: 18px; padding: 12px; box-shadow: 0 1px 4px rgba(59,42,26,.05); }
+  .kartu:hover { border-color: var(--emas); }
+  .kartu .ikon { flex: 0 0 auto; width: 52px; height: 52px; border-radius: 14px; background: #FBF1D8; border: 1px solid #F0E2BE; display: flex; align-items: center; justify-content: center; font-size: 26px; overflow: hidden; }
+  .kartu .ikon img { width: 100%; height: 100%; object-fit: cover; }
+  .kartu b { display: block; font-size: 16px; }
+  .kartu small { display: block; color: var(--coklat2); font-size: 13px; margin-top: 2px; }
+  .pilih { position: relative; display: block; width: 100%; text-align: left; background: var(--putih); border: 2px solid var(--garis); border-radius: 14px; padding: 10px 12px; min-height: 52px; }
+  .pilih b { display: block; font-size: 14.5px; }
+  .pilih small { display: block; color: var(--coklat2); font-size: 12.5px; margin-top: 2px; }
+  .pilih.on { border-color: var(--emas); background: #FBF1D8; }
+  .pilih.on::after { content: "✓"; position: absolute; right: 9px; top: 7px; font-weight: 800; color: var(--emas2); }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip { border: 2px solid var(--garis); background: var(--putih); border-radius: 999px; padding: 7px 13px; font-size: 14px; font-weight: 600; min-height: 40px; }
+  .chip.on { border-color: var(--emas); background: #FBF1D8; }
+  .label { font-size: 13px; font-weight: 700; color: var(--coklat2); margin: 12px 0 6px; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 1px solid #A9832F; border-radius: 14px; padding: 12px 18px; min-height: 50px; font-weight: 800; font-size: 16px; color: var(--coklat); background-image: linear-gradient(135deg,#E9CF8A 0%,#C9A24D 45%,#A9832F 70%,#E2C47A 100%); box-shadow: 0 2px 8px rgba(201,162,77,.3); }
+  .btn.lebar { width: 100%; }
+  .btn2 { display: inline-flex; align-items: center; justify-content: center; gap: 6px; border: 1px solid var(--garis); border-radius: 12px; padding: 9px 14px; min-height: 44px; font-weight: 700; font-size: 14px; background: var(--putih); }
+  .kembali { border: 1px solid var(--emas); background: #FFF8E8; border-radius: 999px; padding: 6px 14px; font-size: 14px; font-weight: 600; min-height: 38px; }
+  input[type=text], textarea { width: 100%; border: 1px solid #D9C9A8; background: #FFFDF8; border-radius: 12px; padding: 11px 12px; font: inherit; font-size: 15px; color: var(--coklat); }
+  textarea { min-height: 90px; resize: vertical; }
+  .catatan { font-size: 12.5px; color: var(--coklat2); margin-top: 6px; }
+  .figurbaris { border-top: 1px dashed var(--garis); padding-top: 10px; margin-top: 10px; }
+  .figurbaris:first-child { border-top: 0; margin-top: 0; padding-top: 0; }
+  .foto-mini { width: 40px; height: 40px; border-radius: 10px; object-fit: cover; border: 1px solid var(--garis); }
+  .ide { border: 1px solid var(--garis); border-radius: 14px; padding: 12px; margin-top: 10px; background: #FFFDF8; }
+  .ide b { font-size: 15px; }
+  .ide p { margin: 4px 0; font-size: 14px; }
+  .tag { display: inline-block; font-size: 12px; font-weight: 700; background: #FBF1D8; border: 1px solid #F0E2BE; border-radius: 999px; padding: 2px 9px; }
+  .spin { width: 34px; height: 34px; border: 4px solid var(--garis); border-top-color: var(--emas); border-radius: 50%; animation: sp-s .8s linear infinite; margin: 14px auto; }
+  @keyframes sp-s { to { transform: rotate(360deg); } }
+  .peringatan { background: #FCEBE5; border: 1px solid #E9B7A6; color: #7A2E1C; border-radius: 12px; padding: 10px 12px; font-size: 14px; margin-top: 12px; }
+  .baik { background: #E9F3E6; border: 1px solid #B8D6B0; color: #2C5A2F; border-radius: 12px; padding: 10px 12px; font-size: 14px; margin-top: 12px; }
+  #sp-dialog { position: fixed; inset: 0; z-index: 60; background: rgba(30,20,10,.55); display: none; align-items: center; justify-content: center; padding: 18px; }
+  #sp-dialog .isi { background: var(--putih); border-radius: 18px; padding: 18px; max-width: 420px; width: 100%; }
+  #sp-dialog .tombol { display: flex; flex-direction: column; gap: 8px; margin-top: 14px; }
+  #sp-muat { position: fixed; inset: 46px 0 0 0; z-index: 25; display: none; align-items: center; justify-content: center; background: var(--krem); text-align: center; padding: 20px; }
+  .bank-foto { width: 100%; max-width: 200px; border-radius: 14px; border: 1px solid var(--garis); display: block; margin: 0 auto 10px; }
+  ul.rapi { margin: 6px 0 0; padding-left: 18px; font-size: 14px; }
+  ul.rapi li { margin: 3px 0; }
+</style>
+</head>
+<body>
+<header id="sp-kepala">
+  <div class="kepala-in">
+    <button class="logo" onclick="SP.buka('beranda')" aria-label="Studio Pribadi">
+      <span class="logo-w">STUDIO <b>PRIBADI</b></span>
+      <span class="logo-ai"><em>AI</em></span>
+      <span class="logo-by">BY SUHU DIGITAL</span>
+    </button>
+  </div>
+</header>
+<nav id="sp-tab"></nav>
+<main id="sp-isi"></main>
+<div id="sp-bingkai"></div>
+<div id="sp-muat"><div><div class="spin"></div><p id="sp-muat-teks">Menyiapkan studio...</p></div></div>
+<div id="sp-dialog"><div class="isi" id="sp-dialog-isi"></div></div>
+
+<script>
+// Penanda untuk Canvas (K88 Sugi): aplikasi ini memakai AI Gemini (kunci kosong, disediakan Canvas).
+var apiKey = "";
+var GEMINI_MODEL = "gemini-3-flash-preview";
+var GEMINI_API = "https://generativelanguage.googleapis.com/v1beta/models/" + GEMINI_MODEL + ":generateContent?key=" + apiKey;
+
+var SP = (function () {
+  var VERSI = "V1.0";
+  var MESIN_URL = "https://raw.githubusercontent.com/elhabsyihauto-ai/Sugimation/main/";
+  var ASET_URL = "https://raw.githubusercontent.com/elhabsyihauto-ai/studio-pribadi/main/";
+  var BATAS = 3;
+
+  // ================= BANK FIGUR (terkunci) =================
+  var FIGUR = {
+    rio: {
+      nama: "Rio", emoji: "🎬", umur: 27, akun: "a1", foto: "figur/rio.jpg",
+      ringkas: "Pria 27 tahun · kreator dan pengajar video AI",
+      peran: "pemilik akun tutorial video AI, mengajar dengan sabar dan jelas",
+      usiaSuara: "20-an", warnaSuara: "Bulat dan jelas (seperti penyiar)", logat: "Indonesia netral",
+      ciri: "usia 27 tahun; rambut hitam pendek, bagian atas sedikit bervolume dan disisir ke samping; senyum lebar yang ramah",
+      fisik: "pria Asia Tenggara, wajah agak bulat dengan rahang lembut, mata cokelat tua yang hangat, alis tebal rapi, bayangan janggut tipis",
+      en: "Rio: fictional 27-year-old Southeast Asian man, slightly round face with a soft jawline, warm dark-brown eyes, thick neat eyebrows, light stubble shadow, short black hair with a little volume on top swept to the side, wide friendly smile; confident, friendly, professional; clear medium voice, neutral Indonesian accent",
+      outfit: [
+        { id: "casual", emoji: "👔", label: "Smart casual", saran: true, teks: "kemeja polos biru muda lengan digulung sampai siku, celana chino krem, jam tangan kulit cokelat", en: "plain light-blue shirt with sleeves rolled to the elbows, beige chinos, brown leather watch" },
+        { id: "resmi", emoji: "🤵", label: "Resmi", teks: "jas hitam, kemeja putih, dasi hitam bertekstur, saputangan putih di saku jas", en: "black suit, white shirt, textured black tie, white pocket square" },
+        { id: "santai", emoji: "👕", label: "Santai", teks: "kaos polos putih dengan overshirt hijau zaitun, celana jeans gelap, sneakers putih", en: "plain white T-shirt under an olive-green overshirt, dark jeans, white sneakers" }
+      ]
+    },
+    mia: {
+      nama: "Mia", emoji: "🛍️", umur: 30, akun: "a2", foto: "figur/mia.jpg",
+      ringkas: "Wanita sekitar 30 tahun, berhijab · pengajar affiliate",
+      peran: "pemilik akun Affiliate AI Academy, mengajar affiliate dengan video AI",
+      usiaSuara: "30-an", warnaSuara: "Lembut dan halus", logat: "Indonesia netral",
+      ciri: "usia sekitar 30 tahun; selalu berhijab georgette abu tua yang menutup rambut dan leher; kesan percaya diri, ramah, profesional",
+      fisik: "wanita Indonesia berwajah ramah, senyum hangat, riasan natural",
+      en: "Mia: fictional Indonesian woman about 30 years old, always wears a dark-grey georgette hijab that fully covers her hair and neck, warm smile, natural make-up; confident, friendly, professional; soft clear voice, neutral Indonesian accent",
+      outfit: [
+        { id: "kardigan", emoji: "💜", label: "Kardigan lavender", saran: true, teks: "kardigan rajut pastel lavender, kaos krem, jeans biru denim, sneakers putih, jam tangan perak berpermukaan putih", en: "pastel lavender knit cardigan, cream T-shirt, blue denim jeans, white sneakers, silver watch with a white dial" },
+        { id: "blazer", emoji: "🧥", label: "Blazer navy", teks: "blazer navy dengan dalaman krem polos, celana panjang bahan krem", en: "navy blazer over a plain cream top, cream tailored trousers" },
+        { id: "dress", emoji: "👗", label: "Dress anggun", teks: "dress panjang anggun yang sopan warna dusty pink", en: "long, elegant modest dress in dusty pink" }
+      ]
+    },
+    nara: {
+      nama: "Nara", emoji: "💡", umur: 26, akun: "a3", foto: "figur/nara.jpg",
+      ringkas: "Wanita 26 tahun, berhijab · kreator produk digital",
+      peran: "kreator produk digital yang memakai AI untuk membuat dan memasarkan produknya",
+      usiaSuara: "20-an", warnaSuara: "Ringan", logat: "Indonesia netral",
+      ciri: "usia 26 tahun; selalu berhijab pashmina kaos warna terakota yang dililit santai dan menutup rambut dan leher; kacamata bulat berbingkai tipis; gelang kayu",
+      fisik: "wajah bulat telur, mata ekspresif, pipi berisi, senyum lebar ceria, riasan tipis natural",
+      en: "Nara: fictional 26-year-old Indonesian woman, oval face, expressive eyes, full cheeks, cheerful wide smile, light natural make-up, thin round glasses, wooden bracelet, terracotta jersey pashmina hijab wrapped casually that fully covers her hair and neck; creative and relaxed; light, lively voice, neutral Indonesian accent",
+      outfit: [
+        { id: "kreatif", emoji: "🎨", label: "Kreatif santai", saran: true, teks: "kemeja oversized krem, celana kulot cokelat muda, sneakers kanvas, totebag kain", en: "oversized cream shirt, light-brown culottes, canvas sneakers, cloth tote bag" },
+        { id: "gamis", emoji: "🧕", label: "Gamis santai", teks: "gamis santai motif kecil warna sage", en: "relaxed modest long dress with a small sage-green print" },
+        { id: "sporty", emoji: "🏃‍♀️", label: "Sporty", teks: "hoodie longgar, celana training, sepatu lari; hijab tetap pashmina terakota diikat lebih rapat", en: "loose hoodie, track pants, running shoes; the same terracotta hijab wrapped more snugly" }
+      ]
+    }
+  };
+  var URUT_FIGUR = ["rio", "mia", "nara"];
+
+  // ================= LOKASI =================
+  var RUANG = {
+    rio: { emoji: "🖥️", nama: "Ruang kerja Rio", teks: "Ruang kerja Rio (lokasi tetap): meja kayu gelap dengan dua monitor, lampu meja kuning hangat, rak buku, satu tanaman; nuansa hangat dan serius; isi layar monitor tidak terbaca" },
+    mia: { emoji: "📦", nama: "Ruang kerja Mia", teks: "Ruang kerja Mia (lokasi tetap): meja putih, rak berisi kotak produk polos tanpa merek, jendela besar dengan cahaya pagi, aksen warna lavender lembut" },
+    nara: { emoji: "🎨", nama: "Studio kreatif Nara", teks: "Studio kreatif Nara (lokasi tetap): meja dengan tablet gambar, papan ide berisi kertas tempel yang tulisannya tidak terbaca, tanaman gantung, lampu gantung rotan; nuansa ceria" }
+  };
+  var KUMPUL = [
+    { id: "markas", emoji: "🛋️", nama: "Markas", teks: "Markas tiga sahabat (lokasi tetap): ruang bersama dengan meja panjang, sofa, dan papan tulis kosong" },
+    { id: "kafe", emoji: "☕", nama: "Kafe langganan", teks: "Kafe langganan tiga sahabat (lokasi tetap): kafe kecil berdinding bata dengan meja kayu dekat jendela" },
+    { id: "teras", emoji: "🌇", nama: "Teras atap", teks: "Teras atap (lokasi tetap): teras di atap gedung pada sore hari dengan pemandangan kota" }
+  ];
+  var JUMPA = [
+    { id: "gym", emoji: "🏋️", nama: "Gym" }, { id: "lari", emoji: "🏃", nama: "Taman lari" }, { id: "cowork", emoji: "💼", nama: "Coworking space" },
+    { id: "pasar", emoji: "🧺", nama: "Pasar" }, { id: "mal", emoji: "🛍️", nama: "Mal" }, { id: "jalan", emoji: "🚗", nama: "Perjalanan (mobil diparkir)" }
+  ];
+
+  // ================= AKUN DAN FORMAT =================
+  var AKUN = {
+    a1: { label: "Akun 1 · Rio", nama: "Akun 1", emoji: "🎬", figur: ["rio"], niche: "Tutorial ilmu AI, terutama membuat video AI",
+      nicheEn: "tutorials about AI tools, especially how to make AI videos",
+      format: [
+        { id: "tutorial", emoji: "📘", judul: "Tutorial langkah demi langkah", desc: "Rio menjelaskan tiap langkah; layar aplikasi dari rekaman layarmu", mesin: "th", layar: true, en: "step-by-step tutorial: Rio explains each step on camera" },
+        { id: "tips", emoji: "⚡", judul: "Tips cepat", desc: "Satu tips penting dalam 30–60 detik", mesin: "th", en: "one quick, practical tip" },
+        { id: "beforeafter", emoji: "🔁", judul: "Before–after", desc: "Prompt biasa vs prompt bagus, hasilnya dibandingkan", mesin: "th", layar: true, en: "before-vs-after: a weak prompt versus a strong prompt and the difference in results" },
+        { id: "kesalahan", emoji: "⚠️", judul: "Kesalahan pemula", desc: "Kesalahan umum dan cara memperbaikinya", mesin: "th", en: "common beginner mistakes when making AI videos and how to fix them" },
+        { id: "alatbaru", emoji: "🆕", judul: "Kenalan alat AI baru", desc: "Mengenalkan alat AI dan kegunaannya", mesin: "th", layar: true, en: "introducing a new AI tool and what it is useful for" },
+        { id: "komentar", emoji: "💬", judul: "Jawab pertanyaan komentar", desc: "Menjawab pertanyaan penonton", mesin: "th", en: "answering one viewer question from the comments" },
+        { id: "cerita", emoji: "🎭", judul: "Cerita atau skit bebas", desc: "Ceritakan idemu, AI menyesuaikan", mesin: "serba", en: "a short story or skit" }
+      ] },
+    a2: { label: "Akun 2 · Mia", nama: "Akun 2", emoji: "🛍️", figur: ["mia"], niche: "Tutorial affiliate dengan video AI dan ilmu affiliate",
+      nicheEn: "affiliate marketing tutorials using AI videos, plus practical affiliate knowledge",
+      aturan: "Mia speaks and explains on camera in EVERY scene; never a scene that only shows tools or products without Mia explaining.",
+      format: [
+        { id: "hari2", emoji: "⭐", judul: "Format Hari 2", desc: "Mia berdialog dan menjelaskan di setiap scene", mesin: "th", en: "Mia talks to the viewer and explains in every scene" },
+        { id: "ilmu", emoji: "🎓", judul: "Ilmu affiliate", desc: "Memilih produk, komisi, etalase, strategi", mesin: "th", en: "practical affiliate knowledge (choosing products, commission, showcase, strategy)" },
+        { id: "iklan", emoji: "🛍️", judul: "Contoh iklan produk + bedah", desc: "Mia menunjukkan contoh iklan video AI lalu membedahnya", mesin: "th", layar: true, en: "Mia shows an example AI product-ad video and breaks down why it works" },
+        { id: "mitos", emoji: "🤔", judul: "Mitos vs fakta affiliate", desc: "Meluruskan anggapan yang keliru", mesin: "th", en: "affiliate myths versus facts" },
+        { id: "studi", emoji: "📈", judul: "Studi kasus / dari nol", desc: "Perjalanan dan pelajaran nyata", mesin: "th", en: "a case study or a from-zero journey with honest lessons (no invented income claims)" },
+        { id: "cerita", emoji: "🎭", judul: "Cerita atau skit bebas", desc: "Ceritakan idemu, AI menyesuaikan", mesin: "serba", en: "a short story or skit" }
+      ] },
+    a3: { label: "Akun 3 · Nara", nama: "Akun 3", emoji: "💡", figur: ["nara"], niche: "Produk digital dan ilmu AI: membuat dan memasarkan produk digital dengan AI",
+      nicheEn: "digital products and AI: creating digital products with AI and marketing them with AI",
+      format: [
+        { id: "idepro", emoji: "💡", judul: "Ide produk digital", desc: "Ide produk yang bisa dibuat dengan AI", mesin: "th", en: "digital product ideas that can be made with AI" },
+        { id: "proses", emoji: "🛠️", judul: "Bikin produk pakai AI", desc: "Ebook, template, kumpulan prompt", mesin: "th", layar: true, en: "the process of making a digital product (ebook, template, prompt pack) with AI" },
+        { id: "pasar", emoji: "📣", judul: "Memasarkan dengan AI", desc: "Caption, konten, dan promosi dibantu AI", mesin: "th", layar: true, en: "marketing a digital product with the help of AI" },
+        { id: "bedah", emoji: "🔍", judul: "Bedah produk digital laris", desc: "Kenapa produk itu laku", mesin: "th", en: "breaking down why a kind of digital product sells (no real brands)" },
+        { id: "seri", emoji: "🧭", judul: "Seri dari nol sampai terjual", desc: "Cerita bersambung membangun produk", mesin: "th", en: "an episode of a from-zero-to-first-sale series" },
+        { id: "cerita", emoji: "🎭", judul: "Cerita atau skit bebas", desc: "Ceritakan idemu, AI menyesuaikan", mesin: "serba", en: "a short story or skit" }
+      ] },
+    kolab: { label: "Kolaborasi", nama: "Kolaborasi", emoji: "🤝", figur: ["rio", "mia", "nara"], niche: "Tiga sahabat yang saling mendukung antar-akun",
+      nicheEn: "three friends from three accounts who support each other (AI video, affiliate, digital products)",
+      aturan: "The hosts are close friends: warm, supportive banter, each speaks from their own niche. This is not a podcast studio unless the location is a studio: no podcast microphones.",
+      format: [
+        { id: "obrolan", emoji: "☕", judul: "Obrolan sahabat", desc: "Ngobrol santai saling berbagi", mesin: "podcast", en: "a relaxed chat between friends who share tips from their own niches" },
+        { id: "tanya", emoji: "🙋", judul: "Saling tanya / saling tantang", desc: "Satu bertanya, yang lain menjawab atau ditantang", mesin: "podcast", en: "the friends quiz or challenge each other" },
+        { id: "diskusi", emoji: "🧠", judul: "Diskusi rencana konten", desc: "Rapat santai di Markas", mesin: "podcast", en: "a casual planning discussion about content" },
+        { id: "skit", emoji: "🎭", judul: "Skit tiga sahabat", desc: "Cerita lucu atau menyentuh", mesin: "serba", en: "a short skit starring the friends" }
+      ] }
+  };
+  var URUT_AKUN = ["a1", "a2", "a3", "kolab"];
+
+  // ================= KEADAAN =================
+  var halaman = "beranda", pil = null, fotoResmi = {}, fotoSementara = {}, mesinCache = {};
+  var ideAkun = "a1", ideJumlah = 3, ideTema = "", ideHasil = [], ideMuat = false, ideGalat = "";
+  var kerja = [], kini = -1, nomor = 0;
+
+  function $(id) { return document.getElementById(id); }
+  function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
+  function figurAkun(a) { return a === "kolab" && pil ? pil.figur : AKUN[a].figur; }
+  function cariFormat(a, id) { return AKUN[a].format.filter(function (f) { return f.id === id; })[0] || null; }
+  var BLOK = /\b(1[0-7]|[1-9])\s*(th|tahun|thn)\b|\banak[- ]?anak\b|\bbalita\b|\bremaja\b|\bABG\b|\bbocah\b|\bpelajar SMP\b|\bSD\b/i;
+
+  // ---------- Foto wajah resmi (dari repo) ----------
+  function bacaBlob(b) { return new Promise(function (ok, gagal) { var fr = new FileReader(); fr.onload = function () { ok(fr.result); }; fr.onerror = gagal; fr.readAsDataURL(b); }); }
+  function muatFotoResmi() {
+    URUT_FIGUR.forEach(function (id) {
+      fetch(ASET_URL + FIGUR[id].foto + "?v=" + VERSI, { cache: "no-store" }).then(function (r) {
+        if (!r.ok) throw new Error(r.status);
+        var t = r.headers.get("Content-Type") || "";
+        if (t && !/image/.test(t) && !/octet/.test(t)) throw new Error("bukan gambar");
+        return r.blob();
+      }).then(bacaBlob).then(function (url) {
+        fotoResmi[id] = { mime: "image/jpeg", data: url.split(",")[1], url: url };
+        if (pil && !(pil.fotoManual || {})[id]) pil.foto[id] = "resmi";
+        gambar();
+      }).catch(function () { fotoResmi[id] = null; });
+    });
+  }
+  function fotoDipakai(id) {
+    var m = pil && pil.foto[id];
+    if (m === "sementara" && fotoSementara[id]) return fotoSementara[id];
+    if (m === "resmi" && fotoResmi[id]) return fotoResmi[id];
+    return null;
+  }
+  function ikonFigur(id) { var f = fotoResmi[id] || fotoSementara[id]; return f ? '<img src="' + f.url + '" alt="">' : FIGUR[id].emoji; }
+
+  // ================= TAMPILAN =================
+  function buka(h, sesuatu) {
+    document.body.classList.remove("di-bingkai");
+    halaman = h;
+    if (h === "akun") mulaiPilihan(sesuatu.akun, sesuatu.format, sesuatu.ide);
+    gambar(); gambarTab();
+    window.scrollTo(0, 0);
+  }
+  function gambar() {
+    var el = $("sp-isi"); if (!el) return;
+    if (halaman === "beranda") el.innerHTML = htmlBeranda();
+    else if (halaman === "akun") el.innerHTML = htmlAkun();
+    else if (halaman === "ide") el.innerHTML = htmlIde();
+    else if (halaman === "bank") el.innerHTML = htmlBank();
+    else if (halaman === "lanjut") el.innerHTML = htmlLanjut();
+  }
+  function kembaliBtn() { return '<button class="kembali" onclick="SP.buka(\'beranda\')">‹ Beranda</button>'; }
+
+  function htmlBeranda() {
+    var h = '<h1>Studio konten pribadimu</h1><p class="sub tengah">Pilih akun, figur dan lokasinya sudah terkunci. Prompt dibuat dengan mesin Sugi Studio.</p>';
+    h += '<div class="grid2 sempit1">';
+    URUT_AKUN.forEach(function (a) {
+      var A = AKUN[a];
+      var ik = a === "kolab" ? "🤝" : ikonFigur(A.figur[0]);
+      h += '<button class="kartu" onclick="SP.buka(\'akun\',{akun:\'' + a + '\'})"><span class="ikon">' + ik + '</span><span><b>' + esc(A.label) + '</b><small>' + esc(A.niche) + '</small></span></button>';
+    });
+    h += '</div>';
+    h += '<div class="grid2 sempit1" style="margin-top:10px">';
+    h += '<button class="kartu" onclick="SP.buka(\'ide\')"><span class="ikon">📅</span><span><b>Ide Konten</b><small>3 ide untuk hari ini atau 7 untuk seminggu, per akun</small></span></button>';
+    h += '<button class="kartu" onclick="SP.buka(\'lanjut\')"><span class="ikon">📂</span><span><b>Lanjutkan Proyek</b><small>Tempel Kode Proyek yang kamu simpan</small></span></button>';
+    h += '<button class="kartu" onclick="SP.buka(\'bank\')"><span class="ikon">👥</span><span><b>Bank Figur & Lokasi</b><small>Lihat data Rio, Mia, Nara, dan tempatnya</small></span></button>';
+    h += '</div>';
+    if (kerja.length) h += '<div class="baik">▶ ' + kerja.length + ' video sedang dibuka. Ketuk tab di atas untuk melanjutkan.</div>';
+    h += '<p class="catatan tengah" style="margin-top:22px">Studio Pribadi ' + VERSI + ' · mesin Sugi Studio (Kreator & Serba Bisa) · paling banyak ' + BATAS + ' video bersamaan</p>';
+    return h;
+  }
+
+  // ---------- Halaman akun (pengaturan video) ----------
+  function mulaiPilihan(a, formatId, ide) {
+    pil = { akun: a, figur: AKUN[a].figur.slice(), format: formatId || "", formatSendiri: "", outfit: {}, foto: {}, lokasi: "", lokasiSendiri: "", ide: ide || "" };
+    if (formatId && !cariFormat(a, formatId)) { pil.format = "__sendiri"; pil.formatSendiri = formatId; }
+    URUT_FIGUR.forEach(function (id) {
+      var o = FIGUR[id].outfit.filter(function (x) { return x.saran; })[0];
+      pil.outfit[id] = o.id;
+      pil.foto[id] = fotoResmi[id] ? "resmi" : "ai";
+    });
+    if (a === "kolab") pil.lokasi = "kumpul:markas";
+    else { var f = AKUN[a].figur[0]; pil.lokasi = "ruang:" + f; if (f === "nara") pil.outfit.nara = "kreatif"; }
+  }
+  function htmlAkun() {
+    var a = pil.akun, A = AKUN[a], n = 0;
+    var h = '<div style="display:flex;align-items:center;gap:10px">' + kembaliBtn() + '</div>';
+    h += '<h2 style="margin-top:10px">' + A.emoji + ' ' + esc(A.label) + '</h2><p class="sub">' + esc(A.niche) + '</p>';
+    if (a === "kolab") {
+      h += '<div class="kotak"><h3><span class="num">' + (++n) + '</span>Siapa yang tampil?</h3><div class="chips">';
+      URUT_FIGUR.forEach(function (id) { var on = pil.figur.indexOf(id) >= 0; h += '<button class="chip ' + (on ? "on" : "") + '" onclick="SP.togFigur(\'' + id + '\')">' + FIGUR[id].emoji + ' ' + FIGUR[id].nama + '</button>'; });
+      h += '</div><p class="catatan">Pilih 2 atau 3 sahabat.</p></div>';
+    }
+    // Format
+    h += '<div class="kotak"><h3><span class="num">' + (++n) + '</span>Format konten</h3><div class="grid2 sempit1">';
+    A.format.forEach(function (f) { h += '<button class="pilih ' + (pil.format === f.id ? "on" : "") + '" onclick="SP.set(\'format\',\'' + f.id + '\')"><b>' + f.emoji + ' ' + esc(f.judul) + '</b><small>' + esc(f.desc) + '</small></button>'; });
+    h += '<button class="pilih ' + (pil.format === "__sendiri" ? "on" : "") + '" onclick="SP.set(\'format\',\'__sendiri\')"><b>✍️ Tulis format sendiri</b><small>Format lain yang kamu inginkan</small></button>';
+    h += '</div>';
+    if (pil.format === "__sendiri") h += '<div style="margin-top:10px"><input type="text" id="sp-format-sendiri" maxlength="150" placeholder="Contoh: review jujur 3 aplikasi edit video" value="' + esc(pil.formatSendiri) + '" oninput="SP.setDiam(\'formatSendiri\', this.value)"></div>';
+    h += '</div>';
+    // Outfit
+    h += '<div class="kotak"><h3><span class="num">' + (++n) + '</span>Pakaian</h3>';
+    pil.figur.forEach(function (id) {
+      var F = FIGUR[id];
+      h += '<div class="figurbaris"><div class="label">' + F.emoji + ' ' + F.nama + '</div><div class="chips">';
+      F.outfit.forEach(function (o) { h += '<button class="chip ' + (pil.outfit[id] === o.id ? "on" : "") + '" onclick="SP.setOutfit(\'' + id + '\',\'' + o.id + '\')">' + o.emoji + ' ' + esc(o.label) + (o.saran ? " ⭐" : "") + '</button>'; });
+      var oo = F.outfit.filter(function (o) { return o.id === pil.outfit[id]; })[0];
+      h += '</div><p class="catatan">' + esc(oo ? oo.teks : "") + '</p></div>';
+    });
+    h += '</div>';
+    // Lokasi
+    h += '<div class="kotak"><h3><span class="num">' + (++n) + '</span>Lokasi</h3>';
+    h += '<div class="label">🏠 Ruang kerja (tetap)</div><div class="chips">';
+    (a === "kolab" ? pil.figur : A.figur).forEach(function (id) { var v = "ruang:" + id; h += '<button class="chip ' + (pil.lokasi === v ? "on" : "") + '" onclick="SP.set(\'lokasi\',\'' + v + '\')">' + RUANG[id].emoji + ' ' + RUANG[id].nama + (a !== "kolab" ? " ⭐" : "") + '</button>'; });
+    h += '</div><div class="label">🤝 Tempat kumpul (tetap)</div><div class="chips">';
+    KUMPUL.forEach(function (k) { var v = "kumpul:" + k.id; h += '<button class="chip ' + (pil.lokasi === v ? "on" : "") + '" onclick="SP.set(\'lokasi\',\'' + v + '\')">' + k.emoji + ' ' + k.nama + (a === "kolab" && k.id === "markas" ? " ⭐" : "") + '</button>'; });
+    h += '</div><div class="label">🔄 Tempat jumpa lain (bisa berganti)</div><div class="chips">';
+    JUMPA.forEach(function (k) { var v = "jumpa:" + k.id; h += '<button class="chip ' + (pil.lokasi === v ? "on" : "") + '" onclick="SP.set(\'lokasi\',\'' + v + '\')">' + k.emoji + ' ' + k.nama + '</button>'; });
+    h += '<button class="chip ' + (pil.lokasi === "sendiri" ? "on" : "") + '" onclick="SP.set(\'lokasi\',\'sendiri\')">✍️ Tulis sendiri</button></div>';
+    if (pil.lokasi === "sendiri") h += '<div style="margin-top:10px"><input type="text" maxlength="150" placeholder="Contoh: pantai saat matahari terbenam" value="' + esc(pil.lokasiSendiri) + '" oninput="SP.setDiam(\'lokasiSendiri\', this.value)"></div>';
+    h += '<p class="catatan">' + esc(teksLokasi().teks) + '</p></div>';
+    // Wajah
+    h += '<div class="kotak"><h3><span class="num">' + (++n) + '</span>Wajah</h3>';
+    pil.figur.forEach(function (id) {
+      var F = FIGUR[id], ada = !!fotoResmi[id], s = fotoSementara[id];
+      h += '<div class="figurbaris"><div class="label">' + F.emoji + ' ' + F.nama + '</div><div class="chips">';
+      if (ada) h += '<button class="chip ' + (pil.foto[id] === "resmi" ? "on" : "") + '" onclick="SP.setFoto(\'' + id + '\',\'resmi\')"><img class="foto-mini" style="width:24px;height:24px;vertical-align:middle" src="' + fotoResmi[id].url + '" alt=""> Foto wajah resmi ⭐</button>';
+      h += '<button class="chip ' + (pil.foto[id] === "ai" ? "on" : "") + '" onclick="SP.setFoto(\'' + id + '\',\'ai\')">🤖 Dari deskripsi</button>';
+      if (s) h += '<button class="chip ' + (pil.foto[id] === "sementara" ? "on" : "") + '" onclick="SP.setFoto(\'' + id + '\',\'sementara\')"><img class="foto-mini" style="width:24px;height:24px;vertical-align:middle" src="' + s.url + '" alt=""> Foto unggahan</button>';
+      h += '<label class="chip" style="display:inline-flex;align-items:center">📷 Unggah foto<input type="file" accept="image/*" style="display:none" onchange="SP.unggahFoto(\'' + id + '\', this)"></label>';
+      h += '</div>';
+      if (!ada) h += '<p class="catatan">Foto wajah resmi ' + F.nama + ' belum ada di aplikasi, jadi wajah dibuat dari deskripsi. Foto unggahan hanya bertahan selama Canvas terbuka.</p>';
+      h += '</div>';
+    });
+    h += '<p class="catatan">Foto wajah dipakai untuk Character Sheet dan format Image-to-Video. Di Text-to-Video, wajah tetap dijaga lewat deskripsi dan Identity Anchor.</p></div>';
+    // Ide
+    var fm = formatPilihan();
+    h += '<div class="kotak"><h3><span class="num">' + (++n) + '</span>Ide video <span class="tag">opsional</span></h3>';
+    h += '<textarea id="sp-ide" maxlength="1500" placeholder="' + (fm && fm.mesin === "serba" ? "Ceritakan videonya: apa yang terjadi, siapa melakukan apa." : "Sudah punya ide? Tulis di sini. Kosongkan bila ingin AI mengusulkan ide sesuai akun.") + '" oninput="SP.setDiam(\'ide\', this.value)">' + esc(pil.ide) + '</textarea></div>';
+    h += '<div id="sp-akun-galat"></div><div style="margin-top:16px"><button class="btn lebar" onclick="SP.mulai()">🎬 Mulai buat video</button></div>';
+    h += '<p class="catatan tengah">Setelah ini kamu masuk ke mesin Sugi Studio dengan figur, pakaian, dan lokasi sudah terisi.</p>';
+    return h;
+  }
+  function formatPilihan() {
+    if (!pil) return null;
+    if (pil.format === "__sendiri") { var t = (pil.formatSendiri || "").trim(); return t ? { id: "__sendiri", emoji: "✍️", judul: t, mesin: pil.akun === "kolab" ? "podcast" : "th", en: t + " (the user's own format; write it in English)" } : null; }
+    return cariFormat(pil.akun, pil.format);
+  }
+  function teksLokasi() {
+    var v = pil.lokasi || "";
+    if (v.indexOf("ruang:") === 0) { var r = RUANG[v.slice(6)]; return { nama: r.nama, teks: r.teks }; }
+    if (v.indexOf("kumpul:") === 0) { var k = KUMPUL.filter(function (x) { return x.id === v.slice(7); })[0]; return { nama: k.nama, teks: k.teks }; }
+    if (v.indexOf("jumpa:") === 0) { var j = JUMPA.filter(function (x) { return x.id === v.slice(6); })[0]; return { nama: j.nama, teks: j.nama + " (tempat jumpa; detailnya boleh ditentukan AI, lalu dikunci untuk video ini)" }; }
+    if (v === "sendiri") { var s = (pil.lokasiSendiri || "").trim(); return { nama: s || "Tulis sendiri", teks: s || "Tulis lokasinya di kotak di atas." }; }
+    return { nama: "", teks: "" };
+  }
+
+  // ---------- Ide Konten ----------
+  function htmlIde() {
+    var h = kembaliBtn() + '<h2 style="margin-top:10px">📅 Ide Konten</h2><p class="sub">AI mengusulkan ide sesuai niche akun. Ketuk "Buat video ini" untuk langsung memulai.</p>';
+    h += '<div class="kotak"><div class="label" style="margin-top:0">Akun</div><div class="chips">';
+    URUT_AKUN.forEach(function (a) { h += '<button class="chip ' + (ideAkun === a ? "on" : "") + '" onclick="SP.ideSet(\'akun\',\'' + a + '\')">' + AKUN[a].emoji + ' ' + esc(AKUN[a].label) + '</button>'; });
+    h += '</div><div class="label">Jumlah ide</div><div class="chips">';
+    [[3, "3 ide (hari ini)"], [7, "7 ide (seminggu)"]].forEach(function (x) { h += '<button class="chip ' + (ideJumlah === x[0] ? "on" : "") + '" onclick="SP.ideSet(\'jumlah\',' + x[0] + ')">' + x[1] + '</button>'; });
+    h += '</div><div class="label">Tema khusus <span class="tag">opsional</span></div><input type="text" maxlength="150" placeholder="Contoh: persiapan promo akhir tahun" value="' + esc(ideTema) + '" oninput="SP.ideSet(\'tema\', this.value, true)">';
+    h += '<div style="margin-top:14px"><button class="btn lebar" onclick="SP.buatIde()" ' + (ideMuat ? "disabled" : "") + '>✨ ' + (ideHasil.length ? "Buat ide lain" : "Buat ide") + '</button></div></div>';
+    if (ideMuat) h += '<div class="spin"></div><p class="tengah catatan">AI sedang menyiapkan ide...</p>';
+    if (ideGalat) h += '<div class="peringatan">' + esc(ideGalat) + '</div>';
+    ideHasil.forEach(function (d, i) {
+      var f = cariFormat(d.akun, d.format);
+      h += '<div class="ide"><span class="tag">' + esc(AKUN[d.akun].label) + (f ? ' · ' + f.emoji + ' ' + esc(f.judul) : "") + '</span><p><b>' + (i + 1) + '. ' + esc(d.judul) + '</b></p><p>' + esc(d.ringkasan) + '</p>' + (d.hook ? '<p class="catatan">Kalimat pembuka: "' + esc(d.hook) + '"</p>' : "") + '<button class="btn2" onclick="SP.pakaiIde(' + i + ')">🎬 Buat video ini</button></div>';
+    });
+    return h;
+  }
+  function ideSet(k, v, diam) { if (k === "akun") ideAkun = v; else if (k === "jumlah") ideJumlah = v; else ideTema = v; if (!diam) gambar(); }
+  function ekstrakJson(t) { var s = String(t || "").replace(/```json|```/g, ""); var a = s.indexOf("{"), b = s.lastIndexOf("}"); return JSON.parse(s.slice(a, b + 1)); }
+  async function aiTeks(sys, user, json) {
+    var body = { contents: [{ parts: [{ text: user }] }], systemInstruction: { parts: [{ text: sys }] } };
+    if (json) body.generationConfig = { responseMimeType: "application/json" };
+    var url = "https://generativelanguage.googleapis.com/v1beta/models/" + GEMINI_MODEL + ":generateContent?key=" + apiKey;
+    var tunda = 1000;
+    for (var i = 0; i < 3; i++) {
+      try {
+        var r = await fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+        if (!r.ok) throw new Error(r.status + " " + (await r.text()).slice(0, 160));
+        var d = await r.json(), t = d.candidates && d.candidates[0] && d.candidates[0].content && d.candidates[0].content.parts && d.candidates[0].content.parts[0].text;
+        if (!t) throw new Error("Jawaban AI kosong");
+        return t;
+      } catch (e) { if (i === 2) throw e; await new Promise(function (ok) { setTimeout(ok, tunda); }); tunda *= 2; }
+    }
+  }
+  async function buatIde() {
+    var A = AKUN[ideAkun];
+    ideMuat = true; ideGalat = ""; gambar();
+    var daftar = A.format.map(function (f) { return f.id + " = " + f.judul + " (" + f.en + ")"; }).join("\n");
+    var figurTeks = A.figur.map(function (id) { return FIGUR[id].en; }).join("\n");
+    var sys = "You plan short vertical videos (TikTok/Reels) for an Indonesian creator's own account. Return ONLY JSON: {\"ide\":[{\"judul\":\"...\",\"format\":\"<format id>\",\"ringkasan\":\"...\",\"hook\":\"...\"}]}. Write judul, ringkasan (2-3 sentences: what happens and what the viewer learns), and hook (the spoken first line, max 14 words) in casual Indonesian. Every idea must fit the account niche, be practical and honest (no invented income numbers, no real brands, no real people), feature the account's fictional host(s), and differ from each other in angle and format. All characters are adults 18+.";
+    var user = "Account: " + A.label + "\nNiche: " + A.nicheEn + "\nHost(s):\n" + figurTeks + "\nAllowed formats (use the id):\n" + daftar + "\nNumber of ideas: " + ideJumlah + (ideTema.trim() ? "\nSpecial theme from the user: " + ideTema.trim() : "") + "\nAvoid repeating these titles: " + ideHasil.map(function (d) { return d.judul; }).join("; ");
+    try {
+      var j = ekstrakJson(await aiTeks(sys, user, true));
+      var list = (j.ide || []).filter(function (d) { return d && d.judul; }).slice(0, ideJumlah).map(function (d) { return { akun: ideAkun, judul: String(d.judul), format: cariFormat(ideAkun, d.format) ? d.format : A.format[0].id, ringkasan: String(d.ringkasan || ""), hook: String(d.hook || "") }; });
+      if (!list.length) throw new Error("Ide tidak terbaca");
+      ideHasil = list;
+    } catch (e) { ideGalat = "Ide gagal dibuat. Coba lagi. (" + (e.message || e) + ")"; }
+    ideMuat = false; gambar();
+  }
+  function pakaiIde(i) {
+    var d = ideHasil[i]; if (!d) return;
+    var teks = d.judul + ". " + d.ringkasan + (d.hook ? ' Kalimat pembuka: "' + d.hook + '"' : "");
+    buka("akun", { akun: d.akun, format: d.format, ide: teks });
+  }
+
+  // ---------- Bank Figur ----------
+  function htmlBank() {
+    var h = kembaliBtn() + '<h2 style="margin-top:10px">👥 Bank Figur & Lokasi</h2><p class="sub">Data ini dikunci dan dipakai otomatis di setiap video. Untuk mengubahnya, kirim perubahan ke Claude.</p>';
+    URUT_FIGUR.forEach(function (id) {
+      var F = FIGUR[id], f = fotoResmi[id];
+      h += '<div class="kotak"><h3>' + F.emoji + ' ' + F.nama + ' <span class="tag">' + esc(AKUN[F.akun].nama) + '</span></h3>';
+      h += f ? '<img class="bank-foto" src="' + f.url + '" alt="' + F.nama + '">' : '<p class="catatan">Foto wajah resmi belum ada.</p>';
+      h += '<ul class="rapi"><li><b>Usia:</b> ' + F.umur + ' tahun</li><li><b>Peran:</b> ' + esc(F.peran) + '</li><li><b>Ciri tetap:</b> ' + esc(F.ciri) + '</li><li><b>Wajah (tanpa foto):</b> ' + esc(F.fisik) + '</li><li><b>Suara:</b> ' + esc(F.usiaSuara + ", " + F.warnaSuara.toLowerCase() + ", logat " + F.logat) + '</li></ul>';
+      h += '<div class="label">Pakaian</div><ul class="rapi">' + F.outfit.map(function (o) { return '<li>' + o.emoji + ' <b>' + esc(o.label) + ':</b> ' + esc(o.teks) + '</li>'; }).join("") + '</ul>';
+      h += '<div class="label">Ruang kerja</div><p class="catatan" style="margin-top:0">' + esc(RUANG[id].teks) + '</p></div>';
+    });
+    h += '<div class="kotak"><h3>🤝 Tempat kumpul (tetap)</h3><ul class="rapi">' + KUMPUL.map(function (k) { return '<li>' + k.emoji + ' ' + esc(k.teks) + '</li>'; }).join("") + '</ul>';
+    h += '<div class="label">🔄 Tempat jumpa lain</div><p class="catatan" style="margin-top:0">' + JUMPA.map(function (k) { return k.emoji + " " + k.nama; }).join(" · ") + ' · atau tulis sendiri</p></div>';
+    return h;
+  }
+
+  // ---------- Lanjutkan Proyek ----------
+  function htmlLanjut() {
+    return kembaliBtn() + '<h2 style="margin-top:10px">📂 Lanjutkan Proyek</h2><p class="sub">Tempel Kode Proyek yang kamu simpan dari hasil video. Proyek dibuka kembali lengkap dengan figurnya.</p>' +
+      '<div class="kotak"><textarea id="sp-kode" placeholder="Tempel kode di sini (diawali SGM1:...)"></textarea><div id="sp-kode-st"></div><div style="margin-top:12px"><button class="btn lebar" onclick="SP.lanjut()">📂 Buka proyek</button></div></div>';
+  }
+  function b64Bytes(b) { var s = atob(b), a = new Uint8Array(s.length); for (var i = 0; i < s.length; i++) a[i] = s.charCodeAt(i); return a; }
+  async function bacaKode(text) {
+    var t = String(text || "").trim().replace(/\s+/g, "");
+    try {
+      if (t.indexOf("SGM1:") === 0) return JSON.parse(new TextDecoder().decode(await new Response(new Blob([b64Bytes(t.slice(5))]).stream().pipeThrough(new DecompressionStream("gzip"))).arrayBuffer()));
+      if (t.indexOf("SGM0:") === 0) return JSON.parse(new TextDecoder().decode(b64Bytes(t.slice(5))));
+      return JSON.parse(String(text || "").trim());
+    } catch (e) { return null; }
+  }
+  async function lanjut() {
+    var el = $("sp-kode"), st = $("sp-kode-st"), teks = el ? el.value : "";
+    var d = await bacaKode(teks);
+    var mesin = d && d.app === "sugimation-kreator" ? "kreator" : d && d.app === "sugimation-serba-bisa" ? "serba" : "";
+    if (!d || !d.selections || !mesin) { st.innerHTML = '<div class="peringatan">Kode tidak dikenali. Pastikan kodenya tersalin lengkap dari Studio Pribadi.</div>'; return; }
+    var sp = d.selections.sp;
+    if (sp && AKUN[sp.akun]) {
+      mulaiPilihan(sp.akun, sp.format);
+      pil.figur = (sp.figur || pil.figur).filter(function (x) { return FIGUR[x]; });
+      if (sp.outfit) for (var k in sp.outfit) pil.outfit[k] = sp.outfit[k];
+      if (sp.lokasi) pil.lokasi = sp.lokasi;
+      if (sp.lokasiSendiri) pil.lokasiSendiri = sp.lokasiSendiri;
+      if (sp.formatSendiri) pil.formatSendiri = sp.formatSendiri;
+      if (sp.foto) for (var f in sp.foto) pil.foto[f] = sp.foto[f] === "resmi" && fotoResmi[f] ? "resmi" : "ai";
+      if (!formatPilihan()) pil = null;
+    } else { pil = null; }
+    bukaBingkai(mesin, pil ? konfig(mesin) : { mesin: mesin }, teks.trim(), (d.selections[1] || "Proyek lanjutan").slice(0, 24));
+  }
+
+  // ---------- Konfigurasi untuk mesin ----------
+  function konfig(mesinPaksa) {
+    var fm = formatPilihan(), A = AKUN[pil.akun], lok = teksLokasi();
+    var mesin = mesinPaksa || (fm.mesin === "serba" ? "serba" : "kreator");
+    var figur = pil.figur.map(function (id) {
+      var F = FIGUR[id], o = F.outfit.filter(function (x) { return x.id === pil.outfit[id]; })[0] || F.outfit[0];
+      var peran = F.peran + (pil.figur.length > 1 ? "; sahabat " + pil.figur.filter(function (x) { return x !== id; }).map(function (x) { return FIGUR[x].nama; }).join(" dan ") : "");
+      return { id: id, nama: F.nama, peran: peran, usiaSuara: F.usiaSuara, warnaSuara: F.warnaSuara, logat: F.logat, pakaian: o.teks, ciri: F.ciri, umur: F.umur, fisik: F.fisik, foto: fotoDipakai(id), en: F.en + "; outfit: " + o.en };
+    });
+    var nama = figur.map(function (f) { return f.nama; });
+    var pemeran = figur.length === 1
+      ? figur[0].nama + " (" + FIGUR[figur[0].id].ringkas + "), figur tetap " + A.nama
+      : nama.slice(0, -1).join(", ") + " dan " + nama[nama.length - 1] + ", " + (figur.length === 3 ? "tiga" : "dua") + " sahabat (figur tetap)";
+    var konteks = "STUDIO PRIBADI - PERSONAL CHANNEL CONTEXT (follow strictly; where it conflicts with the theme direction, this wins):\n" +
+      "- Channel: the user's own TikTok account \"" + A.label + "\", niche: " + A.nicheEn + ". Content format: " + fm.judul + " - " + fm.en + ".\n" +
+      "- Recurring fictional AI host" + (figur.length > 1 ? "s" : "") + " (adults, not real people):\n" + figur.map(function (f) { return "  * " + f.en + (f.foto ? " (face from the user's reference photo)" : ""); }).join("\n") + "\n" +
+      "- Keep every host's name, age, face, hijab and outfit identical in every part and every scene. No other main characters unless the story needs them.\n" +
+      "- Location: " + lok.teks + ".\n" +
+      (A.aturan ? "- " + A.aturan + "\n" : "") +
+      (fm.layar ? "- SCREEN RULE: AI video cannot show readable app screens. Keep the host on camera explaining. Whenever the viewer must see an app or a screen, add a separate line \"INSERT SCREEN RECORDING: [what to record, in Indonesian]\" to that scene in the storyboard (and mention it in the editing guide) so the user can overlay a real screen recording in CapCut. Screens inside the shot stay unreadable.\n" : "") +
+      "- Speech in casual Indonesian. No background music inside the clips (the user adds music in CapCut).";
+    return {
+      mesin: mesin, tema: fm.mesin === "podcast" ? "podcast" : "th", cabang: fm.judul, figur: figur, pemeran: pemeran, lokasi: lok.teks, ide: (pil.ide || "").trim(),
+      label: A.label, konteks: konteks,
+      simpan: { akun: pil.akun, figur: pil.figur.slice(), format: pil.format, formatSendiri: pil.formatSendiri, outfit: pil.outfit, lokasi: pil.lokasi, lokasiSendiri: pil.lokasiSendiri, foto: pil.foto }
+    };
+  }
+  function mulai() {
+    var g = $("sp-akun-galat");
+    function salah(t) { g.innerHTML = '<div class="peringatan">' + t + '</div>'; g.scrollIntoView({ block: "center" }); }
+    if (pil.akun === "kolab" && pil.figur.length < 2) return salah("Pilih minimal 2 sahabat untuk kolaborasi.");
+    var fm = formatPilihan();
+    if (!fm) return salah(pil.format === "__sendiri" ? "Tulis dulu format yang kamu inginkan." : "Pilih format kontennya dulu.");
+    if (pil.lokasi === "sendiri" && !(pil.lokasiSendiri || "").trim()) return salah("Tulis dulu lokasinya.");
+    var cek = [pil.ide, pil.formatSendiri, pil.lokasiSendiri].join(" ");
+    if (BLOK.test(cek)) return salah("Semua tokoh harus orang dewasa (18+). Silakan ubah tulisannya.");
+    var k = konfig();
+    var judul = AKUN[pil.akun].emoji + " " + (pil.akun === "kolab" ? pil.figur.map(function (x) { return FIGUR[x].nama; }).join("+") : FIGUR[pil.figur[0]].nama) + " · " + fm.judul;
+    bukaBingkai(k.mesin, k, null, judul);
+  }
+
+  // ================= BINGKAI (mesin Sugi Studio) =================
+  async function ambilMesin(mesin) {
+    if (mesinCache[mesin]) return mesinCache[mesin];
+    var file = mesin === "serba" ? "serba-bisa.html" : "kreator.html";
+    var r = await fetch(MESIN_URL + file + "?v=" + Date.now(), { cache: "no-store" });
+    if (!r.ok) throw new Error("Mesin " + file + " gagal dimuat (kode " + r.status + ")");
+    var doc = new DOMParser().parseFromString(await r.text(), "text/html");
+    var gaya = Array.prototype.map.call(doc.head.querySelectorAll("style"), function (s) { return s.textContent; });
+    var skrip = Array.prototype.map.call(doc.body.querySelectorAll("script"), function (s) { var t = s.textContent; s.parentNode.removeChild(s); return t; });
+    var data = { gaya: gaya, skrip: skrip, body: doc.body.innerHTML, bodyClass: doc.body.getAttribute("class") || "" };
+    mesinCache[mesin] = data;
+    return data;
+  }
+  function tampilMuat(t) { $("sp-muat-teks").textContent = t; $("sp-muat").style.display = t ? "flex" : "none"; }
+  async function bukaBingkai(mesin, k, kodeImpor, judul) {
+    if (kerja.length >= BATAS) {
+      dialog("Sudah " + BATAS + " video terbuka", "Tutup salah satu video dulu (tombol ✕ di tab atas), lalu coba lagi.", [{ teks: "Mengerti", utama: true }]);
+      return;
+    }
+    document.body.classList.add("di-bingkai"); gambarTab();
+    tampilMuat("Menyiapkan mesin Sugi Studio...");
+    var data;
+    try { data = await ambilMesin(mesin); }
+    catch (e) { tampilMuat(""); buka("beranda"); dialog("Mesin gagal dimuat", "Periksa koneksi internet, lalu coba lagi.<br><small>" + esc(e.message || e) + "</small>", [{ teks: "Tutup", utama: true }]); return; }
+    k = k || { mesin: mesin };
+    if (kodeImpor) k.impor = kodeImpor;
+    var item = { no: ++nomor, judul: judul || "Video", konteks: k.konteks || "", f: null, w: null };
+    var f = document.createElement("iframe");
+    f.setAttribute("title", item.judul);
+    f.srcdoc = '<!DOCTYPE html><html lang="id"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>' + esc(item.judul) + '</title></head><body></body></html>';
+    item.f = f;
+    f.onload = function () {
+      f.onload = null;
+      var w = f.contentWindow, doc = f.contentDocument;
+      item.w = w;
+      data.gaya.forEach(function (css) { var st = doc.createElement("style"); st.textContent = css; doc.head.appendChild(st); });
+      doc.body.className = data.bodyClass;
+      doc.body.innerHTML = data.body;
+      w.__spKonfig = k;
+      var p = doc.createElement("script"); p.textContent = PERANTARA; doc.head.appendChild(p);
+      var galat = null, tangkap = function (e) { if (!galat) galat = e.message || String(e); };
+      w.addEventListener("error", tangkap);
+      w.onload = null;
+      data.skrip.forEach(function (t) { var s = doc.createElement("script"); s.textContent = t; doc.body.appendChild(s); });
+      var s2 = doc.createElement("script"); s2.textContent = "(" + PERSONA.toString() + ")();"; doc.body.appendChild(s2);
+      w.removeEventListener("error", tangkap);
+      if (!w.__spSiap) {
+        tutup(item, true); tampilMuat("");
+        dialog("Video gagal dibuka", "Mesin Sugi Studio tidak bisa dijalankan." + (galat ? "<br><small>" + esc(galat) + "</small>" : ""), [{ teks: "Tutup", utama: true }]);
+        buka("beranda"); return;
+      }
+      var b0 = w.onload; w.onload = null;
+      if (typeof b0 === "function") { try { b0(); } catch (e) { } }
+      try { w.__spMulai(); } catch (e) { galat = e.message; }
+      tampilMuat("");
+      kini = kerja.indexOf(item); tampilBingkai();
+      if (w.__spHilang && w.__spHilang.length) dialog("Perlu pembaruan", "Mesin Sugi Studio berubah, jadi sebagian isian otomatis mungkin tidak berjalan (" + esc(w.__spHilang.join(", ")) + "). Kirim pesan ini ke Claude.", [{ teks: "Mengerti", utama: true }]);
+    };
+    kerja.push(item);
+    $("sp-bingkai").appendChild(f);
+  }
+  function tampilBingkai() {
+    document.body.classList.add("di-bingkai");
+    kerja.forEach(function (k, i) { k.f.className = i === kini ? "kini" : ""; });
+    gambarTab();
+  }
+  function pilihTab(i) { if (i < 0) { buka("beranda"); return; } kini = i; tampilBingkai(); }
+  function tutup(item, diam) {
+    var i = kerja.indexOf(item); if (i < 0) return;
+    if (!diam && item.w) {
+      var sibuk = false; try { sibuk = !!item.w.eval("typeof isProcessingQueue !== 'undefined' && isProcessingQueue"); } catch (e) { }
+      if (sibuk) { dialog("Masih diproses", "Video ini sedang dibuat AI. Tunggu sampai selesai, lalu tutup.", [{ teks: "Mengerti", utama: true }]); return; }
+      dialog("Tutup video ini?", "Simpan Kode Proyek dulu kalau masih ingin melanjutkannya nanti.", [{ teks: "Tutup video", utama: true, aksi: function () { tutup(item, true); } }, { teks: "Batal" }]);
+      return;
+    }
+    if (item.f && item.f.parentNode) item.f.parentNode.removeChild(item.f);
+    kerja.splice(i, 1);
+    if (kini >= kerja.length) kini = kerja.length - 1;
+    if (!kerja.length || !document.body.classList.contains("di-bingkai")) buka("beranda"); else tampilBingkai();
+  }
+  function gambarTab() {
+    var el = $("sp-tab");
+    if (!kerja.length) { el.style.display = "none"; return; }
+    el.style.display = "flex";
+    var diBingkai = document.body.classList.contains("di-bingkai");
+    var h = '<button class="tab ' + (!diBingkai ? "aktif" : "") + '" onclick="SP.pilihTab(-1)">🏠 Beranda</button>';
+    kerja.forEach(function (k, i) { h += '<button class="tab ' + (diBingkai && i === kini ? "aktif" : "") + '" onclick="SP.pilihTab(' + i + ')">' + esc(k.judul) + '<span class="x" onclick="event.stopPropagation();SP.tutupNo(' + k.no + ')">✕</span></button>'; });
+    el.innerHTML = h;
+  }
+  function tutupNo(no) { var k = kerja.filter(function (x) { return x.no === no; })[0]; if (k) tutup(k); }
+
+  // Panggilan AI dari bingkai dititipkan ke halaman utama LEWAT PESAN (sama seperti Satu Pintu V1.8).
+  var PERANTARA = "(" + function () {
+    var n = 0, tunggu = {}, asli = window.fetch;
+    window.addEventListener("message", function (e) {
+      var d = e.data || {};
+      if (e.source !== window.parent || d.jenis !== "sugi-jawab-ai" || !tunggu[d.id]) return;
+      var p = tunggu[d.id]; delete tunggu[d.id];
+      if (d.galat) p[1](new TypeError(d.galat));
+      else p[0](new Response(d.isi, { status: d.status, statusText: d.statusText || "", headers: { "Content-Type": d.tipe || "application/json" } }));
+    });
+    var titip = function (url, opsi) {
+      var u = typeof url === "string" ? url : (url && url.url) || String(url);
+      if (!/^https:\/\/generativelanguage\.googleapis\.com\//.test(u)) return asli.apply(window, arguments);
+      opsi = opsi || {};
+      var h = {}, hh = opsi.headers || {};
+      if (typeof hh.forEach === "function" && !Array.isArray(hh)) hh.forEach(function (v, k) { h[k] = v; });
+      else Object.keys(hh).forEach(function (k) { h[k] = hh[k]; });
+      return new Promise(function (ok, gagal) {
+        var id = ++n; tunggu[id] = [ok, gagal];
+        window.parent.postMessage({ jenis: "sugi-minta-ai", id: id, url: u, opsi: { method: opsi.method || "POST", headers: h, body: opsi.body } }, "*");
+      });
+    };
+    try { Object.defineProperty(window, "fetch", { value: titip, writable: false, configurable: false }); } catch (e) { window.fetch = titip; }
+  } + ")();";
+
+  // Konteks akun ditambahkan ke setiap perintah AI teks dari bingkai (bukan AI gambar, bukan pemadat prompt).
+  function tambahKonteks(body, konteks) {
+    if (!konteks || typeof body !== "string") return body;
+    try {
+      var b = JSON.parse(body);
+      var img = b.generationConfig && (b.generationConfig.responseModalities || []).indexOf("IMAGE") >= 0;
+      if (img) return body;
+      b.systemInstruction = b.systemInstruction || { parts: [{ text: "" }] };
+      var parts = b.systemInstruction.parts = b.systemInstruction.parts || [{ text: "" }];
+      if (!parts.length) parts.push({ text: "" });
+      var t = String(parts[0].text || "");
+      if (/^You shorten/.test(t) || t.indexOf("STUDIO PRIBADI - PERSONAL CHANNEL CONTEXT") >= 0) return body;
+      parts[0].text = t + (t ? "\n\n" : "") + konteks;
+      return JSON.stringify(b);
+    } catch (e) { return body; }
+  }
+  window.addEventListener("message", function (e) {
+    var d = e.data || {};
+    var item = kerja.filter(function (k) { return k.w === e.source; })[0];
+    if (!item) return;
+    if (d.jenis === "sp-pulang") { buka("beranda"); return; }
+    if (d.jenis !== "sugi-minta-ai") return;
+    var src = e.source, opsi = d.opsi || {};
+    opsi.body = tambahKonteks(opsi.body, item.konteks);
+    fetch(d.url, opsi).then(function (r) {
+      return r.text().then(function (t) { src.postMessage({ jenis: "sugi-jawab-ai", id: d.id, status: r.status, statusText: r.statusText, isi: t, tipe: r.headers.get("Content-Type") }, "*"); });
+    }).catch(function (er) {
+      try { src.postMessage({ jenis: "sugi-jawab-ai", id: d.id, galat: String((er && er.message) || er || "Failed to fetch") }, "*"); } catch (x) { }
+    });
+  });
+
+  // Dijalankan di dalam bingkai, setelah mesin Sugi Studio: mengisi figur, pakaian, lokasi, dan mengganti merek.
+  function PERSONA() {
+    var C = window.__spKonfig || {}, P = window.parent;
+    var wajib = ["resetProject", "openStep1", "afterLokasi", "setStep1View", "goNew", "goHome", "openProject", "importProjectText", "getStory"];
+    window.__spHilang = wajib.filter(function (n) { return typeof window[n] !== "function"; });
+    function pulang() { try { P.postMessage({ jenis: "sp-pulang" }, "*"); } catch (e) { } }
+    function pasangFoto() {
+      if (!C.figur) return;
+      var ada = false;
+      selections.fotoKe = []; selections.izinFoto = [];
+      C.figur.forEach(function (f, i) {
+        if (f.foto) { ownPhotos[i] = f.foto; selections.fotoKe[i] = true; selections.izinFoto[i] = true; ada = true; }
+        else { ownPhotos[i] = null; selections.fotoKe[i] = false; }
+      });
+      if (ada) { selections.pakaiFoto = "Iya"; selections.fotoKarakter = true; }
+      else { selections.pakaiFoto = "Tidak"; delete selections.fotoKarakter; delete selections.fotoKe; delete selections.izinFoto; }
+    }
+    function isi() {
+      if (!C.figur) return;
+      selections.sp = C.simpan;
+      selections.pemeran = C.pemeran;
+      selections.tokohN = C.figur.length;
+      selections.jumlahTokoh = C.figur.length === 1 ? "1 tokoh" : C.figur.length + " tokoh";
+      selections.tokoh = C.figur.map(function (f) {
+        var t = { nama: f.nama, peran: f.peran, usiaSuara: f.usiaSuara, warnaSuara: f.warnaSuara, logat: f.logat, pakaian: f.pakaian, ciri: f.ciri };
+        if (!f.foto) { t.umur = String(f.umur); t.fisik = f.fisik; }
+        return t;
+      });
+      selections.lokasi = C.lokasi;
+      pasangFoto();
+    }
+    if (typeof resetProject === "function") { var r0 = resetProject; resetProject = function () { var r = r0.apply(this, arguments); isi(); return r; }; }
+    if (typeof afterLokasi === "function") {
+      var a0 = afterLokasi;
+      afterLokasi = function () {
+        if (C.figur && String(getStory() || "").trim() && !returnToSummary) { selections._castDone = 1; setStep1View("story"); return; }
+        return a0.apply(this, arguments);
+      };
+    }
+    // Lokasi dari Studio Pribadi sudah dipilih: beri tombol lanjut langsung di halaman Lokasi
+    if (typeof buildLokasiHtml === "function") {
+      var l0 = buildLokasiHtml;
+      buildLokasiHtml = function () {
+        var h = l0.apply(this, arguments);
+        if (C.figur && selections.lokasi && selections.lokasi === C.lokasi) h += '<div class="mt-6"><button id="sp-lok-lanjut" onclick="afterLokasi()" class="w-full bg-gold-500 hover:bg-gold-600 text-brown-900 font-bold py-3 min-h-[48px] rounded-xl shadow-sm">Lanjut dengan lokasi ini</button><p class="text-xs text-brown-500 mt-2 text-center">Lokasi dari Studio Pribadi sudah terpilih. Ketuk pilihan lain bila ingin mengganti.</p></div>';
+        return h;
+      };
+    }
+    if (typeof openProject === "function") { var o0 = openProject; openProject = function () { var r = o0.apply(this, arguments); try { if (selections && selections.sp && C.figur) pasangFoto(); } catch (e) { } return r; }; }
+    goNew = function () { pulang(); };
+    goHome = function () { pulang(); };
+    try {
+      var lw = document.querySelector(".k-logo-w"); if (lw) lw.innerHTML = '<span class="font-serif text-[#3B2A1A]">STUDIO</span> <span class="font-serif text-[#9A7425]">PRIBADI</span>';
+      var la = document.querySelector(".k-logo-ai span"); if (la) la.textContent = C.label || "Studio Pribadi";
+      var lb = document.querySelector(".k-logo-btn"); if (lb) lb.setAttribute("aria-label", "Kembali ke Studio Pribadi");
+    } catch (e) { }
+    window.__spMulai = function () {
+      if (C.impor) { importProjectText(C.impor); return; }
+      resetProject();
+      if (C.mesin === "serba") { if (C.ide) selections[1] = C.ide; openStep1("story"); }
+      else { selections.temaRek = { id: C.tema || "th", cabang: C.cabang || "" }; if (C.ide) selections[1] = C.ide; openStep1("pemeran"); }
+    };
+    window.__spSiap = true;
+  }
+
+  // ---------- Dialog ----------
+  var aksiDialog = [];
+  function dialog(judul, isi, tombol) {
+    aksiDialog = tombol || [{ teks: "Tutup", utama: true }];
+    $("sp-dialog-isi").innerHTML = '<h3 class="serif" style="font-size:19px">' + judul + '</h3><div style="font-size:15px">' + isi + '</div><div class="tombol">' + aksiDialog.map(function (t, i) { return '<button class="' + (t.utama ? "btn" : "btn2") + '" onclick="SP.tekanDialog(' + i + ')">' + esc(t.teks) + '</button>'; }).join("") + '</div>';
+    $("sp-dialog").style.display = "flex";
+  }
+  function tekanDialog(i) { $("sp-dialog").style.display = "none"; var t = aksiDialog[i]; if (t && t.aksi) t.aksi(); }
+
+  // ---------- Isian ----------
+  function set(k, v) { simpanIde(); pil[k] = v; gambar(); }
+  function setDiam(k, v) { pil[k] = v; }
+  function simpanIde() { var t = $("sp-ide"); if (t && pil) pil.ide = t.value; }
+  function setOutfit(id, o) { simpanIde(); pil.outfit[id] = o; gambar(); }
+  function setFoto(id, m) { simpanIde(); pil.foto[id] = m; pil.fotoManual = pil.fotoManual || {}; pil.fotoManual[id] = true; gambar(); }
+  function togFigur(id) {
+    simpanIde();
+    var i = pil.figur.indexOf(id);
+    if (i >= 0) { if (pil.figur.length <= 2) return; pil.figur.splice(i, 1); if (pil.lokasi === "ruang:" + id) pil.lokasi = "kumpul:markas"; }
+    else pil.figur = URUT_FIGUR.filter(function (x) { return x === id || pil.figur.indexOf(x) >= 0; });
+    gambar();
+  }
+  function unggahFoto(id, input) {
+    var file = input && input.files && input.files[0]; if (!file) return;
+    simpanIde();
+    var fr = new FileReader();
+    fr.onload = function () {
+      var img = new Image();
+      img.onload = function () {
+        var s = Math.min(1, 1024 / Math.max(img.width, img.height)), cv = document.createElement("canvas");
+        cv.width = Math.round(img.width * s); cv.height = Math.round(img.height * s);
+        cv.getContext("2d").drawImage(img, 0, 0, cv.width, cv.height);
+        var url = cv.toDataURL("image/jpeg", 0.9);
+        fotoSementara[id] = { mime: "image/jpeg", data: url.split(",")[1], url: url };
+        pil.foto[id] = "sementara"; gambar();
+      };
+      img.onerror = function () { dialog("Foto gagal dibaca", "File ini bukan gambar yang bisa dibaca.", null); };
+      img.src = fr.result;
+    };
+    fr.readAsDataURL(file);
+  }
+
+  function mulaiAplikasi() { gambar(); muatFotoResmi(); }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", mulaiAplikasi); else setTimeout(mulaiAplikasi, 0);
+
+  return {
+    buka: buka, set: set, setDiam: setDiam, setOutfit: setOutfit, setFoto: setFoto, togFigur: togFigur, unggahFoto: unggahFoto, mulai: mulai,
+    ideSet: ideSet, buatIde: buatIde, pakaiIde: pakaiIde, lanjut: lanjut, pilihTab: pilihTab, tutupNo: tutupNo, tekanDialog: tekanDialog,
+    _uji: { kerja: function () { return kerja; }, konfig: function () { return konfig(); }, pil: function () { return pil; }, tambahKonteks: tambahKonteks }
+  };
+})();
+</script>
+</body>
+</html>
