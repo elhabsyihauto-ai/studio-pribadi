@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Studio Pribadi by Suhu Digital V1.2 (17 Nov 2026). SP6 foto wajah resmi Nara; SP7 tampilan Nara dari karakter sheet (hijab sifon beige, 5 pakaian); SP8 pakaian tambahan Rio; SP9 Rio dan Nara berpacaran (sopan dan hangat), Mia sahabat, format Konten Rio & Nara. Sebelumnya V1.1 (17 Nov 2026). SP1 figur dan lokasi akun di atas halaman Pembicara/Lokasi + lokasi pilihan ikut ke AI; SP2 foto tanpa usia/rambut; SP3 sepatu tetap; SP4 nama akun otomatis; SP5 pilihan ajakan penutup + jadwal live. Sebelumnya V1.0 (16 Nov 2026). Aplikasi pribadi untuk konten tiga akun TikTok (Rio, Mia, Nara + kolaborasi).
+<!-- Studio Pribadi by Suhu Digital V1.3 (17 Nov 2026). SP10 pakaian Rio sesuai karakter sheet + bawaan per akun; SP11 kembar serasi Rio & Nara; SP12 foto wajah resmi Mia + kardigan dengan celana lebar beige; SP13 atur detail pakaian (opsional). Sebelumnya V1.2 (17 Nov 2026). SP6 foto wajah resmi Nara; SP7 tampilan Nara dari karakter sheet (hijab sifon beige, 5 pakaian); SP8 pakaian tambahan Rio; SP9 Rio dan Nara berpacaran (sopan dan hangat), Mia sahabat, format Konten Rio & Nara. Sebelumnya V1.1 (17 Nov 2026). SP1 figur dan lokasi akun di atas halaman Pembicara/Lokasi + lokasi pilihan ikut ke AI; SP2 foto tanpa usia/rambut; SP3 sepatu tetap; SP4 nama akun otomatis; SP5 pilihan ajakan penutup + jadwal live. Sebelumnya V1.0 (16 Nov 2026). Aplikasi pribadi untuk konten tiga akun TikTok (Rio, Mia, Nara + kolaborasi).
      Mesin pembuat prompt diambil langsung dari Sugi Studio (kreator.html dan serba-bisa.html di repo Sugimation, cabang main),
      jadi setiap perbaikan Sugi otomatis ikut. Setiap video berjalan di bingkai sendiri (maks. 3 bersamaan); AI dari bingkai
      dititipkan ke halaman utama lewat pesan (cara yang terbukti di Satu Pintu). -->
@@ -7,7 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Studio Pribadi by Suhu Digital V1.2</title>
+<title>Studio Pribadi by Suhu Digital V1.3</title>
 <style>
   :root { --krem:#FAF3E3; --krem2:#F3E8D0; --garis:#E9DCC2; --emas:#C9A24D; --emas2:#9A7425; --coklat:#3B2A1A; --coklat2:#7A6244; --putih:#FFFDF8; --merah:#B4472F; --hijau:#3F7A43; }
   * { box-sizing: border-box; }
@@ -109,7 +109,7 @@ var GEMINI_MODEL = "gemini-3-flash-preview";
 var GEMINI_API = "https://generativelanguage.googleapis.com/v1beta/models/" + GEMINI_MODEL + ":generateContent?key=" + apiKey;
 
 var SP = (function () {
-  var VERSI = "V1.2";
+  var VERSI = "V1.3";
   var MESIN_URL = "https://raw.githubusercontent.com/elhabsyihauto-ai/Sugimation/main/";
   var ASET_URL = "https://raw.githubusercontent.com/elhabsyihauto-ai/studio-pribadi/main/";
   var BATAS = 3;
@@ -127,12 +127,12 @@ var SP = (function () {
       enFoto: "Rio: the adult man from the user's reference photo (face, age, and hair come ONLY from the photo; never describe them); wide friendly smile; confident, friendly, professional; clear medium voice, neutral Indonesian accent",
       en: "Rio: fictional 27-year-old Southeast Asian man, slightly round face with a soft jawline, warm dark-brown eyes, thick neat eyebrows, light stubble shadow, short black hair with a little volume on top swept to the side, wide friendly smile; confident, friendly, professional; clear medium voice, neutral Indonesian accent",
       outfit: [
-        { id: "casual", emoji: "👔", label: "Smart casual", saran: true, teks: "kemeja polos biru muda lengan digulung sampai siku, celana chino krem, jam tangan kulit cokelat, sepatu loafer kulit cokelat tua", en: "plain light-blue shirt with sleeves rolled to the elbows, beige chinos, brown leather watch, dark-brown leather loafers" },
-        { id: "resmi", emoji: "🤵", label: "Resmi", teks: "jas hitam, kemeja putih, dasi hitam bertekstur, saputangan putih di saku jas, sepatu pantofel kulit hitam", en: "black suit, white shirt, textured black tie, white pocket square, black leather oxford shoes" },
-        { id: "denim", emoji: "🧢", label: "Kasual denim", teks: "overshirt denim navy di atas kaos putih, celana chino krem, sneakers putih, jam tangan kulit cokelat", en: "navy denim overshirt over a white T-shirt, beige chinos, white sneakers, brown leather watch" },
-        { id: "traveling", emoji: "🧳", label: "Traveling", teks: "jaket hijau zaitun di atas kaos putih, jeans gelap, ransel hitam, sneakers putih", en: "olive-green jacket over a white T-shirt, dark jeans, black backpack, white sneakers" },
-        { id: "olahraga", emoji: "🏃", label: "Olahraga", teks: "jaket training hitam, celana training hitam, sepatu lari hitam", en: "black track jacket, black track pants, black running shoes" },
-        { id: "santai", emoji: "👕", label: "Santai", teks: "kaos polos putih dengan overshirt hijau zaitun, celana jeans gelap, sneakers putih", en: "plain white T-shirt under an olive-green overshirt, dark jeans, white sneakers" }
+        { "id": "casual", "emoji": "👔", "label": "Smart casual", "saran": true, "b": {"atasan": "kemeja polos biru muda lengan digulung sampai siku", "bawahan": "celana chino krem", "sepatu": "sepatu loafer kulit cokelat tua", "aksesori": "jam tangan perak bertali hitam"}, "e": {"atasan": "plain light-blue shirt with sleeves rolled to the elbows", "bawahan": "beige chinos", "sepatu": "dark-brown leather loafers", "aksesori": "silver watch with a black strap"}},
+        { "id": "kasual", "emoji": "🧢", "label": "Kasual denim", "b": {"atasan": "kemeja denim navy dibiarkan terbuka di atas kaos putih", "bawahan": "celana khaki", "sepatu": "sneakers putih", "aksesori": "jam tangan perak bertali hitam"}, "e": {"atasan": "open navy denim shirt over a white T-shirt", "bawahan": "khaki trousers", "sepatu": "white sneakers", "aksesori": "silver watch with a black strap"}},
+        { "id": "traveling", "emoji": "🧳", "label": "Traveling", "b": {"atasan": "jaket hijau army di atas kaos putih", "bawahan": "jeans gelap", "sepatu": "sneakers putih", "aksesori": "ransel hitam, jam tangan perak bertali hitam"}, "e": {"atasan": "army-green jacket over a white T-shirt", "bawahan": "dark jeans", "sepatu": "white sneakers", "aksesori": "black backpack, silver watch with a black strap"}},
+        { "id": "formal", "emoji": "🤵", "label": "Formal", "b": {"atasan": "jas hitam, kemeja putih, dasi hitam bertekstur, saputangan putih di saku jas", "bawahan": "celana bahan hitam", "sepatu": "sepatu pantofel kulit hitam", "aksesori": "jam tangan perak bertali hitam"}, "e": {"atasan": "black suit jacket, white shirt, textured black tie, white pocket square", "bawahan": "black suit trousers", "sepatu": "black leather oxford shoes", "aksesori": "silver watch with a black strap"}},
+        { "id": "rumah", "emoji": "🏠", "label": "Rumah", "b": {"atasan": "kaos polos biru", "bawahan": "celana santai abu-abu", "sepatu": "sandal rumah hitam", "aksesori": "jam tangan perak bertali hitam"}, "e": {"atasan": "plain blue T-shirt", "bawahan": "grey lounge pants", "sepatu": "black house slippers", "aksesori": "silver watch with a black strap"}},
+        { "id": "olahraga", "emoji": "🏃", "label": "Olahraga", "b": {"atasan": "hoodie hitam", "bawahan": "celana training hitam", "sepatu": "sepatu lari hitam", "aksesori": "topi navy"}, "e": {"atasan": "black hoodie", "bawahan": "black track pants", "sepatu": "black running shoes", "aksesori": "navy cap"}}
       ]
     },
     mia: {
@@ -140,15 +140,15 @@ var SP = (function () {
       ringkas: "Wanita sekitar 30 tahun, berhijab · pengajar affiliate",
       peran: "pemilik akun Affiliate AI Academy, mengajar affiliate dengan video AI",
       usiaSuara: "30-an", warnaSuara: "Lembut dan halus", logat: "Indonesia netral",
-      ciri: "usia sekitar 30 tahun; selalu berhijab georgette abu tua yang menutup rambut dan leher; kesan percaya diri, ramah, profesional",
+      ciri: "usia sekitar 30 tahun; selalu berhijab yang menutup kepala dan leher (bawaan: georgette abu tua); kesan percaya diri, ramah, profesional",
       fisik: "wanita Indonesia berwajah ramah, senyum hangat, riasan natural",
-      ciriFoto: "selalu berhijab georgette abu tua yang menutup kepala dan leher; kesan percaya diri, ramah, profesional",
+      ciriFoto: "selalu berhijab yang menutup kepala dan leher (bawaan: georgette abu tua); kesan percaya diri, ramah, profesional",
       enFoto: "Mia: the adult woman from the user's reference photo (face and age come ONLY from the photo; never describe them); always wears a dark-grey georgette hijab covering head and neck; confident, friendly, professional; soft clear voice, neutral Indonesian accent",
       en: "Mia: fictional Indonesian woman about 30 years old, always wears a dark-grey georgette hijab that fully covers her hair and neck, warm smile, natural make-up; confident, friendly, professional; soft clear voice, neutral Indonesian accent",
       outfit: [
-        { id: "kardigan", emoji: "💜", label: "Kardigan lavender", saran: true, teks: "kardigan rajut pastel lavender, kaos krem, jeans biru denim, sneakers putih, jam tangan perak berpermukaan putih", en: "pastel lavender knit cardigan, cream T-shirt, blue denim jeans, white sneakers, silver watch with a white dial" },
-        { id: "blazer", emoji: "🧥", label: "Blazer navy", teks: "blazer navy dengan dalaman krem polos, celana panjang bahan krem, sepatu flat krem", en: "navy blazer over a plain cream top, cream tailored trousers, cream flat shoes" },
-        { id: "dress", emoji: "👗", label: "Dress anggun", teks: "dress panjang anggun yang sopan warna dusty pink, sepatu flat warna nude", en: "long, elegant modest dress in dusty pink, nude flat shoes" }
+        { "id": "kardigan", "emoji": "💜", "label": "Kardigan lavender", "saran": true, "b": {"hijab": "hijab georgette abu tua yang menutup kepala dan leher", "atasan": "kardigan rajut lavender di atas kaos krem", "bawahan": "celana panjang lebar warna beige", "sepatu": "sneakers putih", "aksesori": "jam tangan perak berpermukaan putih"}, "e": {"hijab": "dark-grey georgette hijab covering head and neck", "atasan": "lavender knit cardigan over a cream T-shirt", "bawahan": "wide beige trousers", "sepatu": "white sneakers", "aksesori": "silver watch with a white dial"}},
+        { "id": "blazer", "emoji": "🧥", "label": "Blazer navy", "b": {"hijab": "hijab georgette abu tua yang menutup kepala dan leher", "atasan": "blazer navy dengan dalaman krem polos", "bawahan": "celana panjang bahan krem", "sepatu": "sepatu flat krem", "aksesori": "jam tangan perak berpermukaan putih"}, "e": {"hijab": "dark-grey georgette hijab covering head and neck", "atasan": "navy blazer over a plain cream top", "bawahan": "cream tailored trousers", "sepatu": "cream flat shoes", "aksesori": "silver watch with a white dial"}},
+        { "id": "dress", "emoji": "👗", "label": "Dress anggun", "b": {"hijab": "hijab georgette abu tua yang menutup kepala dan leher", "atasan": "dress panjang anggun yang sopan warna dusty pink", "bawahan": "", "sepatu": "sepatu flat warna nude", "aksesori": "jam tangan perak berpermukaan putih"}, "e": {"hijab": "dark-grey georgette hijab covering head and neck", "atasan": "long, elegant modest dress in dusty pink", "bawahan": "", "sepatu": "nude flat shoes", "aksesori": "silver watch with a white dial"}}
       ]
     },
     nara: {
@@ -162,15 +162,20 @@ var SP = (function () {
       enFoto: "Nara: the adult woman from the user's reference photo (face and age come ONLY from the photo; never describe them); always wears a hijab covering head and neck (its color follows the outfit), silver wristwatch, gentle smile; warm, creative, relaxed; soft clear voice, neutral Indonesian accent",
       en: "Nara: fictional 26-year-old Indonesian woman, soft oval face, large brown eyes with long lashes, naturally rosy cheeks, natural pink lips, light natural make-up, always wears a hijab covering head and neck (its color follows the outfit), silver wristwatch, gentle smile; warm, creative, relaxed; soft clear voice, neutral Indonesian accent",
       outfit: [
-        { id: "kasual", emoji: "🤍", label: "Kasual", saran: true, teks: "hijab sifon beige menjuntai menutup dada, blus putih bertekstur berlengan balon, rok panjang lebar warna beige, sneakers putih, tas tangan krem", en: "draped beige chiffon hijab covering the chest, textured white blouse with balloon sleeves, wide long beige skirt, white sneakers, cream handbag" },
-        { id: "traveling", emoji: "🧳", label: "Traveling", teks: "hijab sifon beige, jaket krem di atas kaos putih, celana panjang krem, topi pantai anyaman berpita hitam, ransel hitam, kacamata hitam, sneakers putih", en: "beige chiffon hijab, cream jacket over a white T-shirt, cream trousers, woven straw sun hat with a black band, black backpack, sunglasses, white sneakers" },
-        { id: "formal", emoji: "💼", label: "Formal", teks: "hijab sifon beige, blazer krem dengan dalaman putih, celana bahan krem, tas tangan hitam, sepatu flat krem", en: "beige chiffon hijab, cream blazer over a white top, cream tailored trousers, black handbag, cream flat shoes" },
-        { id: "rumah", emoji: "🏠", label: "Rumah", teks: "hijab instan beige, sweter rajut pink dusty, jeans biru, sandal rumah krem", en: "beige slip-on hijab, dusty-pink knit sweater, blue jeans, cream house slippers" },
-        { id: "olahraga", emoji: "🏃‍♀️", label: "Olahraga", teks: "hijab olahraga navy, topi hitam, jaket olahraga hitam bergaris putih, celana training hitam, sepatu lari putih", en: "navy sports hijab, black cap, black track jacket with white stripes, black track pants, white running shoes" }
+        { "id": "kasual", "emoji": "🤍", "label": "Kasual", "saran": true, "b": {"hijab": "hijab sifon beige menjuntai menutup dada", "atasan": "blus putih bertekstur berlengan balon", "bawahan": "rok panjang lebar warna beige", "sepatu": "sneakers putih", "aksesori": "tas tangan krem, jam tangan perak"}, "e": {"hijab": "draped beige chiffon hijab covering the chest", "atasan": "textured white blouse with balloon sleeves", "bawahan": "wide long beige skirt", "sepatu": "white sneakers", "aksesori": "cream handbag, silver watch"}},
+        { "id": "traveling", "emoji": "🧳", "label": "Traveling", "b": {"hijab": "hijab sifon beige", "atasan": "jaket krem di atas kaos putih", "bawahan": "celana panjang krem", "sepatu": "sneakers putih", "aksesori": "topi pantai anyaman berpita hitam, ransel hitam, kacamata hitam, jam tangan perak"}, "e": {"hijab": "beige chiffon hijab", "atasan": "cream jacket over a white T-shirt", "bawahan": "cream trousers", "sepatu": "white sneakers", "aksesori": "woven straw sun hat with a black band, black backpack, sunglasses, silver watch"}},
+        { "id": "formal", "emoji": "💼", "label": "Formal", "b": {"hijab": "hijab sifon beige", "atasan": "blazer krem dengan dalaman putih", "bawahan": "celana bahan krem", "sepatu": "sepatu flat krem", "aksesori": "tas tangan hitam, jam tangan perak"}, "e": {"hijab": "beige chiffon hijab", "atasan": "cream blazer over a white top", "bawahan": "cream tailored trousers", "sepatu": "cream flat shoes", "aksesori": "black handbag, silver watch"}},
+        { "id": "rumah", "emoji": "🏠", "label": "Rumah", "b": {"hijab": "hijab instan beige", "atasan": "sweter rajut pink dusty", "bawahan": "jeans biru", "sepatu": "sandal rumah krem", "aksesori": "jam tangan perak"}, "e": {"hijab": "beige slip-on hijab", "atasan": "dusty-pink knit sweater", "bawahan": "blue jeans", "sepatu": "cream house slippers", "aksesori": "silver watch"}},
+        { "id": "olahraga", "emoji": "🏃‍♀️", "label": "Olahraga", "b": {"hijab": "hijab olahraga navy", "atasan": "jaket olahraga hitam bergaris putih", "bawahan": "celana training hitam", "sepatu": "sepatu lari putih", "aksesori": "topi hitam"}, "e": {"hijab": "navy sports hijab", "atasan": "black track jacket with white stripes", "bawahan": "black track pants", "sepatu": "white running shoes", "aksesori": "black cap"}}
       ]
     }
   };
   var URUT_FIGUR = ["rio", "mia", "nara"];
+  // SP13: pakaian disusun dari bagian-bagian (hijab, atasan, bawahan, sepatu, aksesori)
+  var BAGIAN = [["hijab", "Hijab", "Contoh: hijab segi empat hitam"], ["atasan", "Atasan", "Contoh: kemeja batik cokelat"], ["bawahan", "Bawahan", "Contoh: celana kain hitam"], ["sepatu", "Sepatu", "Contoh: sepatu kets abu-abu"], ["aksesori", "Aksesori", "Contoh: kacamata hitam, tas selempang"], ["warna", "Warna utama", "Contoh: serba putih dan krem"]];
+  var BAGIAN_EN = { hijab: "hijab", atasan: "top", bawahan: "bottom", sepatu: "shoes", aksesori: "accessories", warna: "main colors" };
+  function gabungBagian(b) { return ["hijab", "atasan", "bawahan", "sepatu", "aksesori", "warna"].map(function (k) { return b[k]; }).filter(function (x) { return x && String(x).trim(); }).join(", "); }
+  URUT_FIGUR.forEach(function (id) { FIGUR[id].outfit.forEach(function (o) { o.teks = gabungBagian(o.b); o.en = gabungBagian(o.e); }); });
   // SP9: Rio dan Nara berpacaran (sopan dan hangat), Mia sahabat mereka
   function hubungan(a, b) { return (a === "rio" && b === "nara") || (a === "nara" && b === "rio") ? "pacar" : "sahabat"; }
   var ATURAN_PASANGAN = "Rio and Nara are a couple (boyfriend and girlfriend); Mia is their close friend. Rio and Nara's interaction is always polite and warm: they may sit side by side, encourage each other, and joke together, but they never hug, kiss, hold or touch each other romantically, or act intimate; keep a modest distance.";
@@ -193,7 +198,7 @@ var SP = (function () {
 
   // ================= AKUN DAN FORMAT =================
   var AKUN = {
-    a1: { label: "Akun 1 · Rio", nama: "Akun 1", namaAkun: "Rio | Suhu Digital", emoji: "🎬", figur: ["rio"], niche: "Tutorial ilmu AI, terutama membuat video AI",
+    a1: { outfitBawaan: { rio: "casual" }, label: "Akun 1 · Rio", nama: "Akun 1", namaAkun: "Rio | Suhu Digital", emoji: "🎬", figur: ["rio"], niche: "Tutorial ilmu AI, terutama membuat video AI",
       nicheEn: "tutorials about AI tools, especially how to make AI videos",
       format: [
         { id: "tutorial", emoji: "📘", judul: "Tutorial langkah demi langkah", desc: "Rio menjelaskan tiap langkah; layar aplikasi dari rekaman layarmu", mesin: "th", layar: true, en: "step-by-step tutorial: Rio explains each step on camera" },
@@ -225,11 +230,11 @@ var SP = (function () {
         { id: "seri", emoji: "🧭", judul: "Seri dari nol sampai terjual", desc: "Cerita bersambung membangun produk", mesin: "th", en: "an episode of a from-zero-to-first-sale series" },
         { id: "cerita", emoji: "🎭", judul: "Cerita atau skit bebas", desc: "Ceritakan idemu, AI menyesuaikan", mesin: "serba", en: "a short story or skit" }
       ] },
-    kolab: { label: "Kolaborasi", nama: "Kolaborasi", emoji: "🤝", figur: ["rio", "mia", "nara"], niche: "Rio & Nara berpacaran, Mia sahabat mereka; saling mendukung antar-akun",
+    kolab: { outfitBawaan: { rio: "kasual", nara: "kasual" }, label: "Kolaborasi", nama: "Kolaborasi", emoji: "🤝", figur: ["rio", "mia", "nara"], niche: "Rio & Nara berpacaran, Mia sahabat mereka; saling mendukung antar-akun",
       nicheEn: "Rio and Nara (a couple) and their close friend Mia, three creators from three accounts who support each other (AI video, affiliate, digital products)",
       aturan: "Warm, supportive banter; each host speaks from their own niche. This is not a podcast studio unless the location is a studio: no podcast microphones.",
       format: [
-        { id: "pasangan", emoji: "💑", judul: "Konten Rio & Nara", desc: "Kerja bareng, ngonten bareng, saling dukung bisnis", mesin: "serba", figur: ["rio", "nara"], en: "a wholesome couple video: Rio and Nara work together, create content together, or support each other's business" },
+        { id: "pasangan", emoji: "💑", judul: "Konten Rio & Nara", desc: "Kerja bareng, ngonten bareng, saling dukung bisnis", mesin: "serba", figur: ["rio", "nara"], outfit: { rio: "kasual", nara: "kasual" }, serasi: true, en: "a wholesome couple video: Rio and Nara work together, create content together, or support each other's business" },
         { id: "obrolan", emoji: "☕", judul: "Obrolan sahabat", desc: "Ngobrol santai saling berbagi", mesin: "podcast", en: "a relaxed chat between friends who share tips from their own niches" },
         { id: "tanya", emoji: "🙋", judul: "Saling tanya / saling tantang", desc: "Satu bertanya, yang lain menjawab atau ditantang", mesin: "podcast", en: "the friends quiz or challenge each other" },
         { id: "diskusi", emoji: "🧠", judul: "Diskusi rencana konten", desc: "Rapat santai di Markas", mesin: "podcast", en: "a casual planning discussion about content" },
@@ -325,11 +330,11 @@ var SP = (function () {
 
   // ---------- Halaman akun (pengaturan video) ----------
   function mulaiPilihan(a, formatId, ide) {
-    pil = { akun: a, figur: AKUN[a].figur.slice(), format: formatId || "", formatSendiri: "", outfit: {}, foto: {}, lokasi: "", lokasiSendiri: "", ide: ide || "", ajakan: ["ai"], ajakanSendiri: "", jadwalLive: "" };
+    pil = { detail: { rio: {}, mia: {}, nara: {} }, serasi: false, akun: a, figur: AKUN[a].figur.slice(), format: formatId || "", formatSendiri: "", outfit: {}, foto: {}, lokasi: "", lokasiSendiri: "", ide: ide || "", ajakan: ["ai"], ajakanSendiri: "", jadwalLive: "" };
     if (formatId && !cariFormat(a, formatId)) { pil.format = "__sendiri"; pil.formatSendiri = formatId; }
     URUT_FIGUR.forEach(function (id) {
       var o = FIGUR[id].outfit.filter(function (x) { return x.saran; })[0];
-      pil.outfit[id] = o.id;
+      pil.outfit[id] = (AKUN[a].outfitBawaan || {})[id] || o.id;
       pil.foto[id] = fotoResmi[id] ? "resmi" : "ai";
     });
     if (a === "kolab") pil.lokasi = "kumpul:markas";
@@ -357,10 +362,22 @@ var SP = (function () {
       var F = FIGUR[id];
       h += '<div class="figurbaris"><div class="label">' + F.emoji + ' ' + F.nama + '</div><div class="chips">';
       F.outfit.forEach(function (o) { h += '<button class="chip ' + (pil.outfit[id] === o.id ? "on" : "") + '" onclick="SP.setOutfit(\'' + id + '\',\'' + o.id + '\')">' + o.emoji + ' ' + esc(o.label) + (o.saran ? " ⭐" : "") + '</button>'; });
-      var oo = F.outfit.filter(function (o) { return o.id === pil.outfit[id]; })[0];
-      h += '</div><p class="catatan">' + esc(oo ? oo.teks : "") + '</p></div>';
+      h += '</div><p class="catatan">' + esc(pakaianFigur(id).teks) + '</p></div>';
     });
-    h += '</div>';
+    if (pil.figur.indexOf("rio") >= 0 && pil.figur.indexOf("nara") >= 0) h += '<div style="margin-top:10px"><button class="chip ' + (pil.serasi ? "on" : "") + '" onclick="SP.togSerasi()">👫 Kembar serasi Rio & Nara</button><p class="catatan">Pakaian Rio dan Nara dipasangkan (warna senada navy, putih, beige), seperti di sheet pasangan.</p></div>';
+    var adaDetail = pil.figur.some(function (id) { return Object.keys(pil.detail[id] || {}).some(function (k) { return (pil.detail[id][k] || "").trim(); }); });
+    h += '<details style="margin-top:12px"' + (adaDetail || pil.bukaDetail ? " open" : "") + ' ontoggle="SP.setDiam(\'bukaDetail\', this.open)"><summary style="cursor:pointer;font-weight:700;font-size:14px;min-height:40px;display:flex;align-items:center">⚙️ Atur detail pakaian (opsional)</summary>';
+    h += '<p class="catatan">Kosongkan bila tidak perlu: pakaian mengikuti gaya khas figur. Bagian yang diisi saja yang berganti. Hanya untuk video ini.</p>';
+    pil.figur.forEach(function (id) {
+      var F = FIGUR[id];
+      h += '<div class="figurbaris"><div class="label">' + F.emoji + ' ' + F.nama + '</div>';
+      BAGIAN.forEach(function (bg) {
+        if (bg[0] === "hijab" && id === "rio") return;
+        h += '<input type="text" class="sp-detail" data-f="' + id + '" data-k="' + bg[0] + '" maxlength="120" style="margin-top:6px" placeholder="' + bg[1] + ' · ' + esc(bg[2]) + '" value="' + esc((pil.detail[id] || {})[bg[0]] || "") + '" oninput="SP.setDetail(\'' + id + '\',\'' + bg[0] + '\', this.value)">';
+      });
+      h += '</div>';
+    });
+    h += '</details></div>';
     // Lokasi
     h += '<div class="kotak"><h3><span class="num">' + (++n) + '</span>Lokasi</h3>';
     h += '<div class="label">🏠 Ruang kerja (tetap)</div><div class="chips">';
@@ -516,6 +533,8 @@ var SP = (function () {
       if (sp.formatSendiri) pil.formatSendiri = sp.formatSendiri;
       if (sp.foto) for (var f in sp.foto) pil.foto[f] = sp.foto[f] === "resmi" && fotoResmi[f] ? "resmi" : "ai";
       if (sp.ajakan && sp.ajakan.length) pil.ajakan = sp.ajakan.slice(0, 2);
+      if (sp.detail) pil.detail = sp.detail;
+      if (sp.serasi) pil.serasi = true;
       if (sp.ajakanSendiri) pil.ajakanSendiri = sp.ajakanSendiri;
       if (sp.jadwalLive) pil.jadwalLive = sp.jadwalLive;
       if (!formatPilihan()) pil = null;
@@ -528,7 +547,7 @@ var SP = (function () {
     var fm = formatPilihan(), A = AKUN[pil.akun], lok = teksLokasi();
     var mesin = mesinPaksa || (fm.mesin === "serba" ? "serba" : "kreator");
     var figur = pil.figur.map(function (id) {
-      var F = FIGUR[id], o = F.outfit.filter(function (x) { return x.id === pil.outfit[id]; })[0] || F.outfit[0];
+      var F = FIGUR[id], o = pakaianFigur(id);
       var peran = F.peran + pil.figur.filter(function (x) { return x !== id; }).map(function (x) { return "; " + hubungan(id, x) + " " + FIGUR[x].nama; }).join("");
       var foto = fotoDipakai(id);
       return { id: id, nama: F.nama, peran: peran, usiaSuara: F.usiaSuara, warnaSuara: F.warnaSuara, logat: F.logat, pakaian: o.teks, ciri: foto ? F.ciriFoto : F.ciri, umur: F.umur, fisik: F.fisik, foto: foto, en: (foto ? F.enFoto : F.en) + "; outfit: " + o.en };
@@ -547,12 +566,13 @@ var SP = (function () {
       "- CLOSING CALL TO ACTION (required by the user; spoken by the host in the FINAL scene, never replaced by a series closing or quiz; Quality Control must quote it): " + teksAjakan() + ". Never say the account name aloud.\n" +
       (A.aturan ? "- " + A.aturan + "\n" : "") +
       (pil.figur.indexOf("rio") >= 0 && pil.figur.indexOf("nara") >= 0 ? "- RELATIONSHIP: " + ATURAN_PASANGAN + "\n" : "") +
+      (pil.serasi && pil.figur.indexOf("rio") >= 0 && pil.figur.indexOf("nara") >= 0 ? "- MATCHING OUTFITS: Rio and Nara wear coordinated couple outfits in harmonious navy, white, and beige tones, exactly as listed for each of them.\n" : "") +
       (fm.layar ? "- SCREEN RULE: AI video cannot show readable app screens. Keep the host on camera explaining. Whenever the viewer must see an app or a screen, add a separate line \"INSERT SCREEN RECORDING: [what to record, in Indonesian]\" to that scene in the storyboard (and mention it in the editing guide) so the user can overlay a real screen recording in CapCut. Screens inside the shot stay unreadable.\n" : "") +
       "- Speech in casual Indonesian. No background music inside the clips (the user adds music in CapCut).";
     return {
       mesin: mesin, tema: fm.mesin === "podcast" ? "podcast" : "th", cabang: fm.judul, figur: figur, pemeran: pemeran, lokasi: lok.teks, ide: (pil.ide || "").trim(),
       label: A.label, konteks: konteks, lokasiTeks: lok.teks, lokasiNama: lok.nama, namaAkun: namaAkunPilihan(),
-      simpan: { akun: pil.akun, figur: pil.figur.slice(), format: pil.format, formatSendiri: pil.formatSendiri, outfit: pil.outfit, lokasi: pil.lokasi, lokasiSendiri: pil.lokasiSendiri, foto: pil.foto, ajakan: pil.ajakan, ajakanSendiri: pil.ajakanSendiri, jadwalLive: pil.jadwalLive }
+      simpan: { detail: pil.detail, serasi: pil.serasi, akun: pil.akun, figur: pil.figur.slice(), format: pil.format, formatSendiri: pil.formatSendiri, outfit: pil.outfit, lokasi: pil.lokasi, lokasiSendiri: pil.lokasiSendiri, foto: pil.foto, ajakan: pil.ajakan, ajakanSendiri: pil.ajakanSendiri, jadwalLive: pil.jadwalLive }
     };
   }
   function namaAkunPilihan() {
@@ -567,7 +587,7 @@ var SP = (function () {
     if (!fm) return salah(pil.format === "__sendiri" ? "Tulis dulu format yang kamu inginkan." : "Pilih format kontennya dulu.");
     if (pil.lokasi === "sendiri" && !(pil.lokasiSendiri || "").trim()) return salah("Tulis dulu lokasinya.");
     if (pil.ajakan.indexOf("sendiri") >= 0 && !(pil.ajakanSendiri || "").trim()) return salah("Tulis dulu ajakanmu, atau pilih ajakan lain.");
-    var cek = [pil.ide, pil.formatSendiri, pil.lokasiSendiri, pil.ajakanSendiri].join(" ");
+    var cek = [pil.ide, pil.formatSendiri, pil.lokasiSendiri, pil.ajakanSendiri].concat(pil.figur.map(function (id) { return gabungBagian(pil.detail[id] || {}); })).join(" ");
     if (BLOK.test(cek)) return salah("Semua tokoh harus orang dewasa (18+). Silakan ubah tulisannya.");
     var k = konfig();
     var judul = AKUN[pil.akun].emoji + " " + (pil.akun === "kolab" ? pil.figur.map(function (x) { return FIGUR[x].nama; }).join("+") : FIGUR[pil.figur[0]].nama) + " · " + fm.judul;
@@ -821,12 +841,22 @@ var SP = (function () {
   // ---------- Isian ----------
   function set(k, v) {
     simpanIde(); pil[k] = v;
-    if (k === "format") { var f = cariFormat(pil.akun, v); if (f && f.figur) { pil.figur = f.figur.slice(); if (/^ruang:/.test(pil.lokasi) && pil.figur.indexOf(pil.lokasi.slice(6)) < 0) pil.lokasi = "kumpul:markas"; } }
+    if (k === "format") { var f = cariFormat(pil.akun, v); if (f && f.outfit) { for (var oi in f.outfit) pil.outfit[oi] = f.outfit[oi]; pil.serasi = !!f.serasi; } if (f && f.figur) { pil.figur = f.figur.slice(); if (/^ruang:/.test(pil.lokasi) && pil.figur.indexOf(pil.lokasi.slice(6)) < 0) pil.lokasi = "kumpul:markas"; } }
     gambar();
   }
   function setDiam(k, v) { pil[k] = v; }
   function simpanIde() { var t = $("sp-ide"); if (t && pil) pil.ide = t.value; var a = $("sp-ajakan"); if (a && pil) pil.ajakanSendiri = a.value; var l = $("sp-live"); if (l && pil) pil.jadwalLive = l.value; }
-  function setOutfit(id, o) { simpanIde(); pil.outfit[id] = o; gambar(); }
+  function setOutfit(id, o) { simpanIde(); pil.outfit[id] = o; pil.serasi = false; gambar(); }
+  function setDetail(id, k, v) { pil.detail[id] = pil.detail[id] || {}; pil.detail[id][k] = v; }
+  function togSerasi() { simpanIde(); pil.serasi = !pil.serasi; if (pil.serasi) { pil.outfit.rio = "kasual"; pil.outfit.nara = "kasual"; } gambar(); }
+  function pakaianFigur(id) {
+    var F = FIGUR[id], o = F.outfit.filter(function (x) { return x.id === pil.outfit[id]; })[0] || F.outfit[0];
+    var d = (pil.detail && pil.detail[id]) || {}, b = {}, ubah = [];
+    Object.keys(o.b).forEach(function (k) { b[k] = o.b[k]; });
+    BAGIAN.forEach(function (bg) { var v = (d[bg[0]] || "").trim(); if (v && !(bg[0] === "hijab" && id === "rio")) { b[bg[0]] = v; ubah.push(BAGIAN_EN[bg[0]] + ": " + v); } });
+    var en = o.en + (ubah.length ? " — USER CHANGES that REPLACE the matching items (write them in English): " + ubah.join("; ") : "");
+    return { label: o.label, teks: gabungBagian(b), en: en, ubah: ubah.length };
+  }
   function setFoto(id, m) { simpanIde(); pil.foto[id] = m; pil.fotoManual = pil.fotoManual || {}; pil.fotoManual[id] = true; gambar(); }
   function togFigur(id) {
     simpanIde();
@@ -877,7 +907,7 @@ var SP = (function () {
 
   return {
     buka: buka, set: set, setDiam: setDiam, setOutfit: setOutfit, setFoto: setFoto, togFigur: togFigur, unggahFoto: unggahFoto, mulai: mulai,
-    togAjakan: togAjakan, ideSet: ideSet, buatIde: buatIde, pakaiIde: pakaiIde, lanjut: lanjut, pilihTab: pilihTab, tutupNo: tutupNo, tekanDialog: tekanDialog,
+    togAjakan: togAjakan, setDetail: setDetail, togSerasi: togSerasi, ideSet: ideSet, buatIde: buatIde, pakaiIde: pakaiIde, lanjut: lanjut, pilihTab: pilihTab, tutupNo: tutupNo, tekanDialog: tekanDialog,
     _uji: { kerja: function () { return kerja; }, konfig: function () { return konfig(); }, pil: function () { return pil; }, tambahKonteks: tambahKonteks }
   };
 })();

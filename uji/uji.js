@@ -19,8 +19,8 @@ async function keRingkasan(fr) {
     const page = await halaman(b, log);
     await page.waitForSelector('text=Studio konten pribadimu', { timeout: 15000 });
     await page.waitForFunction(() => document.querySelector('.kartu .ikon img'), null, { timeout: 8000 }).catch(() => { });
-    await page.waitForFunction(() => document.querySelectorAll('.kartu .ikon img').length >= 2, null, { timeout: 8000 }).catch(() => { });
-    cek(await page.locator('.kartu .ikon img').count() === 2, 'Beranda: foto Rio dan Nara tampil (SP6)');
+    await page.waitForFunction(() => document.querySelectorAll('.kartu .ikon img').length >= 3, null, { timeout: 8000 }).catch(() => { });
+    cek(await page.locator('.kartu .ikon img').count() === 3, 'Beranda: foto Rio, Mia, dan Nara tampil (SP6, SP12)');
     // SP7: halaman Nara
     await page.click('text=Akun 3 · Nara');
     cek(await page.locator('.figurbaris .chip').filter({ hasText: /Kasual|Traveling|Formal|Rumah|Olahraga/ }).count() === 5 && await page.locator('.chip.on:has-text("Kasual")').count() === 1, 'SP7 Nara: 5 pakaian, bawaan Kasual');
@@ -92,7 +92,8 @@ async function keRingkasan(fr) {
     // ===== B. Mia, ide sudah ditulis =====
     await page.click('text=Akun 2 · Mia');
     await page.click('text=Format Hari 2');
-    cek(await page.locator('.chip.on:has-text("Dari deskripsi")').count() === 1, 'Mia tanpa foto resmi: wajah dari deskripsi');
+    cek(await page.locator('.chip.on:has-text("Foto wajah resmi")').count() === 1, 'SP12 Mia: foto wajah resmi dipilih');
+    cek(/celana panjang lebar warna beige/.test(await page.locator('.figurbaris .catatan').first().innerText()), 'SP12 Mia: kardigan lavender dengan celana lebar beige');
     cek(await page.locator('.chip:has-text("Cek keranjang kuning")').count() === 1 && await page.locator('.chip:has-text("Ikut kelas")').count() === 0, 'SP5 Mia: pilihan keranjang kuning ada, kelas tidak');
     await page.click('.chip:has-text("Cek keranjang kuning")');
     await page.click('.chip:has-text("Tonton live")');
@@ -107,7 +108,7 @@ async function keRingkasan(fr) {
     await page.click('button:has-text("Mulai buat video")');
     fr = await tungguBingkai(page);
     const stB = await fr.evaluate(() => ({ t: selections.tokoh[0], foto: !!ownPhotos[0], pk: selections.pakaiFoto }));
-    cek(stB.t.nama === 'Mia' && stB.t.umur === '30' && /hijab/.test(stB.t.ciri) && !stB.foto, 'Mia: umur, hijab, tanpa foto', JSON.stringify(stB));
+    cek(stB.t.nama === 'Mia' && !stB.t.umur && /hijab/.test(stB.t.ciri) && stB.foto, 'Mia: foto terpasang, umur tidak dikirim, hijab tetap', JSON.stringify(stB));
     await fr.click('#app-container button:has-text("Lanjut")');
     await fr.click('#sp-lok-lanjut');
     await fr.waitForTimeout(300);
@@ -130,7 +131,7 @@ async function keRingkasan(fr) {
     fr = await tungguBingkai(page);
     const stC = await fr.evaluate(() => ({ n: selections.tokoh.length, nm: selections.tokoh.map(t => t.nama).join(','), foto: ownPhotos.map(Boolean), tema: selections.temaRek.id, slot: castSlots(), pem: selections.pemeran }));
     cek(stC.n === 3 && stC.nm === 'Rio,Mia,Nara' && stC.slot === 3, 'Kolaborasi: 3 tokoh terisi', JSON.stringify(stC));
-    cek(stC.foto[0] && !stC.foto[1] && stC.foto[2] && stC.tema === 'podcast', 'Kolaborasi: foto Rio dan Nara (Mia belum ada), mesin podcast');
+    cek(stC.foto[0] && stC.foto[1] && stC.foto[2] && stC.tema === 'podcast', 'Kolaborasi: foto Rio, Mia, Nara terpasang, mesin podcast');
     const tokC = await fr.evaluate(() => selections.tokoh.map(t => t.peran).join(' | '));
     cek(/pacar Nara/.test(tokC) && /sahabat Mia/.test(tokC) && /pacar Rio/.test(tokC), 'SP9 peran: Rio-Nara pacar, Mia sahabat', tokC);
     global.prompts = [];
@@ -183,9 +184,26 @@ async function keRingkasan(fr) {
     // ===== SP9: format Konten Rio & Nara =====
     await page.evaluate(() => SP.buka('akun', { akun: 'kolab' }));
     await page.click('text=Konten Rio & Nara');
-    cek(await page.locator('.chip.on:has-text("Rio")').count() === 1 && await page.locator('.chip.on:has-text("Nara")').count() === 1 && await page.locator('.chip.on:has-text("Mia")').count() === 0, 'SP9 format pasangan: otomatis Rio + Nara');
+    const siapa = page.locator('.kotak:has-text("Siapa yang tampil") .chip.on');
+    cek((await siapa.allInnerTexts()).join('|').replace(/[^A-Za-z|]/g, '') === 'Rio|Nara', 'SP9 format pasangan: otomatis Rio + Nara', (await siapa.allInnerTexts()).join('|'));
     cek(await page.evaluate(() => SP._uji.konfig().mesin) === 'serba', 'SP9 format pasangan memakai mesin Serba Bisa');
     cek(/Rio dan Nara \(pasangan\)/.test(await page.evaluate(() => SP._uji.konfig().pemeran)), 'SP9 pemeran: Rio dan Nara (pasangan)');
+    const kP = await page.evaluate(() => SP._uji.konfig());
+    cek(/kemeja denim navy/.test(kP.figur[0].pakaian) && /blus putih/.test(kP.figur[1].pakaian) && /MATCHING OUTFITS/.test(kP.konteks), 'SP11 Konten Rio & Nara: kembar serasi otomatis');
+    cek(await page.locator('.chip.on:has-text("Kembar serasi")').count() === 1, 'SP11 tombol Kembar serasi menyala');
+    // SP13: detail pakaian opsional
+    const kosong = kP.figur[0].pakaian;
+    await page.click('summary:has-text("Atur detail pakaian")');
+    await page.fill('input.sp-detail[data-f="rio"][data-k="atasan"]', 'kemeja batik cokelat');
+    const kD = await page.evaluate(() => SP._uji.konfig());
+    cek(/kemeja batik cokelat/.test(kD.figur[0].pakaian) && !/kemeja denim navy/.test(kD.figur[0].pakaian) && /celana khaki/.test(kD.figur[0].pakaian) && /sneakers putih/.test(kD.figur[0].pakaian), 'SP13 detail atasan mengganti atasan saja', kD.figur[0].pakaian);
+    cek(/USER CHANGES[^"]*top: kemeja batik cokelat/.test(kD.figur[0].en) && kD.figur[1].pakaian === kP.figur[1].pakaian, 'SP13 perubahan ikut ke AI; Nara tetap gaya khas');
+    cek(await page.locator('input.sp-detail[data-f="rio"][data-k="hijab"]').count() === 0 && await page.locator('input.sp-detail[data-f="nara"][data-k="hijab"]').count() === 1, 'SP13 kolom hijab hanya untuk Mia dan Nara');
+    await page.fill('input.sp-detail[data-f="rio"][data-k="atasan"]', '');
+    cek((await page.evaluate(() => SP._uji.konfig())).figur[0].pakaian === kosong, 'SP13 dikosongkan: kembali ke gaya khas');
+    await page.evaluate(() => SP.buka('akun', { akun: 'a1' }));
+    cek(await page.locator('.chip.on:has-text("Smart casual")').count() === 1 && /jam tangan perak bertali hitam/.test(await page.locator('.figurbaris .catatan').first().innerText()), 'SP10 Rio Akun 1: Smart casual, jam tangan perak bertali hitam');
+    cek(await page.locator('.figurbaris').first().locator('.chip').count() === 6, 'SP10 Rio punya 6 pakaian');
 
     // ===== E. Ide Konten =====
     await page.evaluate(() => SP.buka('ide'));
