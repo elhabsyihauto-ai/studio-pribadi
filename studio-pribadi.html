@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Studio Pribadi by Suhu Digital V1.1 (17 Nov 2026). SP1 figur dan lokasi akun di atas halaman Pembicara/Lokasi + lokasi pilihan ikut ke AI; SP2 foto tanpa usia/rambut; SP3 sepatu tetap; SP4 nama akun otomatis; SP5 pilihan ajakan penutup + jadwal live. Sebelumnya V1.0 (16 Nov 2026). Aplikasi pribadi untuk konten tiga akun TikTok (Rio, Mia, Nara + kolaborasi).
+<!-- Studio Pribadi by Suhu Digital V1.2 (17 Nov 2026). SP6 foto wajah resmi Nara; SP7 tampilan Nara dari karakter sheet (hijab sifon beige, 5 pakaian); SP8 pakaian tambahan Rio; SP9 Rio dan Nara berpacaran (sopan dan hangat), Mia sahabat, format Konten Rio & Nara. Sebelumnya V1.1 (17 Nov 2026). SP1 figur dan lokasi akun di atas halaman Pembicara/Lokasi + lokasi pilihan ikut ke AI; SP2 foto tanpa usia/rambut; SP3 sepatu tetap; SP4 nama akun otomatis; SP5 pilihan ajakan penutup + jadwal live. Sebelumnya V1.0 (16 Nov 2026). Aplikasi pribadi untuk konten tiga akun TikTok (Rio, Mia, Nara + kolaborasi).
      Mesin pembuat prompt diambil langsung dari Sugi Studio (kreator.html dan serba-bisa.html di repo Sugimation, cabang main),
      jadi setiap perbaikan Sugi otomatis ikut. Setiap video berjalan di bingkai sendiri (maks. 3 bersamaan); AI dari bingkai
      dititipkan ke halaman utama lewat pesan (cara yang terbukti di Satu Pintu). -->
@@ -7,7 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Studio Pribadi by Suhu Digital V1.1</title>
+<title>Studio Pribadi by Suhu Digital V1.2</title>
 <style>
   :root { --krem:#FAF3E3; --krem2:#F3E8D0; --garis:#E9DCC2; --emas:#C9A24D; --emas2:#9A7425; --coklat:#3B2A1A; --coklat2:#7A6244; --putih:#FFFDF8; --merah:#B4472F; --hijau:#3F7A43; }
   * { box-sizing: border-box; }
@@ -109,7 +109,7 @@ var GEMINI_MODEL = "gemini-3-flash-preview";
 var GEMINI_API = "https://generativelanguage.googleapis.com/v1beta/models/" + GEMINI_MODEL + ":generateContent?key=" + apiKey;
 
 var SP = (function () {
-  var VERSI = "V1.1";
+  var VERSI = "V1.2";
   var MESIN_URL = "https://raw.githubusercontent.com/elhabsyihauto-ai/Sugimation/main/";
   var ASET_URL = "https://raw.githubusercontent.com/elhabsyihauto-ai/studio-pribadi/main/";
   var BATAS = 3;
@@ -129,6 +129,9 @@ var SP = (function () {
       outfit: [
         { id: "casual", emoji: "👔", label: "Smart casual", saran: true, teks: "kemeja polos biru muda lengan digulung sampai siku, celana chino krem, jam tangan kulit cokelat, sepatu loafer kulit cokelat tua", en: "plain light-blue shirt with sleeves rolled to the elbows, beige chinos, brown leather watch, dark-brown leather loafers" },
         { id: "resmi", emoji: "🤵", label: "Resmi", teks: "jas hitam, kemeja putih, dasi hitam bertekstur, saputangan putih di saku jas, sepatu pantofel kulit hitam", en: "black suit, white shirt, textured black tie, white pocket square, black leather oxford shoes" },
+        { id: "denim", emoji: "🧢", label: "Kasual denim", teks: "overshirt denim navy di atas kaos putih, celana chino krem, sneakers putih, jam tangan kulit cokelat", en: "navy denim overshirt over a white T-shirt, beige chinos, white sneakers, brown leather watch" },
+        { id: "traveling", emoji: "🧳", label: "Traveling", teks: "jaket hijau zaitun di atas kaos putih, jeans gelap, ransel hitam, sneakers putih", en: "olive-green jacket over a white T-shirt, dark jeans, black backpack, white sneakers" },
+        { id: "olahraga", emoji: "🏃", label: "Olahraga", teks: "jaket training hitam, celana training hitam, sepatu lari hitam", en: "black track jacket, black track pants, black running shoes" },
         { id: "santai", emoji: "👕", label: "Santai", teks: "kaos polos putih dengan overshirt hijau zaitun, celana jeans gelap, sneakers putih", en: "plain white T-shirt under an olive-green overshirt, dark jeans, white sneakers" }
       ]
     },
@@ -152,20 +155,25 @@ var SP = (function () {
       nama: "Nara", emoji: "💡", umur: 26, akun: "a3", foto: "figur/nara.jpg",
       ringkas: "Wanita 26 tahun, berhijab · kreator produk digital",
       peran: "kreator produk digital yang memakai AI untuk membuat dan memasarkan produknya",
-      usiaSuara: "20-an", warnaSuara: "Ringan", logat: "Indonesia netral",
-      ciri: "usia 26 tahun; selalu berhijab pashmina kaos warna terakota yang dililit santai dan menutup rambut dan leher; kacamata bulat berbingkai tipis; gelang kayu",
-      fisik: "wajah bulat telur, mata ekspresif, pipi berisi, senyum lebar ceria, riasan tipis natural",
-      ciriFoto: "selalu berhijab pashmina kaos warna terakota yang dililit santai dan menutup kepala dan leher; kacamata bulat berbingkai tipis; gelang kayu",
-      enFoto: "Nara: the adult woman from the user's reference photo (face and age come ONLY from the photo; never describe them); thin round glasses, wooden bracelet, terracotta jersey pashmina hijab wrapped casually covering head and neck; creative and relaxed; light, lively voice, neutral Indonesian accent",
-      en: "Nara: fictional 26-year-old Indonesian woman, oval face, expressive eyes, full cheeks, cheerful wide smile, light natural make-up, thin round glasses, wooden bracelet, terracotta jersey pashmina hijab wrapped casually that fully covers her hair and neck; creative and relaxed; light, lively voice, neutral Indonesian accent",
+      usiaSuara: "20-an", warnaSuara: "Lembut dan halus", logat: "Indonesia netral",
+      ciri: "usia 26 tahun; selalu berhijab yang menutup kepala dan leher (warna hijab mengikuti pakaian); jam tangan perak; senyum lembut",
+      fisik: "wanita Indonesia, wajah oval lembut, mata cokelat besar dengan bulu mata lentik, pipi merona alami, bibir merah muda alami, riasan tipis natural",
+      ciriFoto: "selalu berhijab yang menutup kepala dan leher (warna hijab mengikuti pakaian); jam tangan perak; senyum lembut",
+      enFoto: "Nara: the adult woman from the user's reference photo (face and age come ONLY from the photo; never describe them); always wears a hijab covering head and neck (its color follows the outfit), silver wristwatch, gentle smile; warm, creative, relaxed; soft clear voice, neutral Indonesian accent",
+      en: "Nara: fictional 26-year-old Indonesian woman, soft oval face, large brown eyes with long lashes, naturally rosy cheeks, natural pink lips, light natural make-up, always wears a hijab covering head and neck (its color follows the outfit), silver wristwatch, gentle smile; warm, creative, relaxed; soft clear voice, neutral Indonesian accent",
       outfit: [
-        { id: "kreatif", emoji: "🎨", label: "Kreatif santai", saran: true, teks: "kemeja oversized krem, celana kulot cokelat muda, sneakers kanvas, totebag kain", en: "oversized cream shirt, light-brown culottes, canvas sneakers, cloth tote bag" },
-        { id: "gamis", emoji: "🧕", label: "Gamis santai", teks: "gamis santai motif kecil warna sage, sepatu flat cokelat muda", en: "relaxed modest long dress with a small sage-green print, light-brown flat shoes" },
-        { id: "sporty", emoji: "🏃‍♀️", label: "Sporty", teks: "hoodie longgar, celana training, sepatu lari; hijab tetap pashmina terakota diikat lebih rapat", en: "loose hoodie, track pants, running shoes; the same terracotta hijab wrapped more snugly" }
+        { id: "kasual", emoji: "🤍", label: "Kasual", saran: true, teks: "hijab sifon beige menjuntai menutup dada, blus putih bertekstur berlengan balon, rok panjang lebar warna beige, sneakers putih, tas tangan krem", en: "draped beige chiffon hijab covering the chest, textured white blouse with balloon sleeves, wide long beige skirt, white sneakers, cream handbag" },
+        { id: "traveling", emoji: "🧳", label: "Traveling", teks: "hijab sifon beige, jaket krem di atas kaos putih, celana panjang krem, topi pantai anyaman berpita hitam, ransel hitam, kacamata hitam, sneakers putih", en: "beige chiffon hijab, cream jacket over a white T-shirt, cream trousers, woven straw sun hat with a black band, black backpack, sunglasses, white sneakers" },
+        { id: "formal", emoji: "💼", label: "Formal", teks: "hijab sifon beige, blazer krem dengan dalaman putih, celana bahan krem, tas tangan hitam, sepatu flat krem", en: "beige chiffon hijab, cream blazer over a white top, cream tailored trousers, black handbag, cream flat shoes" },
+        { id: "rumah", emoji: "🏠", label: "Rumah", teks: "hijab instan beige, sweter rajut pink dusty, jeans biru, sandal rumah krem", en: "beige slip-on hijab, dusty-pink knit sweater, blue jeans, cream house slippers" },
+        { id: "olahraga", emoji: "🏃‍♀️", label: "Olahraga", teks: "hijab olahraga navy, topi hitam, jaket olahraga hitam bergaris putih, celana training hitam, sepatu lari putih", en: "navy sports hijab, black cap, black track jacket with white stripes, black track pants, white running shoes" }
       ]
     }
   };
   var URUT_FIGUR = ["rio", "mia", "nara"];
+  // SP9: Rio dan Nara berpacaran (sopan dan hangat), Mia sahabat mereka
+  function hubungan(a, b) { return (a === "rio" && b === "nara") || (a === "nara" && b === "rio") ? "pacar" : "sahabat"; }
+  var ATURAN_PASANGAN = "Rio and Nara are a couple (boyfriend and girlfriend); Mia is their close friend. Rio and Nara's interaction is always polite and warm: they may sit side by side, encourage each other, and joke together, but they never hug, kiss, hold or touch each other romantically, or act intimate; keep a modest distance.";
 
   // ================= LOKASI =================
   var RUANG = {
@@ -174,8 +182,8 @@ var SP = (function () {
     nara: { emoji: "🎨", nama: "Studio kreatif Nara", teks: "Studio kreatif Nara (lokasi tetap): meja dengan tablet gambar, papan ide berisi kertas tempel yang tulisannya tidak terbaca, tanaman gantung, lampu gantung rotan; nuansa ceria" }
   };
   var KUMPUL = [
-    { id: "markas", emoji: "🛋️", nama: "Markas", teks: "Markas tiga sahabat (lokasi tetap): ruang bersama dengan meja panjang, sofa, dan papan tulis kosong" },
-    { id: "kafe", emoji: "☕", nama: "Kafe langganan", teks: "Kafe langganan tiga sahabat (lokasi tetap): kafe kecil berdinding bata dengan meja kayu dekat jendela" },
+    { id: "markas", emoji: "🛋️", nama: "Markas", teks: "Markas Rio, Nara, dan Mia (lokasi tetap): ruang bersama dengan meja panjang, sofa, dan papan tulis kosong" },
+    { id: "kafe", emoji: "☕", nama: "Kafe langganan", teks: "Kafe langganan Rio, Nara, dan Mia (lokasi tetap): kafe kecil berdinding bata dengan meja kayu dekat jendela" },
     { id: "teras", emoji: "🌇", nama: "Teras atap", teks: "Teras atap (lokasi tetap): teras di atap gedung pada sore hari dengan pemandangan kota" }
   ];
   var JUMPA = [
@@ -217,14 +225,15 @@ var SP = (function () {
         { id: "seri", emoji: "🧭", judul: "Seri dari nol sampai terjual", desc: "Cerita bersambung membangun produk", mesin: "th", en: "an episode of a from-zero-to-first-sale series" },
         { id: "cerita", emoji: "🎭", judul: "Cerita atau skit bebas", desc: "Ceritakan idemu, AI menyesuaikan", mesin: "serba", en: "a short story or skit" }
       ] },
-    kolab: { label: "Kolaborasi", nama: "Kolaborasi", emoji: "🤝", figur: ["rio", "mia", "nara"], niche: "Tiga sahabat yang saling mendukung antar-akun",
-      nicheEn: "three friends from three accounts who support each other (AI video, affiliate, digital products)",
-      aturan: "The hosts are close friends: warm, supportive banter, each speaks from their own niche. This is not a podcast studio unless the location is a studio: no podcast microphones.",
+    kolab: { label: "Kolaborasi", nama: "Kolaborasi", emoji: "🤝", figur: ["rio", "mia", "nara"], niche: "Rio & Nara berpacaran, Mia sahabat mereka; saling mendukung antar-akun",
+      nicheEn: "Rio and Nara (a couple) and their close friend Mia, three creators from three accounts who support each other (AI video, affiliate, digital products)",
+      aturan: "Warm, supportive banter; each host speaks from their own niche. This is not a podcast studio unless the location is a studio: no podcast microphones.",
       format: [
+        { id: "pasangan", emoji: "💑", judul: "Konten Rio & Nara", desc: "Kerja bareng, ngonten bareng, saling dukung bisnis", mesin: "serba", figur: ["rio", "nara"], en: "a wholesome couple video: Rio and Nara work together, create content together, or support each other's business" },
         { id: "obrolan", emoji: "☕", judul: "Obrolan sahabat", desc: "Ngobrol santai saling berbagi", mesin: "podcast", en: "a relaxed chat between friends who share tips from their own niches" },
         { id: "tanya", emoji: "🙋", judul: "Saling tanya / saling tantang", desc: "Satu bertanya, yang lain menjawab atau ditantang", mesin: "podcast", en: "the friends quiz or challenge each other" },
         { id: "diskusi", emoji: "🧠", judul: "Diskusi rencana konten", desc: "Rapat santai di Markas", mesin: "podcast", en: "a casual planning discussion about content" },
-        { id: "skit", emoji: "🎭", judul: "Skit tiga sahabat", desc: "Cerita lucu atau menyentuh", mesin: "serba", en: "a short skit starring the friends" }
+        { id: "skit", emoji: "🎭", judul: "Skit Rio, Nara & Mia", desc: "Cerita lucu atau menyentuh", mesin: "serba", en: "a short skit starring the hosts" }
       ] }
   };
   var URUT_AKUN = ["a1", "a2", "a3", "kolab"];
@@ -324,7 +333,7 @@ var SP = (function () {
       pil.foto[id] = fotoResmi[id] ? "resmi" : "ai";
     });
     if (a === "kolab") pil.lokasi = "kumpul:markas";
-    else { var f = AKUN[a].figur[0]; pil.lokasi = "ruang:" + f; if (f === "nara") pil.outfit.nara = "kreatif"; }
+    else { pil.lokasi = "ruang:" + AKUN[a].figur[0]; }
   }
   function htmlAkun() {
     var a = pil.akun, A = AKUN[a], n = 0;
@@ -333,7 +342,7 @@ var SP = (function () {
     if (a === "kolab") {
       h += '<div class="kotak"><h3><span class="num">' + (++n) + '</span>Siapa yang tampil?</h3><div class="chips">';
       URUT_FIGUR.forEach(function (id) { var on = pil.figur.indexOf(id) >= 0; h += '<button class="chip ' + (on ? "on" : "") + '" onclick="SP.togFigur(\'' + id + '\')">' + FIGUR[id].emoji + ' ' + FIGUR[id].nama + '</button>'; });
-      h += '</div><p class="catatan">Pilih 2 atau 3 sahabat.</p></div>';
+      h += '</div><p class="catatan">Pilih 2 atau 3 orang. Rio dan Nara berpacaran, Mia sahabat mereka.</p></div>';
     }
     // Format
     h += '<div class="kotak"><h3><span class="num">' + (++n) + '</span>Format konten</h3><div class="grid2 sempit1">';
@@ -444,7 +453,7 @@ var SP = (function () {
     var A = AKUN[ideAkun];
     ideMuat = true; ideGalat = ""; gambar();
     var daftar = A.format.map(function (f) { return f.id + " = " + f.judul + " (" + f.en + ")"; }).join("\n");
-    var figurTeks = A.figur.map(function (id) { return FIGUR[id].en; }).join("\n");
+    var figurTeks = A.figur.map(function (id) { return FIGUR[id].en; }).join("\n") + (ideAkun === "kolab" ? "\nRelationship: " + ATURAN_PASANGAN : "");
     var sys = "You plan short vertical videos (TikTok/Reels) for an Indonesian creator's own account. Return ONLY JSON: {\"ide\":[{\"judul\":\"...\",\"format\":\"<format id>\",\"ringkasan\":\"...\",\"hook\":\"...\"}]}. Write judul, ringkasan (2-3 sentences: what happens and what the viewer learns), and hook (the spoken first line, max 14 words) in casual Indonesian. Every idea must fit the account niche, be practical and honest (no invented income numbers, no real brands, no real people), feature the account's fictional host(s), and differ from each other in angle and format. All characters are adults 18+.";
     var user = "Account: " + A.label + "\nNiche: " + A.nicheEn + "\nHost(s):\n" + figurTeks + "\nAllowed formats (use the id):\n" + daftar + "\nNumber of ideas: " + ideJumlah + (ideTema.trim() ? "\nSpecial theme from the user: " + ideTema.trim() : "") + "\nAvoid repeating these titles: " + ideHasil.map(function (d) { return d.judul; }).join("; ");
     try {
@@ -464,6 +473,7 @@ var SP = (function () {
   // ---------- Bank Figur ----------
   function htmlBank() {
     var h = kembaliBtn() + '<h2 style="margin-top:10px">👥 Bank Figur & Lokasi</h2><p class="sub">Data ini dikunci dan dipakai otomatis di setiap video. Untuk mengubahnya, kirim perubahan ke Claude.</p>';
+    h += '<div class="kotak"><h3>💑 Hubungan</h3><p style="margin:0;font-size:14px">Rio dan Nara berpacaran; Mia sahabat mereka. Interaksi Rio dan Nara selalu sopan dan hangat: boleh duduk berdampingan, saling menyemangati, dan bercanda; tidak berpelukan, mencium, atau bermesraan.</p></div>';
     URUT_FIGUR.forEach(function (id) {
       var F = FIGUR[id], f = fotoResmi[id];
       h += '<div class="kotak"><h3>' + F.emoji + ' ' + F.nama + ' <span class="tag">' + esc(AKUN[F.akun].nama) + '</span></h3>';
@@ -519,14 +529,16 @@ var SP = (function () {
     var mesin = mesinPaksa || (fm.mesin === "serba" ? "serba" : "kreator");
     var figur = pil.figur.map(function (id) {
       var F = FIGUR[id], o = F.outfit.filter(function (x) { return x.id === pil.outfit[id]; })[0] || F.outfit[0];
-      var peran = F.peran + (pil.figur.length > 1 ? "; sahabat " + pil.figur.filter(function (x) { return x !== id; }).map(function (x) { return FIGUR[x].nama; }).join(" dan ") : "");
+      var peran = F.peran + pil.figur.filter(function (x) { return x !== id; }).map(function (x) { return "; " + hubungan(id, x) + " " + FIGUR[x].nama; }).join("");
       var foto = fotoDipakai(id);
       return { id: id, nama: F.nama, peran: peran, usiaSuara: F.usiaSuara, warnaSuara: F.warnaSuara, logat: F.logat, pakaian: o.teks, ciri: foto ? F.ciriFoto : F.ciri, umur: F.umur, fisik: F.fisik, foto: foto, en: (foto ? F.enFoto : F.en) + "; outfit: " + o.en };
     });
     var nama = figur.map(function (f) { return f.nama; });
     var pemeran = figur.length === 1
       ? figur[0].nama + " (" + FIGUR[figur[0].id].ringkas + "), figur tetap " + A.nama
-      : nama.slice(0, -1).join(", ") + " dan " + nama[nama.length - 1] + ", " + (figur.length === 3 ? "tiga" : "dua") + " sahabat (figur tetap)";
+      : (pil.figur.indexOf("rio") >= 0 && pil.figur.indexOf("nara") >= 0
+        ? "Rio dan Nara (pasangan)" + (pil.figur.indexOf("mia") >= 0 ? " bersama Mia (sahabat mereka)" : "") + ", figur tetap"
+        : nama.slice(0, -1).join(", ") + " dan " + nama[nama.length - 1] + ", dua sahabat (figur tetap)");
     var konteks = "STUDIO PRIBADI - PERSONAL CHANNEL CONTEXT (follow strictly; where it conflicts with the theme direction, this wins):\n" +
       "- Channel: the user's own TikTok account \"" + A.label + "\", niche: " + A.nicheEn + ". Content format: " + fm.judul + " - " + fm.en + ".\n" +
       "- Recurring AI host" + (figur.length > 1 ? "s" : "") + " (adults):\n" + figur.map(function (f) { return "  * " + f.en; }).join("\n") + "\n" +
@@ -534,6 +546,7 @@ var SP = (function () {
       "- Location: @@LOKASI@@\n" +
       "- CLOSING CALL TO ACTION (required by the user; spoken by the host in the FINAL scene, never replaced by a series closing or quiz; Quality Control must quote it): " + teksAjakan() + ". Never say the account name aloud.\n" +
       (A.aturan ? "- " + A.aturan + "\n" : "") +
+      (pil.figur.indexOf("rio") >= 0 && pil.figur.indexOf("nara") >= 0 ? "- RELATIONSHIP: " + ATURAN_PASANGAN + "\n" : "") +
       (fm.layar ? "- SCREEN RULE: AI video cannot show readable app screens. Keep the host on camera explaining. Whenever the viewer must see an app or a screen, add a separate line \"INSERT SCREEN RECORDING: [what to record, in Indonesian]\" to that scene in the storyboard (and mention it in the editing guide) so the user can overlay a real screen recording in CapCut. Screens inside the shot stay unreadable.\n" : "") +
       "- Speech in casual Indonesian. No background music inside the clips (the user adds music in CapCut).";
     return {
@@ -806,7 +819,11 @@ var SP = (function () {
   function tekanDialog(i) { $("sp-dialog").style.display = "none"; var t = aksiDialog[i]; if (t && t.aksi) t.aksi(); }
 
   // ---------- Isian ----------
-  function set(k, v) { simpanIde(); pil[k] = v; gambar(); }
+  function set(k, v) {
+    simpanIde(); pil[k] = v;
+    if (k === "format") { var f = cariFormat(pil.akun, v); if (f && f.figur) { pil.figur = f.figur.slice(); if (/^ruang:/.test(pil.lokasi) && pil.figur.indexOf(pil.lokasi.slice(6)) < 0) pil.lokasi = "kumpul:markas"; } }
+    gambar();
+  }
   function setDiam(k, v) { pil[k] = v; }
   function simpanIde() { var t = $("sp-ide"); if (t && pil) pil.ide = t.value; var a = $("sp-ajakan"); if (a && pil) pil.ajakanSendiri = a.value; var l = $("sp-live"); if (l && pil) pil.jadwalLive = l.value; }
   function setOutfit(id, o) { simpanIde(); pil.outfit[id] = o; gambar(); }

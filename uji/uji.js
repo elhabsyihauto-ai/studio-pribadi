@@ -19,7 +19,14 @@ async function keRingkasan(fr) {
     const page = await halaman(b, log);
     await page.waitForSelector('text=Studio konten pribadimu', { timeout: 15000 });
     await page.waitForFunction(() => document.querySelector('.kartu .ikon img'), null, { timeout: 8000 }).catch(() => { });
-    cek(await page.locator('.kartu .ikon img').count() === 1, 'Beranda: foto Rio tampil di kartu Akun 1');
+    await page.waitForFunction(() => document.querySelectorAll('.kartu .ikon img').length >= 2, null, { timeout: 8000 }).catch(() => { });
+    cek(await page.locator('.kartu .ikon img').count() === 2, 'Beranda: foto Rio dan Nara tampil (SP6)');
+    // SP7: halaman Nara
+    await page.click('text=Akun 3 · Nara');
+    cek(await page.locator('.figurbaris .chip').filter({ hasText: /Kasual|Traveling|Formal|Rumah|Olahraga/ }).count() === 5 && await page.locator('.chip.on:has-text("Kasual")').count() === 1, 'SP7 Nara: 5 pakaian, bawaan Kasual');
+    cek(await page.locator('.chip.on:has-text("Foto wajah resmi")').count() === 1, 'SP6 Nara: foto wajah resmi dipilih');
+    cek(/hijab sifon beige/.test(await page.locator('.figurbaris .catatan').first().innerText()), 'SP7 Nara: hijab sifon beige');
+    await page.evaluate(() => SP.buka('beranda'));
     cek(!(await page.evaluate(() => document.body.innerText)).includes('undefined'), 'Beranda tanpa teks rusak');
 
     // ===== A. Rio, tutorial, sampai hasil =====
@@ -123,7 +130,12 @@ async function keRingkasan(fr) {
     fr = await tungguBingkai(page);
     const stC = await fr.evaluate(() => ({ n: selections.tokoh.length, nm: selections.tokoh.map(t => t.nama).join(','), foto: ownPhotos.map(Boolean), tema: selections.temaRek.id, slot: castSlots(), pem: selections.pemeran }));
     cek(stC.n === 3 && stC.nm === 'Rio,Mia,Nara' && stC.slot === 3, 'Kolaborasi: 3 tokoh terisi', JSON.stringify(stC));
-    cek(stC.foto[0] && !stC.foto[1] && !stC.foto[2] && stC.tema === 'podcast', 'Kolaborasi: foto hanya Rio, mesin podcast');
+    cek(stC.foto[0] && !stC.foto[1] && stC.foto[2] && stC.tema === 'podcast', 'Kolaborasi: foto Rio dan Nara (Mia belum ada), mesin podcast');
+    const tokC = await fr.evaluate(() => selections.tokoh.map(t => t.peran).join(' | '));
+    cek(/pacar Nara/.test(tokC) && /sahabat Mia/.test(tokC) && /pacar Rio/.test(tokC), 'SP9 peran: Rio-Nara pacar, Mia sahabat', tokC);
+    global.prompts = [];
+    await fr.evaluate(() => fetchGemini({ contents: [{ parts: [{ text: 'tes' }] }], systemInstruction: { parts: [{ text: 'You are a test.' }] } }));
+    cek(/RELATIONSHIP: Rio and Nara are a couple[^\n]*never hug, kiss/.test(global.prompts[0].sys), 'SP9 aturan pasangan sopan dan hangat ikut ke AI');
 
     // ===== F. Batas 3 video =====
     await page.click('#sp-tab .tab:has-text("Beranda")');
@@ -147,7 +159,7 @@ async function keRingkasan(fr) {
     await page.locator('#sp-tab .tab:has-text("Rio+Mia+Nara") .x').click(); await page.click('#sp-dialog button:has-text("Tutup video")');
     await page.evaluate(() => SP.buka('beranda'));
     await page.click('text=Kolaborasi');
-    await page.click('text=Skit tiga sahabat');
+    await page.click('text=Skit Rio, Nara & Mia');
     await page.click('.chip:has-text("Mia")'); // Mia keluar, tinggal Rio + Nara
     await page.fill('#sp-ide', 'Rio dan Nara berebut kursi terakhir di kafe.');
     await page.click('button:has-text("Mulai buat video")');
@@ -167,6 +179,13 @@ async function keRingkasan(fr) {
     global.prompts = [];
     await fr.evaluate(() => fetchGemini({ contents: [{ parts: [{ text: 'tes' }] }], systemInstruction: { parts: [{ text: 'You are a test.' }] } }));
     cek(/Rio: the adult man from the user's reference photo/.test(global.prompts[0].sys), 'Kode Proyek: konteks akun ikut lagi');
+
+    // ===== SP9: format Konten Rio & Nara =====
+    await page.evaluate(() => SP.buka('akun', { akun: 'kolab' }));
+    await page.click('text=Konten Rio & Nara');
+    cek(await page.locator('.chip.on:has-text("Rio")').count() === 1 && await page.locator('.chip.on:has-text("Nara")').count() === 1 && await page.locator('.chip.on:has-text("Mia")').count() === 0, 'SP9 format pasangan: otomatis Rio + Nara');
+    cek(await page.evaluate(() => SP._uji.konfig().mesin) === 'serba', 'SP9 format pasangan memakai mesin Serba Bisa');
+    cek(/Rio dan Nara \(pasangan\)/.test(await page.evaluate(() => SP._uji.konfig().pemeran)), 'SP9 pemeran: Rio dan Nara (pasangan)');
 
     // ===== E. Ide Konten =====
     await page.evaluate(() => SP.buka('ide'));
