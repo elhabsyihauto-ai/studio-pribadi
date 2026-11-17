@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Studio Pribadi by Suhu Digital V1.0 (16 Nov 2026). Aplikasi pribadi untuk konten tiga akun TikTok (Rio, Mia, Nara + kolaborasi).
+<!-- Studio Pribadi by Suhu Digital V1.1 (17 Nov 2026). SP1 figur dan lokasi akun di atas halaman Pembicara/Lokasi + lokasi pilihan ikut ke AI; SP2 foto tanpa usia/rambut; SP3 sepatu tetap; SP4 nama akun otomatis; SP5 pilihan ajakan penutup + jadwal live. Sebelumnya V1.0 (16 Nov 2026). Aplikasi pribadi untuk konten tiga akun TikTok (Rio, Mia, Nara + kolaborasi).
      Mesin pembuat prompt diambil langsung dari Sugi Studio (kreator.html dan serba-bisa.html di repo Sugimation, cabang main),
      jadi setiap perbaikan Sugi otomatis ikut. Setiap video berjalan di bingkai sendiri (maks. 3 bersamaan); AI dari bingkai
      dititipkan ke halaman utama lewat pesan (cara yang terbukti di Satu Pintu). -->
@@ -7,7 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Studio Pribadi by Suhu Digital V1.0</title>
+<title>Studio Pribadi by Suhu Digital V1.1</title>
 <style>
   :root { --krem:#FAF3E3; --krem2:#F3E8D0; --garis:#E9DCC2; --emas:#C9A24D; --emas2:#9A7425; --coklat:#3B2A1A; --coklat2:#7A6244; --putih:#FFFDF8; --merah:#B4472F; --hijau:#3F7A43; }
   * { box-sizing: border-box; }
@@ -109,7 +109,7 @@ var GEMINI_MODEL = "gemini-3-flash-preview";
 var GEMINI_API = "https://generativelanguage.googleapis.com/v1beta/models/" + GEMINI_MODEL + ":generateContent?key=" + apiKey;
 
 var SP = (function () {
-  var VERSI = "V1.0";
+  var VERSI = "V1.1";
   var MESIN_URL = "https://raw.githubusercontent.com/elhabsyihauto-ai/Sugimation/main/";
   var ASET_URL = "https://raw.githubusercontent.com/elhabsyihauto-ai/studio-pribadi/main/";
   var BATAS = 3;
@@ -123,10 +123,12 @@ var SP = (function () {
       usiaSuara: "20-an", warnaSuara: "Bulat dan jelas (seperti penyiar)", logat: "Indonesia netral",
       ciri: "usia 27 tahun; rambut hitam pendek, bagian atas sedikit bervolume dan disisir ke samping; senyum lebar yang ramah",
       fisik: "pria Asia Tenggara, wajah agak bulat dengan rahang lembut, mata cokelat tua yang hangat, alis tebal rapi, bayangan janggut tipis",
+      ciriFoto: "senyum lebar yang ramah",
+      enFoto: "Rio: the adult man from the user's reference photo (face, age, and hair come ONLY from the photo; never describe them); wide friendly smile; confident, friendly, professional; clear medium voice, neutral Indonesian accent",
       en: "Rio: fictional 27-year-old Southeast Asian man, slightly round face with a soft jawline, warm dark-brown eyes, thick neat eyebrows, light stubble shadow, short black hair with a little volume on top swept to the side, wide friendly smile; confident, friendly, professional; clear medium voice, neutral Indonesian accent",
       outfit: [
-        { id: "casual", emoji: "👔", label: "Smart casual", saran: true, teks: "kemeja polos biru muda lengan digulung sampai siku, celana chino krem, jam tangan kulit cokelat", en: "plain light-blue shirt with sleeves rolled to the elbows, beige chinos, brown leather watch" },
-        { id: "resmi", emoji: "🤵", label: "Resmi", teks: "jas hitam, kemeja putih, dasi hitam bertekstur, saputangan putih di saku jas", en: "black suit, white shirt, textured black tie, white pocket square" },
+        { id: "casual", emoji: "👔", label: "Smart casual", saran: true, teks: "kemeja polos biru muda lengan digulung sampai siku, celana chino krem, jam tangan kulit cokelat, sepatu loafer kulit cokelat tua", en: "plain light-blue shirt with sleeves rolled to the elbows, beige chinos, brown leather watch, dark-brown leather loafers" },
+        { id: "resmi", emoji: "🤵", label: "Resmi", teks: "jas hitam, kemeja putih, dasi hitam bertekstur, saputangan putih di saku jas, sepatu pantofel kulit hitam", en: "black suit, white shirt, textured black tie, white pocket square, black leather oxford shoes" },
         { id: "santai", emoji: "👕", label: "Santai", teks: "kaos polos putih dengan overshirt hijau zaitun, celana jeans gelap, sneakers putih", en: "plain white T-shirt under an olive-green overshirt, dark jeans, white sneakers" }
       ]
     },
@@ -137,11 +139,13 @@ var SP = (function () {
       usiaSuara: "30-an", warnaSuara: "Lembut dan halus", logat: "Indonesia netral",
       ciri: "usia sekitar 30 tahun; selalu berhijab georgette abu tua yang menutup rambut dan leher; kesan percaya diri, ramah, profesional",
       fisik: "wanita Indonesia berwajah ramah, senyum hangat, riasan natural",
+      ciriFoto: "selalu berhijab georgette abu tua yang menutup kepala dan leher; kesan percaya diri, ramah, profesional",
+      enFoto: "Mia: the adult woman from the user's reference photo (face and age come ONLY from the photo; never describe them); always wears a dark-grey georgette hijab covering head and neck; confident, friendly, professional; soft clear voice, neutral Indonesian accent",
       en: "Mia: fictional Indonesian woman about 30 years old, always wears a dark-grey georgette hijab that fully covers her hair and neck, warm smile, natural make-up; confident, friendly, professional; soft clear voice, neutral Indonesian accent",
       outfit: [
         { id: "kardigan", emoji: "💜", label: "Kardigan lavender", saran: true, teks: "kardigan rajut pastel lavender, kaos krem, jeans biru denim, sneakers putih, jam tangan perak berpermukaan putih", en: "pastel lavender knit cardigan, cream T-shirt, blue denim jeans, white sneakers, silver watch with a white dial" },
-        { id: "blazer", emoji: "🧥", label: "Blazer navy", teks: "blazer navy dengan dalaman krem polos, celana panjang bahan krem", en: "navy blazer over a plain cream top, cream tailored trousers" },
-        { id: "dress", emoji: "👗", label: "Dress anggun", teks: "dress panjang anggun yang sopan warna dusty pink", en: "long, elegant modest dress in dusty pink" }
+        { id: "blazer", emoji: "🧥", label: "Blazer navy", teks: "blazer navy dengan dalaman krem polos, celana panjang bahan krem, sepatu flat krem", en: "navy blazer over a plain cream top, cream tailored trousers, cream flat shoes" },
+        { id: "dress", emoji: "👗", label: "Dress anggun", teks: "dress panjang anggun yang sopan warna dusty pink, sepatu flat warna nude", en: "long, elegant modest dress in dusty pink, nude flat shoes" }
       ]
     },
     nara: {
@@ -151,10 +155,12 @@ var SP = (function () {
       usiaSuara: "20-an", warnaSuara: "Ringan", logat: "Indonesia netral",
       ciri: "usia 26 tahun; selalu berhijab pashmina kaos warna terakota yang dililit santai dan menutup rambut dan leher; kacamata bulat berbingkai tipis; gelang kayu",
       fisik: "wajah bulat telur, mata ekspresif, pipi berisi, senyum lebar ceria, riasan tipis natural",
+      ciriFoto: "selalu berhijab pashmina kaos warna terakota yang dililit santai dan menutup kepala dan leher; kacamata bulat berbingkai tipis; gelang kayu",
+      enFoto: "Nara: the adult woman from the user's reference photo (face and age come ONLY from the photo; never describe them); thin round glasses, wooden bracelet, terracotta jersey pashmina hijab wrapped casually covering head and neck; creative and relaxed; light, lively voice, neutral Indonesian accent",
       en: "Nara: fictional 26-year-old Indonesian woman, oval face, expressive eyes, full cheeks, cheerful wide smile, light natural make-up, thin round glasses, wooden bracelet, terracotta jersey pashmina hijab wrapped casually that fully covers her hair and neck; creative and relaxed; light, lively voice, neutral Indonesian accent",
       outfit: [
         { id: "kreatif", emoji: "🎨", label: "Kreatif santai", saran: true, teks: "kemeja oversized krem, celana kulot cokelat muda, sneakers kanvas, totebag kain", en: "oversized cream shirt, light-brown culottes, canvas sneakers, cloth tote bag" },
-        { id: "gamis", emoji: "🧕", label: "Gamis santai", teks: "gamis santai motif kecil warna sage", en: "relaxed modest long dress with a small sage-green print" },
+        { id: "gamis", emoji: "🧕", label: "Gamis santai", teks: "gamis santai motif kecil warna sage, sepatu flat cokelat muda", en: "relaxed modest long dress with a small sage-green print, light-brown flat shoes" },
         { id: "sporty", emoji: "🏃‍♀️", label: "Sporty", teks: "hoodie longgar, celana training, sepatu lari; hijab tetap pashmina terakota diikat lebih rapat", en: "loose hoodie, track pants, running shoes; the same terracotta hijab wrapped more snugly" }
       ]
     }
@@ -179,7 +185,7 @@ var SP = (function () {
 
   // ================= AKUN DAN FORMAT =================
   var AKUN = {
-    a1: { label: "Akun 1 · Rio", nama: "Akun 1", emoji: "🎬", figur: ["rio"], niche: "Tutorial ilmu AI, terutama membuat video AI",
+    a1: { label: "Akun 1 · Rio", nama: "Akun 1", namaAkun: "Rio | Suhu Digital", emoji: "🎬", figur: ["rio"], niche: "Tutorial ilmu AI, terutama membuat video AI",
       nicheEn: "tutorials about AI tools, especially how to make AI videos",
       format: [
         { id: "tutorial", emoji: "📘", judul: "Tutorial langkah demi langkah", desc: "Rio menjelaskan tiap langkah; layar aplikasi dari rekaman layarmu", mesin: "th", layar: true, en: "step-by-step tutorial: Rio explains each step on camera" },
@@ -190,7 +196,7 @@ var SP = (function () {
         { id: "komentar", emoji: "💬", judul: "Jawab pertanyaan komentar", desc: "Menjawab pertanyaan penonton", mesin: "th", en: "answering one viewer question from the comments" },
         { id: "cerita", emoji: "🎭", judul: "Cerita atau skit bebas", desc: "Ceritakan idemu, AI menyesuaikan", mesin: "serba", en: "a short story or skit" }
       ] },
-    a2: { label: "Akun 2 · Mia", nama: "Akun 2", emoji: "🛍️", figur: ["mia"], niche: "Tutorial affiliate dengan video AI dan ilmu affiliate",
+    a2: { label: "Akun 2 · Mia", nama: "Akun 2", namaAkun: "Mia | Affiliate Pakai AI (@suhudigital123)", emoji: "🛍️", figur: ["mia"], niche: "Tutorial affiliate dengan video AI dan ilmu affiliate",
       nicheEn: "affiliate marketing tutorials using AI videos, plus practical affiliate knowledge",
       aturan: "Mia speaks and explains on camera in EVERY scene; never a scene that only shows tools or products without Mia explaining.",
       format: [
@@ -201,7 +207,7 @@ var SP = (function () {
         { id: "studi", emoji: "📈", judul: "Studi kasus / dari nol", desc: "Perjalanan dan pelajaran nyata", mesin: "th", en: "a case study or a from-zero journey with honest lessons (no invented income claims)" },
         { id: "cerita", emoji: "🎭", judul: "Cerita atau skit bebas", desc: "Ceritakan idemu, AI menyesuaikan", mesin: "serba", en: "a short story or skit" }
       ] },
-    a3: { label: "Akun 3 · Nara", nama: "Akun 3", emoji: "💡", figur: ["nara"], niche: "Produk digital dan ilmu AI: membuat dan memasarkan produk digital dengan AI",
+    a3: { label: "Akun 3 · Nara", nama: "Akun 3", namaAkun: "Nara | Produk Digital AI", emoji: "💡", figur: ["nara"], niche: "Produk digital dan ilmu AI: membuat dan memasarkan produk digital dengan AI",
       nicheEn: "digital products and AI: creating digital products with AI and marketing them with AI",
       format: [
         { id: "idepro", emoji: "💡", judul: "Ide produk digital", desc: "Ide produk yang bisa dibuat dengan AI", mesin: "th", en: "digital product ideas that can be made with AI" },
@@ -222,6 +228,19 @@ var SP = (function () {
       ] }
   };
   var URUT_AKUN = ["a1", "a2", "a3", "kolab"];
+  // SP5: ajakan di akhir video (maks. 2, atau AI tentukan), per akun
+  var AJAKAN = [
+    { id: "ai", emoji: "🤖", label: "AI tentukan sesuai isi video", en: "choose ONE fitting call to action yourself (follow, comment, or save)" },
+    { id: "follow", emoji: "➕", label: "Follow untuk tips berikutnya", en: "invite viewers to follow the account for the next tips" },
+    { id: "komen", emoji: "💬", label: "Komentar / jawab pertanyaan", en: "invite viewers to comment or answer a short question in the comments" },
+    { id: "simpan", emoji: "🔖", label: "Simpan dan bagikan", en: "invite viewers to save the video and share it with a friend" },
+    { id: "live", emoji: "🔴", label: "Tonton live", en: "invite viewers to watch the next live" },
+    { id: "kelas", emoji: "🎓", label: "Ikut kelas / cek link di bio", akun: ["a1"], en: "invite viewers to join the class through the link in bio" },
+    { id: "keranjang", emoji: "🛒", label: "Cek keranjang kuning / etalase", akun: ["a2"], en: "invite viewers to check the yellow basket or showcase" },
+    { id: "produk", emoji: "🛍️", label: "Cek produk digital di bio", akun: ["a3"], en: "invite viewers to check the digital product through the link in bio" },
+    { id: "episode", emoji: "⏭️", label: "Tunggu episode berikutnya", en: "invite viewers to wait for the next episode" }
+  ];
+  function ajakanAkun(a) { return AJAKAN.filter(function (x) { return !x.akun || x.akun.indexOf(a) >= 0; }); }
 
   // ================= KEADAAN =================
   var halaman = "beranda", pil = null, fotoResmi = {}, fotoSementara = {}, mesinCache = {};
@@ -297,7 +316,7 @@ var SP = (function () {
 
   // ---------- Halaman akun (pengaturan video) ----------
   function mulaiPilihan(a, formatId, ide) {
-    pil = { akun: a, figur: AKUN[a].figur.slice(), format: formatId || "", formatSendiri: "", outfit: {}, foto: {}, lokasi: "", lokasiSendiri: "", ide: ide || "" };
+    pil = { akun: a, figur: AKUN[a].figur.slice(), format: formatId || "", formatSendiri: "", outfit: {}, foto: {}, lokasi: "", lokasiSendiri: "", ide: ide || "", ajakan: ["ai"], ajakanSendiri: "", jadwalLive: "" };
     if (formatId && !cariFormat(a, formatId)) { pil.format = "__sendiri"; pil.formatSendiri = formatId; }
     URUT_FIGUR.forEach(function (id) {
       var o = FIGUR[id].outfit.filter(function (x) { return x.saran; })[0];
@@ -358,6 +377,13 @@ var SP = (function () {
       h += '</div>';
     });
     h += '<p class="catatan">Foto wajah dipakai untuk Character Sheet dan format Image-to-Video. Di Text-to-Video, wajah tetap dijaga lewat deskripsi dan Identity Anchor.</p></div>';
+    // SP5: Ajakan di akhir video
+    h += '<div class="kotak"><h3><span class="num">' + (++n) + '</span>Ajakan di akhir video</h3><div class="chips">';
+    ajakanAkun(a).forEach(function (x) { h += '<button class="chip ' + (pil.ajakan.indexOf(x.id) >= 0 ? "on" : "") + '" onclick="SP.togAjakan(\'' + x.id + '\')">' + x.emoji + ' ' + esc(x.label) + (x.id === "ai" ? " ⭐" : "") + '</button>'; });
+    h += '<button class="chip ' + (pil.ajakan.indexOf("sendiri") >= 0 ? "on" : "") + '" onclick="SP.togAjakan(\'sendiri\')">✍️ Tulis ajakan sendiri</button></div>';
+    if (pil.ajakan.indexOf("sendiri") >= 0) h += '<div style="margin-top:10px"><input type="text" id="sp-ajakan" maxlength="150" placeholder="Contoh: tulis &quot;MAU&quot; di komentar, nanti aku kirim panduannya" value="' + esc(pil.ajakanSendiri) + '" oninput="SP.setDiam(\'ajakanSendiri\', this.value)"></div>';
+    if (pil.ajakan.indexOf("live") >= 0) h += '<div class="label">🕗 Jadwal live <span class="tag">opsional</span></div><input type="text" id="sp-live" maxlength="80" placeholder="Contoh: tiap malam jam 8" value="' + esc(pil.jadwalLive) + '" oninput="SP.setDiam(\'jadwalLive\', this.value)">';
+    h += '<p class="catatan">Pilih paling banyak 2. Ajakan wajib diucapkan di scene terakhir dan diperiksa Quality Control. Nama akun tidak diucapkan; nama akun dipakai untuk caption dan teks penutup.</p></div>';
     // Ide
     var fm = formatPilihan();
     h += '<div class="kotak"><h3><span class="num">' + (++n) + '</span>Ide video <span class="tag">opsional</span></h3>';
@@ -479,6 +505,9 @@ var SP = (function () {
       if (sp.lokasiSendiri) pil.lokasiSendiri = sp.lokasiSendiri;
       if (sp.formatSendiri) pil.formatSendiri = sp.formatSendiri;
       if (sp.foto) for (var f in sp.foto) pil.foto[f] = sp.foto[f] === "resmi" && fotoResmi[f] ? "resmi" : "ai";
+      if (sp.ajakan && sp.ajakan.length) pil.ajakan = sp.ajakan.slice(0, 2);
+      if (sp.ajakanSendiri) pil.ajakanSendiri = sp.ajakanSendiri;
+      if (sp.jadwalLive) pil.jadwalLive = sp.jadwalLive;
       if (!formatPilihan()) pil = null;
     } else { pil = null; }
     bukaBingkai(mesin, pil ? konfig(mesin) : { mesin: mesin }, teks.trim(), (d.selections[1] || "Proyek lanjutan").slice(0, 24));
@@ -491,7 +520,8 @@ var SP = (function () {
     var figur = pil.figur.map(function (id) {
       var F = FIGUR[id], o = F.outfit.filter(function (x) { return x.id === pil.outfit[id]; })[0] || F.outfit[0];
       var peran = F.peran + (pil.figur.length > 1 ? "; sahabat " + pil.figur.filter(function (x) { return x !== id; }).map(function (x) { return FIGUR[x].nama; }).join(" dan ") : "");
-      return { id: id, nama: F.nama, peran: peran, usiaSuara: F.usiaSuara, warnaSuara: F.warnaSuara, logat: F.logat, pakaian: o.teks, ciri: F.ciri, umur: F.umur, fisik: F.fisik, foto: fotoDipakai(id), en: F.en + "; outfit: " + o.en };
+      var foto = fotoDipakai(id);
+      return { id: id, nama: F.nama, peran: peran, usiaSuara: F.usiaSuara, warnaSuara: F.warnaSuara, logat: F.logat, pakaian: o.teks, ciri: foto ? F.ciriFoto : F.ciri, umur: F.umur, fisik: F.fisik, foto: foto, en: (foto ? F.enFoto : F.en) + "; outfit: " + o.en };
     });
     var nama = figur.map(function (f) { return f.nama; });
     var pemeran = figur.length === 1
@@ -499,17 +529,22 @@ var SP = (function () {
       : nama.slice(0, -1).join(", ") + " dan " + nama[nama.length - 1] + ", " + (figur.length === 3 ? "tiga" : "dua") + " sahabat (figur tetap)";
     var konteks = "STUDIO PRIBADI - PERSONAL CHANNEL CONTEXT (follow strictly; where it conflicts with the theme direction, this wins):\n" +
       "- Channel: the user's own TikTok account \"" + A.label + "\", niche: " + A.nicheEn + ". Content format: " + fm.judul + " - " + fm.en + ".\n" +
-      "- Recurring fictional AI host" + (figur.length > 1 ? "s" : "") + " (adults, not real people):\n" + figur.map(function (f) { return "  * " + f.en + (f.foto ? " (face from the user's reference photo)" : ""); }).join("\n") + "\n" +
-      "- Keep every host's name, age, face, hijab and outfit identical in every part and every scene. No other main characters unless the story needs them.\n" +
-      "- Location: " + lok.teks + ".\n" +
+      "- Recurring AI host" + (figur.length > 1 ? "s" : "") + " (adults):\n" + figur.map(function (f) { return "  * " + f.en; }).join("\n") + "\n" +
+      "- Keep every host's name, look, hijab and outfit (including shoes) identical in every part and every scene. " + (figur.some(function (f) { return f.foto; }) ? "For a host with a reference photo, never write their age, face, or hair: those come only from the photo. " : "") + "No other main characters unless the story needs them.\n" +
+      "- Location: @@LOKASI@@\n" +
+      "- CLOSING CALL TO ACTION (required by the user; spoken by the host in the FINAL scene, never replaced by a series closing or quiz; Quality Control must quote it): " + teksAjakan() + ". Never say the account name aloud.\n" +
       (A.aturan ? "- " + A.aturan + "\n" : "") +
       (fm.layar ? "- SCREEN RULE: AI video cannot show readable app screens. Keep the host on camera explaining. Whenever the viewer must see an app or a screen, add a separate line \"INSERT SCREEN RECORDING: [what to record, in Indonesian]\" to that scene in the storyboard (and mention it in the editing guide) so the user can overlay a real screen recording in CapCut. Screens inside the shot stay unreadable.\n" : "") +
       "- Speech in casual Indonesian. No background music inside the clips (the user adds music in CapCut).";
     return {
       mesin: mesin, tema: fm.mesin === "podcast" ? "podcast" : "th", cabang: fm.judul, figur: figur, pemeran: pemeran, lokasi: lok.teks, ide: (pil.ide || "").trim(),
-      label: A.label, konteks: konteks,
-      simpan: { akun: pil.akun, figur: pil.figur.slice(), format: pil.format, formatSendiri: pil.formatSendiri, outfit: pil.outfit, lokasi: pil.lokasi, lokasiSendiri: pil.lokasiSendiri, foto: pil.foto }
+      label: A.label, konteks: konteks, lokasiTeks: lok.teks, lokasiNama: lok.nama, namaAkun: namaAkunPilihan(),
+      simpan: { akun: pil.akun, figur: pil.figur.slice(), format: pil.format, formatSendiri: pil.formatSendiri, outfit: pil.outfit, lokasi: pil.lokasi, lokasiSendiri: pil.lokasiSendiri, foto: pil.foto, ajakan: pil.ajakan, ajakanSendiri: pil.ajakanSendiri, jadwalLive: pil.jadwalLive }
     };
+  }
+  function namaAkunPilihan() {
+    if (pil.akun !== "kolab") return AKUN[pil.akun].namaAkun;
+    return pil.figur.map(function (id) { return AKUN[FIGUR[id].akun].namaAkun; }).join(", ");
   }
   function mulai() {
     var g = $("sp-akun-galat");
@@ -518,7 +553,8 @@ var SP = (function () {
     var fm = formatPilihan();
     if (!fm) return salah(pil.format === "__sendiri" ? "Tulis dulu format yang kamu inginkan." : "Pilih format kontennya dulu.");
     if (pil.lokasi === "sendiri" && !(pil.lokasiSendiri || "").trim()) return salah("Tulis dulu lokasinya.");
-    var cek = [pil.ide, pil.formatSendiri, pil.lokasiSendiri].join(" ");
+    if (pil.ajakan.indexOf("sendiri") >= 0 && !(pil.ajakanSendiri || "").trim()) return salah("Tulis dulu ajakanmu, atau pilih ajakan lain.");
+    var cek = [pil.ide, pil.formatSendiri, pil.lokasiSendiri, pil.ajakanSendiri].join(" ");
     if (BLOK.test(cek)) return salah("Semua tokoh harus orang dewasa (18+). Silakan ubah tulisannya.");
     var k = konfig();
     var judul = AKUN[pil.akun].emoji + " " + (pil.akun === "kolab" ? pil.figur.map(function (x) { return FIGUR[x].nama; }).join("+") : FIGUR[pil.figur[0]].nama) + " · " + fm.judul;
@@ -551,7 +587,7 @@ var SP = (function () {
     catch (e) { tampilMuat(""); buka("beranda"); dialog("Mesin gagal dimuat", "Periksa koneksi internet, lalu coba lagi.<br><small>" + esc(e.message || e) + "</small>", [{ teks: "Tutup", utama: true }]); return; }
     k = k || { mesin: mesin };
     if (kodeImpor) k.impor = kodeImpor;
-    var item = { no: ++nomor, judul: judul || "Video", konteks: k.konteks || "", f: null, w: null };
+    var item = { no: ++nomor, judul: judul || "Video", konteks: k.konteks || "", lokasiTeks: k.lokasiTeks || "", f: null, w: null };
     var f = document.createElement("iframe");
     f.setAttribute("title", item.judul);
     f.srcdoc = '<!DOCTYPE html><html lang="id"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>' + esc(item.judul) + '</title></head><body></body></html>';
@@ -641,6 +677,16 @@ var SP = (function () {
     try { Object.defineProperty(window, "fetch", { value: titip, writable: false, configurable: false }); } catch (e) { window.fetch = titip; }
   } + ")();";
 
+  function konteksKini(item) {
+    if (!item.konteks) return "";
+    var lok = "";
+    try { lok = String(item.w.eval("typeof selections !== 'undefined' && selections.lokasi || ''") || ""); } catch (e) { }
+    var baris;
+    if (!lok || lok === item.lokasiTeks) baris = item.lokasiTeks + ".";
+    else if (/Tentukan otomatis|AI tentukan/i.test(lok)) baris = "the user let the AI choose; the account's usual place is " + item.lokasiTeks + ".";
+    else baris = "the user changed the location in the app to \"" + lok + "\"; use that location (write it in English).";
+    return item.konteks.replace("@@LOKASI@@", baris);
+  }
   // Konteks akun ditambahkan ke setiap perintah AI teks dari bingkai (bukan AI gambar, bukan pemadat prompt).
   function tambahKonteks(body, konteks) {
     if (!konteks || typeof body !== "string") return body;
@@ -664,7 +710,7 @@ var SP = (function () {
     if (d.jenis === "sp-pulang") { buka("beranda"); return; }
     if (d.jenis !== "sugi-minta-ai") return;
     var src = e.source, opsi = d.opsi || {};
-    opsi.body = tambahKonteks(opsi.body, item.konteks);
+    opsi.body = tambahKonteks(opsi.body, konteksKini(item));
     fetch(d.url, opsi).then(function (r) {
       return r.text().then(function (t) { src.postMessage({ jenis: "sugi-jawab-ai", id: d.id, status: r.status, statusText: r.statusText, isi: t, tipe: r.headers.get("Content-Type") }, "*"); });
     }).catch(function (er) {
@@ -701,6 +747,7 @@ var SP = (function () {
         return t;
       });
       selections.lokasi = C.lokasi;
+      if (C.namaAkun) selections.namaUsaha = C.namaAkun;
       pasangFoto();
     }
     if (typeof resetProject === "function") { var r0 = resetProject; resetProject = function () { var r = r0.apply(this, arguments); isi(); return r; }; }
@@ -716,8 +763,20 @@ var SP = (function () {
       var l0 = buildLokasiHtml;
       buildLokasiHtml = function () {
         var h = l0.apply(this, arguments);
-        if (C.figur && selections.lokasi && selections.lokasi === C.lokasi) h += '<div class="mt-6"><button id="sp-lok-lanjut" onclick="afterLokasi()" class="w-full bg-gold-500 hover:bg-gold-600 text-brown-900 font-bold py-3 min-h-[48px] rounded-xl shadow-sm">Lanjut dengan lokasi ini</button><p class="text-xs text-brown-500 mt-2 text-center">Lokasi dari Studio Pribadi sudah terpilih. Ketuk pilihan lain bila ingin mengganti.</p></div>';
-        return h;
+        if (!C.figur) return h;
+        var sama = selections.lokasi === C.lokasi, nm = C.lokasiNama || "Lokasi akun";
+        return '<div class="mt-6 bg-gold-100 border-2 border-gold-500 rounded-2xl p-4"><p class="font-bold text-brown-800">' + (sama ? '✅ ' + nm + ' (dari Studio Pribadi) sudah terpilih' : '📍 Lokasi akun: ' + nm) + '</p><p class="text-xs text-brown-500 mt-2">' + (sama ? 'Langsung lanjut, atau pilih lokasi lain di bawah.' : 'Kamu memilih lokasi lain. Ketuk tombol ini untuk kembali ke lokasi akun.') + '</p><button id="sp-lok-lanjut" onclick="' + (sama ? 'afterLokasi()' : '__spLokAkun()') + '" class="w-full bg-gold-500 hover:bg-gold-600 text-brown-900 font-bold py-3 min-h-[48px] rounded-xl shadow-sm mt-2">' + (sama ? 'Lanjut dengan lokasi ini' : 'Pakai ' + nm + ' lalu lanjut') + '</button></div>' + h;
+      };
+    }
+    window.__spLokAkun = function () { selections.lokasi = C.lokasi; afterLokasi(); };
+    window.__spPemAkun = function () { isi(); if (typeof submitPemeran === "function") submitPemeran(); };
+    if (typeof buildPemeranHtml === "function") {
+      var pm0 = buildPemeranHtml;
+      buildPemeranHtml = function () {
+        var h = pm0.apply(this, arguments);
+        if (!C.figur) return h;
+        var sama = selections.pemeran === C.pemeran, nm = C.figur.map(function (f) { return f.nama; }).join(" + ");
+        return '<div class="mt-6 bg-gold-100 border-2 border-gold-500 rounded-2xl p-4"><p class="font-bold text-brown-800">' + (sama ? '✅ ' + nm + ' (figur tetap) sudah terpilih' : '👤 Figur akun: ' + nm) + '</p><p class="text-xs text-brown-500 mt-2">' + (sama ? 'Wajah, pakaian, dan suaranya sudah terkunci. Langsung lanjut saja.' : 'Kamu memilih pembicara lain. Ketuk tombol ini untuk kembali ke figur akun.') + '</p><button id="sp-pem-lanjut" onclick="__spPemAkun()" class="w-full bg-gold-500 hover:bg-gold-600 text-brown-900 font-bold py-3 min-h-[48px] rounded-xl shadow-sm mt-2">' + (sama ? 'Lanjut dengan ' + nm : 'Pakai ' + nm + ' lalu lanjut') + '</button></div>' + h;
       };
     }
     if (typeof openProject === "function") { var o0 = openProject; openProject = function () { var r = o0.apply(this, arguments); try { if (selections && selections.sp && C.figur) pasangFoto(); } catch (e) { } return r; }; }
@@ -749,7 +808,7 @@ var SP = (function () {
   // ---------- Isian ----------
   function set(k, v) { simpanIde(); pil[k] = v; gambar(); }
   function setDiam(k, v) { pil[k] = v; }
-  function simpanIde() { var t = $("sp-ide"); if (t && pil) pil.ide = t.value; }
+  function simpanIde() { var t = $("sp-ide"); if (t && pil) pil.ide = t.value; var a = $("sp-ajakan"); if (a && pil) pil.ajakanSendiri = a.value; var l = $("sp-live"); if (l && pil) pil.jadwalLive = l.value; }
   function setOutfit(id, o) { simpanIde(); pil.outfit[id] = o; gambar(); }
   function setFoto(id, m) { simpanIde(); pil.foto[id] = m; pil.fotoManual = pil.fotoManual || {}; pil.fotoManual[id] = true; gambar(); }
   function togFigur(id) {
@@ -758,6 +817,23 @@ var SP = (function () {
     if (i >= 0) { if (pil.figur.length <= 2) return; pil.figur.splice(i, 1); if (pil.lokasi === "ruang:" + id) pil.lokasi = "kumpul:markas"; }
     else pil.figur = URUT_FIGUR.filter(function (x) { return x === id || pil.figur.indexOf(x) >= 0; });
     gambar();
+  }
+  function togAjakan(id) {
+    simpanIde();
+    var i = pil.ajakan.indexOf(id);
+    if (id === "ai") pil.ajakan = ["ai"];
+    else if (i >= 0) { pil.ajakan.splice(i, 1); if (!pil.ajakan.length) pil.ajakan = ["ai"]; }
+    else { pil.ajakan = pil.ajakan.filter(function (x) { return x !== "ai"; }); if (pil.ajakan.length >= 2) pil.ajakan.shift(); pil.ajakan.push(id); }
+    gambar();
+  }
+  function teksAjakan() {
+    if (!pil) return "";
+    var bag = pil.ajakan.map(function (id) {
+      if (id === "sendiri") { var t = (pil.ajakanSendiri || "").trim(); return t ? "say this call to action in natural Indonesian (you may shorten it to fit, keep its meaning): \"" + t + "\"" : ""; }
+      var x = AJAKAN.filter(function (a) { return a.id === id; })[0]; if (!x) return "";
+      return x.en + (id === "live" && (pil.jadwalLive || "").trim() ? " (schedule: " + pil.jadwalLive.trim() + ")" : "");
+    }).filter(Boolean);
+    return bag.join("; and ");
   }
   function unggahFoto(id, input) {
     var file = input && input.files && input.files[0]; if (!file) return;
@@ -784,7 +860,7 @@ var SP = (function () {
 
   return {
     buka: buka, set: set, setDiam: setDiam, setOutfit: setOutfit, setFoto: setFoto, togFigur: togFigur, unggahFoto: unggahFoto, mulai: mulai,
-    ideSet: ideSet, buatIde: buatIde, pakaiIde: pakaiIde, lanjut: lanjut, pilihTab: pilihTab, tutupNo: tutupNo, tekanDialog: tekanDialog,
+    togAjakan: togAjakan, ideSet: ideSet, buatIde: buatIde, pakaiIde: pakaiIde, lanjut: lanjut, pilihTab: pilihTab, tutupNo: tutupNo, tekanDialog: tekanDialog,
     _uji: { kerja: function () { return kerja; }, konfig: function () { return konfig(); }, pil: function () { return pil; }, tambahKonteks: tambahKonteks }
   };
 })();
