@@ -79,6 +79,9 @@ async function keRingkasan(fr) {
     const img = global.prompts.filter(x => x.img);
     cek(img.length > 0 && !img.some(x => /STUDIO PRIBADI/.test(x.sys + x.user)) && img[0].refs > 0, 'AI gambar: foto Rio terlampir, tanpa tambahan konteks', 'img=' + img.length + ' refs=' + (img[0] || {}).refs);
     cek(teks.some(x => x.refs > 0), 'Foto Rio dikirim ke AI (Character Sheet / Master)');
+    cek(/scene whose spoken line explains that exact step/.test(master.sys), 'SP14 rekaman layar di scene yang menjelaskan langkahnya');
+    const ingat = await fr.locator('.sp-ingat').count();
+    cek(ingat > 0 && /lampirkan Character Sheet Rio/.test(await fr.locator('.sp-ingat').first().innerText()), 'SP15 pengingat lampirkan Character Sheet di bawah Prompt Video', ingat);
     const kode = await fr.evaluate(() => makeProjectCode());
     cek(/^SGM[01]:/.test(kode), 'Kode Proyek dibuat');
     await page.screenshot({ path: '/tmp/spA.png' });

@@ -3,8 +3,8 @@
 Aplikasi pribadi pengguna (bukan untuk member) untuk membuat prompt video AI bagi tiga akun TikTok-nya, di Gemini Canvas.
 
 ## Status (17 Nov 2026)
-- **V1.3** di `main` (SP1-SP13). V1.0 sudah diuji pengguna di Canvas asli: berhasil (AI dari bingkai berjalan, figur Rio terkunci, aturan rekaman layar berjalan).
-- Penomoran temuan berikutnya: **SP14**. Temuan di mesin Sugi diberi nomor K (lanjutan dapur Sugi) dan dikerjakan di repo `sugi-studio-dapur`.
+- **V1.4** di `main` (SP1-SP15). V1.0 sudah diuji pengguna di Canvas asli: berhasil (AI dari bingkai berjalan, figur Rio terkunci, aturan rekaman layar berjalan).
+- Penomoran temuan berikutnya: **SP16**. Temuan di mesin Sugi diberi nomor K (lanjutan dapur Sugi) dan dikerjakan di repo `sugi-studio-dapur`.
 - Foto wajah resmi: `figur/rio.jpg`, `figur/nara.jpg` (SP6), `figur/mia.jpg` (SP12, potongan kotak "Depan" dari karakter sheet Mia; ganti bila ada foto besar).
 
 ## Tentang pengguna
@@ -25,7 +25,8 @@ Aplikasi pribadi pengguna (bukan untuk member) untuk membuat prompt video AI bag
 - `pemanggil-studio-pribadi.html` ditempel di Canvas (memuat penanda alamat AI Gemini, tanpa `document.write`), mengambil `studio-pribadi.html` dari `main`.
 - Setiap video berjalan di iframe `srcdoc` sendiri (maks. 3). Mesin = `kreator.html` atau `serba-bisa.html` dari repo **Sugimation main**, diambil saat dibuka. AI dari bingkai dititipkan ke halaman utama lewat `postMessage` (cara Satu Pintu); halaman utama menambahkan **konteks akun** ke setiap perintah AI teks (`tambahKonteks`, `konteksKini`: lokasi mengikuti `selections.lokasi` di bingkai).
 - `PERSONA()` dijalankan di bingkai setelah mesin: membungkus `resetProject` (isi figur, foto, lokasi, `namaUsaha`), `afterLokasi`, `buildLokasiHtml`/`buildPemeranHtml` (kartu figur/lokasi akun di atas), `openProject` (foto kembali), `goNew`/`goHome` (kembali ke Beranda Studio Pribadi), dan mengganti logo. Bila nama fungsi mesin berubah, aplikasi menampilkan "Perlu pembaruan".
+- SP14: sisipan rekaman layar ditaruh di scene yang ucapannya menjelaskan langkah itu (aturan SCREEN RULE di konteks). SP15: `PERSONA` membungkus `kPromptCard` untuk menambah pengingat `.sp-ingat` di bawah Prompt Video bila figur memakai foto (lampirkan Character Sheet di Google Flow).
 - Ajakan penutup (SP5): pilihan per akun, maks. 2, "Tulis ajakan sendiri", jadwal live opsional; dikirim lewat konteks (CLOSING CALL TO ACTION) dan diperiksa QC (aturan K101 di mesin Sugi).
 
 ## Uji
-- `node uji/uji.js` (Playwright dari `/opt/npm-tools/node_modules/playwright`, harness Sugi di `../sugi-studio-dapur/test`). Mesin Sugi diambil dari folder `SUGIMATION` (bawaan `/home/claude/sugimation`). 65 uji, semua harus lolos.
+- `node uji/uji.js` (Playwright dari `/opt/npm-tools/node_modules/playwright`, harness Sugi di `../sugi-studio-dapur/test`). Mesin Sugi diambil dari folder `SUGIMATION` (bawaan `/home/claude/sugimation`). 67 uji, semua harus lolos.

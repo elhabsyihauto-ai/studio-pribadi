@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Studio Pribadi by Suhu Digital V1.3 (17 Nov 2026). SP10 pakaian Rio sesuai karakter sheet + bawaan per akun; SP11 kembar serasi Rio & Nara; SP12 foto wajah resmi Mia + kardigan dengan celana lebar beige; SP13 atur detail pakaian (opsional). Sebelumnya V1.2 (17 Nov 2026). SP6 foto wajah resmi Nara; SP7 tampilan Nara dari karakter sheet (hijab sifon beige, 5 pakaian); SP8 pakaian tambahan Rio; SP9 Rio dan Nara berpacaran (sopan dan hangat), Mia sahabat, format Konten Rio & Nara. Sebelumnya V1.1 (17 Nov 2026). SP1 figur dan lokasi akun di atas halaman Pembicara/Lokasi + lokasi pilihan ikut ke AI; SP2 foto tanpa usia/rambut; SP3 sepatu tetap; SP4 nama akun otomatis; SP5 pilihan ajakan penutup + jadwal live. Sebelumnya V1.0 (16 Nov 2026). Aplikasi pribadi untuk konten tiga akun TikTok (Rio, Mia, Nara + kolaborasi).
+<!-- Studio Pribadi by Suhu Digital V1.4 (17 Nov 2026). SP14 sisipan rekaman layar di scene yang menjelaskan langkahnya; SP15 pengingat lampirkan Character Sheet di Google Flow. Sebelumnya V1.3 (17 Nov 2026). SP10 pakaian Rio sesuai karakter sheet + bawaan per akun; SP11 kembar serasi Rio & Nara; SP12 foto wajah resmi Mia + kardigan dengan celana lebar beige; SP13 atur detail pakaian (opsional). Sebelumnya V1.2 (17 Nov 2026). SP6 foto wajah resmi Nara; SP7 tampilan Nara dari karakter sheet (hijab sifon beige, 5 pakaian); SP8 pakaian tambahan Rio; SP9 Rio dan Nara berpacaran (sopan dan hangat), Mia sahabat, format Konten Rio & Nara. Sebelumnya V1.1 (17 Nov 2026). SP1 figur dan lokasi akun di atas halaman Pembicara/Lokasi + lokasi pilihan ikut ke AI; SP2 foto tanpa usia/rambut; SP3 sepatu tetap; SP4 nama akun otomatis; SP5 pilihan ajakan penutup + jadwal live. Sebelumnya V1.0 (16 Nov 2026). Aplikasi pribadi untuk konten tiga akun TikTok (Rio, Mia, Nara + kolaborasi).
      Mesin pembuat prompt diambil langsung dari Sugi Studio (kreator.html dan serba-bisa.html di repo Sugimation, cabang main),
      jadi setiap perbaikan Sugi otomatis ikut. Setiap video berjalan di bingkai sendiri (maks. 3 bersamaan); AI dari bingkai
      dititipkan ke halaman utama lewat pesan (cara yang terbukti di Satu Pintu). -->
@@ -7,7 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Studio Pribadi by Suhu Digital V1.3</title>
+<title>Studio Pribadi by Suhu Digital V1.4</title>
 <style>
   :root { --krem:#FAF3E3; --krem2:#F3E8D0; --garis:#E9DCC2; --emas:#C9A24D; --emas2:#9A7425; --coklat:#3B2A1A; --coklat2:#7A6244; --putih:#FFFDF8; --merah:#B4472F; --hijau:#3F7A43; }
   * { box-sizing: border-box; }
@@ -109,7 +109,7 @@ var GEMINI_MODEL = "gemini-3-flash-preview";
 var GEMINI_API = "https://generativelanguage.googleapis.com/v1beta/models/" + GEMINI_MODEL + ":generateContent?key=" + apiKey;
 
 var SP = (function () {
-  var VERSI = "V1.3";
+  var VERSI = "V1.4";
   var MESIN_URL = "https://raw.githubusercontent.com/elhabsyihauto-ai/Sugimation/main/";
   var ASET_URL = "https://raw.githubusercontent.com/elhabsyihauto-ai/studio-pribadi/main/";
   var BATAS = 3;
@@ -567,7 +567,7 @@ var SP = (function () {
       (A.aturan ? "- " + A.aturan + "\n" : "") +
       (pil.figur.indexOf("rio") >= 0 && pil.figur.indexOf("nara") >= 0 ? "- RELATIONSHIP: " + ATURAN_PASANGAN + "\n" : "") +
       (pil.serasi && pil.figur.indexOf("rio") >= 0 && pil.figur.indexOf("nara") >= 0 ? "- MATCHING OUTFITS: Rio and Nara wear coordinated couple outfits in harmonious navy, white, and beige tones, exactly as listed for each of them.\n" : "") +
-      (fm.layar ? "- SCREEN RULE: AI video cannot show readable app screens. Keep the host on camera explaining. Whenever the viewer must see an app or a screen, add a separate line \"INSERT SCREEN RECORDING: [what to record, in Indonesian]\" to that scene in the storyboard (and mention it in the editing guide) so the user can overlay a real screen recording in CapCut. Screens inside the shot stay unreadable.\n" : "") +
+      (fm.layar ? "- SCREEN RULE: AI video cannot show readable app screens. Keep the host on camera explaining. Whenever the viewer must see an app or a screen, add a separate line \"INSERT SCREEN RECORDING: [what to record, in Indonesian]\" to the scene whose spoken line explains that exact step (split it per step when different steps are explained in different scenes; never put it only in a summary, quiz, or closing scene), and mention it in the editing guide, so the user can overlay a real screen recording in CapCut. Screens inside the shot stay unreadable.\n" : "") +
       "- Speech in casual Indonesian. No background music inside the clips (the user adds music in CapCut).";
     return {
       mesin: mesin, tema: fm.mesin === "podcast" ? "podcast" : "th", cabang: fm.judul, figur: figur, pemeran: pemeran, lokasi: lok.teks, ide: (pil.ide || "").trim(),
@@ -799,6 +799,16 @@ var SP = (function () {
         if (!C.figur) return h;
         var sama = selections.lokasi === C.lokasi, nm = C.lokasiNama || "Lokasi akun";
         return '<div class="mt-6 bg-gold-100 border-2 border-gold-500 rounded-2xl p-4"><p class="font-bold text-brown-800">' + (sama ? '✅ ' + nm + ' (dari Studio Pribadi) sudah terpilih' : '📍 Lokasi akun: ' + nm) + '</p><p class="text-xs text-brown-500 mt-2">' + (sama ? 'Langsung lanjut, atau pilih lokasi lain di bawah.' : 'Kamu memilih lokasi lain. Ketuk tombol ini untuk kembali ke lokasi akun.') + '</p><button id="sp-lok-lanjut" onclick="' + (sama ? 'afterLokasi()' : '__spLokAkun()') + '" class="w-full bg-gold-500 hover:bg-gold-600 text-brown-900 font-bold py-3 min-h-[48px] rounded-xl shadow-sm mt-2">' + (sama ? 'Lanjut dengan lokasi ini' : 'Pakai ' + nm + ' lalu lanjut') + '</button></div>' + h;
+      };
+    }
+    // SP15: pengingat lampirkan acuan wajah di Google Flow (prompt tidak menjelaskan wajah bila memakai foto)
+    if (typeof kPromptCard === "function") {
+      var kp0 = kPromptCard;
+      kPromptCard = function (id, label) {
+        var h = kp0.apply(this, arguments);
+        var pf = (C.figur || []).filter(function (f) { return f.foto; }).map(function (f) { return f.nama; });
+        if (pf.length && /^s-\d+$/.test(String(id)) && /Prompt Video/.test(String(label))) h += '<p class="sp-ingat text-xs text-brown-500 mt-2">📎 Di Google Flow, lampirkan Character Sheet ' + pf.join(" dan ") + ' (atau foto wajahnya). Prompt ini sengaja tidak menjelaskan wajah.</p>';
+        return h;
       };
     }
     window.__spLokAkun = function () { selections.lokasi = C.lokasi; afterLokasi(); };
