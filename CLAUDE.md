@@ -2,9 +2,10 @@
 
 Aplikasi pribadi pengguna (bukan untuk member) untuk membuat prompt video AI bagi tiga akun TikTok-nya, di Gemini Canvas.
 
-## Status (17 Nov 2026)
+## Status (18 Nov 2026)
+- **V1.5 (SP16 simpan otomatis ke akun) ada di cabang `ccr-bbb52875-s589vb`, BELUM di `main`**: tunggu pengguna bilang "pindahkan sekarang" (pemanggil mengambil `studio-pribadi.html` dari `main`).
 - **V1.4** di `main` (SP1-SP15). V1.0 sudah diuji pengguna di Canvas asli: berhasil (AI dari bingkai berjalan, figur Rio terkunci, aturan rekaman layar berjalan).
-- Penomoran temuan berikutnya: **SP16**. Temuan di mesin Sugi diberi nomor K (lanjutan dapur Sugi) dan dikerjakan di repo `sugi-studio-dapur`.
+- Penomoran temuan berikutnya: **SP17**. Temuan di mesin Sugi diberi nomor K (lanjutan dapur Sugi) dan dikerjakan di repo `sugi-studio-dapur`.
 - Foto wajah resmi: `figur/rio.jpg`, `figur/nara.jpg` (SP6), `figur/mia.jpg` (SP12, potongan kotak "Depan" dari karakter sheet Mia; ganti bila ada foto besar).
 
 ## Tentang pengguna
@@ -28,5 +29,8 @@ Aplikasi pribadi pengguna (bukan untuk member) untuk membuat prompt video AI bag
 - SP14: sisipan rekaman layar ditaruh di scene yang ucapannya menjelaskan langkah itu (aturan SCREEN RULE di konteks). SP15: `PERSONA` membungkus `kPromptCard` untuk menambah pengingat `.sp-ingat` di bawah Prompt Video bila figur memakai foto (lampirkan Character Sheet di Google Flow).
 - Ajakan penutup (SP5): pilihan per akun, maks. 2, "Tulis ajakan sendiri", jadwal live opsional; dikirim lewat konteks (CLOSING CALL TO ACTION) dan diperiksa QC (aturan K101 di mesin Sugi).
 
+- **SP16 simpan otomatis (V1.5):** kotak "☁️ Simpan otomatis" di atas Beranda dan di Proyek Saya. Masuk dengan **email dan sandi admin Satu Pintu** (Firebase `sugi-studio-ai` lewat REST, `FB` di kode; tidak perlu mengubah aturan Firestore karena admin boleh menulis `pengguna/{uid}/**`). Pemantau 3 detik (`sinkron`) membaca riwayat mesin di localStorage (`sugimation_kreator3_history`, `sugimation_serbabisa3_history`; bingkai `srcdoc` berbagi localStorage dengan halaman utama) dan mengunggah proyek yang berubah ke `pengguna/{uid}/pribadi/{mesin}_{id}` {mesin, judul, akun, waktu, data (JSON)}, terpisah dari Proyek Saya Satu Pintu (`pengguna/{uid}/proyek`). Proyek di atas 900 KB tidak diunggah (peringatan). Halaman "📂 Proyek Saya" (dulu Lanjutkan Proyek) = gabungan proyek di akun + di HP (☁️/📱), tombol Buka (`bukaSimpanan` -> `lanjutTeks` dengan JSON + label app) dan 🗑 (hapus dari akun dan HP), plus kotak tempel Kode Proyek. Status masuk disimpan di localStorage `sp_sesi` (hilang saat Canvas ditutup, jadi masuk lagi setiap membuka). Foto tidak ikut disimpan.
+
 ## Uji
-- `node uji/uji.js` (Playwright dari `/opt/npm-tools/node_modules/playwright`, harness Sugi di `../sugi-studio-dapur/test`). Mesin Sugi diambil dari folder `SUGIMATION` (bawaan `/home/claude/sugimation`). 67 uji, semua harus lolos.
+- `node uji/uji.js` (Playwright dari `/opt/npm-tools/node_modules/playwright` atau `playwright` biasa, harness Sugi di folder dapur `DAPUR`). Mesin Sugi diambil dari folder `SUGIMATION` (bawaan `/home/claude/sugimation`, kalau tidak ada `/home/user/Sugimation`). 67 uji, semua harus lolos.
+- `node uji/uji_simpan.js` (SP16, 19 uji, Firebase tiruan yang meniru aturan Firestore: hanya admin di jalurnya sendiri). Yang hanya bisa dibuktikan di Canvas: koneksi Firebase sungguhan dari Canvas Studio Pribadi.

@@ -1,15 +1,16 @@
 // Alat uji Studio Pribadi: jawaban AI tiruan (diambil dari harness Sugi) + GitHub raw diarahkan ke file lokal
-const pw = require('/opt/npm-tools/node_modules/playwright');
+const DAPUR = process.env.DAPUR || (require('fs').existsSync('/home/claude/sugi-studio-dapur') ? '/home/claude/sugi-studio-dapur' : '/home/user/sugi-studio-dapur');
+const pw = (() => { try { return require('/opt/npm-tools/node_modules/playwright'); } catch (e) { return require('playwright'); } })();
 const fs = require('fs'), path = require('path');
-const H = fs.readFileSync('/home/claude/sugi-studio-dapur/test/harness.js', 'utf8');
-const TINY = fs.readFileSync('/home/claude/sugi-studio-dapur/test/tiny.b64', 'utf8').trim();
+const H = fs.readFileSync(DAPUR + '/test/harness.js', 'utf8');
+const TINY = fs.readFileSync(DAPUR + '/test/tiny.b64', 'utf8').trim();
 const kode = H.slice(H.indexOf('function storyboard'), H.indexOf('async function newPage'));
 const mockText0 = new Function(kode + '; return mockText;')();
 function mockText(sys, user) {
     if (/\{"ide":\[\{"judul"/.test(sys) && /"format"/.test(sys)) return JSON.stringify({ ide: [1, 2, 3].map(i => ({ judul: 'Ide akun ' + i, format: i === 2 ? 'tips' : 'tutorial', ringkasan: 'Ringkasan ide ' + i + '.', hook: 'Kalimat pembuka ' + i })) });
     return mockText0(sys, user);
 }
-const SUGI = process.env.SUGIMATION || '/home/claude/sugimation', SP = require('path').resolve(__dirname, '..');
+const SUGI = process.env.SUGIMATION || (fs.existsSync('/home/claude/sugimation') ? '/home/claude/sugimation' : '/home/user/Sugimation'), SP = require('path').resolve(__dirname, '..');
 async function halaman(browser, log, opsi = {}) {
     const page = await browser.newPage({ viewport: opsi.viewport || { width: 412, height: 734 } });
     page.on('pageerror', e => log.push('PAGEERROR ' + e.message));
@@ -43,4 +44,4 @@ let lulus = 0, gagal = 0;
 function cek(ok, nama, info) { if (ok) { lulus++; console.log('✓ ' + nama); } else { gagal++; console.log('✗ ' + nama + (info ? ' :: ' + info : '')); } }
 function ringkas() { console.log(`\n${lulus} lolos, ${gagal} gagal`); return gagal; }
 async function bingkai(page) { const h = await page.$('#sp-bingkai iframe.kini'); return h ? await h.contentFrame() : null; }
-module.exports = { pw, halaman, cek, ringkas, bingkai };
+module.exports = { pw, halaman, cek, ringkas, bingkai, SUGI };
