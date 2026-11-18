@@ -3,8 +3,8 @@
 Aplikasi pribadi pengguna (bukan untuk member) untuk membuat prompt video AI bagi tiga akun TikTok-nya, di Gemini Canvas.
 
 ## Status (18 Nov 2026)
-- **V1.5 (SP16 simpan otomatis ke akun) ada di cabang `ccr-bbb52875-s589vb`, BELUM di `main`**: tunggu pengguna bilang "pindahkan sekarang" (pemanggil mengambil `studio-pribadi.html` dari `main`).
-- **V1.4** di `main` (SP1-SP15). V1.0 sudah diuji pengguna di Canvas asli: berhasil (AI dari bingkai berjalan, figur Rio terkunci, aturan rekaman layar berjalan).
+- **V1.5 (SP1-SP16, simpan otomatis ke akun) di `main` (18 Nov 2026)**, atas persetujuan pengguna ("pindahkan"). Cabang kerja: `ccr-bbb52875-s589vb`. Belum diuji pengguna di Canvas asli (masuk, simpan, buka lagi).
+- V1.4 (SP1-SP15): V1.0 sudah diuji pengguna di Canvas asli: berhasil (AI dari bingkai berjalan, figur Rio terkunci, aturan rekaman layar berjalan).
 - Penomoran temuan berikutnya: **SP17**. Temuan di mesin Sugi diberi nomor K (lanjutan dapur Sugi) dan dikerjakan di repo `sugi-studio-dapur`.
 - Foto wajah resmi: `figur/rio.jpg`, `figur/nara.jpg` (SP6), `figur/mia.jpg` (SP12, potongan kotak "Depan" dari karakter sheet Mia; ganti bila ada foto besar).
 
