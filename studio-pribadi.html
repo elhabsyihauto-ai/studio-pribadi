@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Studio Pribadi by Suhu Digital V1.5 (18 Nov 2026). SP16 simpan otomatis ke akun (masuk dengan email dan sandi admin Satu Pintu; proyek disimpan di pengguna/{uid}/pribadi, terpisah dari Proyek Saya Satu Pintu) dan halaman Proyek Saya. Sebelumnya V1.4 (17 Nov 2026). SP14 sisipan rekaman layar di scene yang menjelaskan langkahnya; SP15 pengingat lampirkan Character Sheet di Google Flow. Sebelumnya V1.3 (17 Nov 2026). SP10 pakaian Rio sesuai karakter sheet + bawaan per akun; SP11 kembar serasi Rio & Nara; SP12 foto wajah resmi Mia + kardigan dengan celana lebar beige; SP13 atur detail pakaian (opsional). Sebelumnya V1.2 (17 Nov 2026). SP6 foto wajah resmi Nara; SP7 tampilan Nara dari karakter sheet (hijab sifon beige, 5 pakaian); SP8 pakaian tambahan Rio; SP9 Rio dan Nara berpacaran (sopan dan hangat), Mia sahabat, format Konten Rio & Nara. Sebelumnya V1.1 (17 Nov 2026). SP1 figur dan lokasi akun di atas halaman Pembicara/Lokasi + lokasi pilihan ikut ke AI; SP2 foto tanpa usia/rambut; SP3 sepatu tetap; SP4 nama akun otomatis; SP5 pilihan ajakan penutup + jadwal live. Sebelumnya V1.0 (16 Nov 2026). Aplikasi pribadi untuk konten tiga akun TikTok (Rio, Mia, Nara + kolaborasi).
+<!-- Studio Pribadi by Suhu Digital V1.6 (18 Nov 2026). SP17 judul konten jadi langkah pertama (bank judul siap pakai per akun + judul baru dari AI), format disarankan dari judul. Sebelumnya V1.5 (18 Nov 2026). SP16 simpan otomatis ke akun (masuk dengan email dan sandi admin Satu Pintu; proyek disimpan di pengguna/{uid}/pribadi, terpisah dari Proyek Saya Satu Pintu) dan halaman Proyek Saya. Sebelumnya V1.4 (17 Nov 2026). SP14 sisipan rekaman layar di scene yang menjelaskan langkahnya; SP15 pengingat lampirkan Character Sheet di Google Flow. Sebelumnya V1.3 (17 Nov 2026). SP10 pakaian Rio sesuai karakter sheet + bawaan per akun; SP11 kembar serasi Rio & Nara; SP12 foto wajah resmi Mia + kardigan dengan celana lebar beige; SP13 atur detail pakaian (opsional). Sebelumnya V1.2 (17 Nov 2026). SP6 foto wajah resmi Nara; SP7 tampilan Nara dari karakter sheet (hijab sifon beige, 5 pakaian); SP8 pakaian tambahan Rio; SP9 Rio dan Nara berpacaran (sopan dan hangat), Mia sahabat, format Konten Rio & Nara. Sebelumnya V1.1 (17 Nov 2026). SP1 figur dan lokasi akun di atas halaman Pembicara/Lokasi + lokasi pilihan ikut ke AI; SP2 foto tanpa usia/rambut; SP3 sepatu tetap; SP4 nama akun otomatis; SP5 pilihan ajakan penutup + jadwal live. Sebelumnya V1.0 (16 Nov 2026). Aplikasi pribadi untuk konten tiga akun TikTok (Rio, Mia, Nara + kolaborasi).
      Mesin pembuat prompt diambil langsung dari Sugi Studio (kreator.html dan serba-bisa.html di repo Sugimation, cabang main),
      jadi setiap perbaikan Sugi otomatis ikut. Setiap video berjalan di bingkai sendiri (maks. 3 bersamaan); AI dari bingkai
      dititipkan ke halaman utama lewat pesan (cara yang terbukti di Satu Pintu). -->
@@ -7,7 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Studio Pribadi by Suhu Digital V1.5</title>
+<title>Studio Pribadi by Suhu Digital V1.6</title>
 <style>
   :root { --krem:#FAF3E3; --krem2:#F3E8D0; --garis:#E9DCC2; --emas:#C9A24D; --emas2:#9A7425; --coklat:#3B2A1A; --coklat2:#7A6244; --putih:#FFFDF8; --merah:#B4472F; --hijau:#3F7A43; }
   * { box-sizing: border-box; }
@@ -84,6 +84,11 @@
   .proyek .btn, .proyek .btn2 { padding:8px 12px; font-size:14px; }
   .awan { display:flex; gap:10px; align-items:center; justify-content:space-between; }
   .awan .btn2 { flex:none; padding:8px 14px; }
+  .bank { display:grid; gap:8px; margin-top:8px; }
+  .bank-j { text-align:left; border:1px solid var(--garis); background:var(--putih); border-radius:12px; padding:10px 12px; font:inherit; color:var(--coklat); cursor:pointer; }
+  .bank-j b { display:block; font-size:15px; }
+  .bank-j small { color:var(--coklat2); font-size:12.5px; }
+  .bank-j.on { border-color:var(--emas); background:#FFF6DF; box-shadow:0 0 0 2px rgba(201,162,77,.35); }
   .baik { background: #E9F3E6; border: 1px solid #B8D6B0; color: #2C5A2F; border-radius: 12px; padding: 10px 12px; font-size: 14px; margin-top: 12px; }
   #sp-dialog { position: fixed; inset: 0; z-index: 60; background: rgba(30,20,10,.55); display: none; align-items: center; justify-content: center; padding: 18px; }
   #sp-dialog .isi { background: var(--putih); border-radius: 18px; padding: 18px; max-width: 420px; width: 100%; }
@@ -117,7 +122,7 @@ var GEMINI_MODEL = "gemini-3-flash-preview";
 var GEMINI_API = "https://generativelanguage.googleapis.com/v1beta/models/" + GEMINI_MODEL + ":generateContent?key=" + apiKey;
 
 var SP = (function () {
-  var VERSI = "V1.5";
+  var VERSI = "V1.6";
   var MESIN_URL = "https://raw.githubusercontent.com/elhabsyihauto-ai/Sugimation/main/";
   var ASET_URL = "https://raw.githubusercontent.com/elhabsyihauto-ai/studio-pribadi/main/";
   var BATAS = 3;
@@ -329,7 +334,7 @@ var SP = (function () {
     });
     h += '</div>';
     h += '<div class="grid2 sempit1" style="margin-top:10px">';
-    h += '<button class="kartu" onclick="SP.buka(\'ide\')"><span class="ikon">📅</span><span><b>Ide Konten</b><small>3 ide untuk hari ini atau 7 untuk seminggu, per akun</small></span></button>';
+    h += '<button class="kartu" onclick="SP.buka(\'ide\')"><span class="ikon">📅</span><span><b>Judul Konten</b><small>Bank judul siap pakai + judul baru dari AI, per akun</small></span></button>';
     h += '<button class="kartu" onclick="SP.buka(\'lanjut\')"><span class="ikon">📂</span><span><b>Proyek Saya</b><small>' + (akun ? 'Proyek tersimpan di akun, atau tempel Kode Proyek' : 'Proyek di HP ini, atau tempel Kode Proyek') + '</small></span></button>';
     h += '<button class="kartu" onclick="SP.buka(\'bank\')"><span class="ikon">👥</span><span><b>Bank Figur & Lokasi</b><small>Lihat data Rio, Mia, Nara, dan tempatnya</small></span></button>';
     h += '</div>';
@@ -340,6 +345,7 @@ var SP = (function () {
 
   // ---------- Halaman akun (pengaturan video) ----------
   function mulaiPilihan(a, formatId, ide) {
+    judulFilter = ""; judulAcak = 0; judulSemua = false; judulGalat = "";
     pil = { detail: { rio: {}, mia: {}, nara: {} }, serasi: false, akun: a, figur: AKUN[a].figur.slice(), format: formatId || "", formatSendiri: "", outfit: {}, foto: {}, lokasi: "", lokasiSendiri: "", ide: ide || "", ajakan: ["ai"], ajakanSendiri: "", jadwalLive: "" };
     if (formatId && !cariFormat(a, formatId)) { pil.format = "__sendiri"; pil.formatSendiri = formatId; }
     URUT_FIGUR.forEach(function (id) {
@@ -350,22 +356,183 @@ var SP = (function () {
     if (a === "kolab") pil.lokasi = "kumpul:markas";
     else { pil.lokasi = "ruang:" + AKUN[a].figur[0]; }
   }
+  // ================= SP17: BANK JUDUL KONTEN (siap pakai, per akun; f = format yang disarankan) =================
+  var BANK_JUDUL = {
+    a1: [
+      ["Cara bikin foto bicara pakai AI dalam 2 langkah", "tutorial"], ["Ubah satu foto jadi video talking head", "tutorial"], ["Cara bikin video AI pertamamu dari nol", "tutorial"],
+      ["Cara bikin prompt video yang langsung jadi", "tutorial"], ["Cara bikin karakter AI yang wajahnya konsisten", "tutorial"], ["Cara bikin video AI 9:16 untuk TikTok", "tutorial"],
+      ["Cara menyambung klip AI supaya tidak patah", "tutorial"], ["Cara bikin suara AI yang terdengar natural", "tutorial"], ["Cara ganti background video tanpa green screen", "tutorial"],
+      ["Cara bikin video iklan produk pakai AI", "tutorial"], ["Cara pakai gambar awal supaya video AI rapi", "tutorial"], ["Cara bikin video AI tanpa tampil di kamera", "tutorial"],
+      ["Cara bikin subtitle otomatis untuk video AI", "tutorial"], ["Cara bikin video AI lip-sync yang pas", "tutorial"], ["Cara edit hasil video AI di HP", "tutorial"],
+      ["1 trik bikin wajah AI tidak berubah", "tips"], ["Rahasia prompt video yang jarang orang tahu", "tips"], ["Tips bikin gerakan AI terlihat alami", "tips"],
+      ["Satu kata yang bikin video AI lebih sinematik", "tips"], ["Tips cahaya supaya video AI tidak plastik", "tips"], ["Trik bikin tangan AI tidak aneh", "tips"],
+      ["Tips memilih durasi klip AI yang pas", "tips"], ["Trik bikin AI menuruti arah kamera", "tips"], ["Tips bikin video AI tanpa musik yang bentrok", "tips"],
+      ["Prompt biasa vs prompt detail: bedanya jauh", "beforeafter"], ["Video AI tanpa Character Sheet vs dengan Character Sheet", "beforeafter"], ["Sebelum dan sesudah pakai Realism Lock", "beforeafter"],
+      ["Kamera bebas vs kamera terkunci: mana lebih rapi?", "beforeafter"], ["Hasil AI tanpa gambar awal vs dengan gambar awal", "beforeafter"], ["Suara AI datar vs suara AI berintonasi", "beforeafter"],
+      ["5 kesalahan pemula saat bikin video AI", "kesalahan"], ["Jangan tulis prompt seperti ini", "kesalahan"], ["Kesalahan yang bikin wajah AI berubah-ubah", "kesalahan"],
+      ["Kenapa video AI-mu kelihatan palsu?", "kesalahan"], ["Kesalahan memilih durasi yang bikin ucapan terpotong", "kesalahan"], ["Hindari 3 hal ini di prompt video", "kesalahan"],
+      ["Kenalan dengan alat AI pembuat video dari teks", "alatbaru"], ["Alat AI untuk bikin suara dari naskah", "alatbaru"], ["Alat AI untuk menghapus background dalam sekejap", "alatbaru"],
+      ["Alat AI gratis untuk pemula video", "alatbaru"], ["Alat AI untuk bikin thumbnail menarik", "alatbaru"],
+      ["Ditanya: video AI boleh dimonetisasi?", "komentar"], ["Ditanya: HP kentang bisa bikin video AI?", "komentar"], ["Ditanya: kenapa wajah AI-ku beda di tiap klip?", "komentar"],
+      ["Ditanya: berapa lama bikin satu video AI?", "komentar"], ["Ditanya: mulai dari mana kalau belum pernah?", "komentar"],
+      ["Hari pertama aku belajar video AI", "cerita"], ["Waktu video AI-ku gagal total", "cerita"], ["Pura-pura jadi sutradara film AI", "cerita"]
+    ],
+    a2: [
+      ["Cara mulai affiliate tanpa modal pakai video AI", "hari2"], ["Bikin video affiliate tanpa tampil wajah", "hari2"], ["Satu video AI untuk banyak produk affiliate", "hari2"],
+      ["Rutinitas posting affiliate harian pakai AI", "hari2"], ["Cara bikin konten affiliate saat tidak sempat syuting", "hari2"], ["Bikin video unboxing pakai AI", "hari2"],
+      ["Cara bikin hook affiliate di 2 detik pertama", "hari2"], ["Cara bikin video review produk pakai AI", "hari2"], ["Video affiliate 15 detik yang bikin orang klik", "hari2"],
+      ["Cara memilih produk affiliate yang laris", "ilmu"], ["Cara menata etalase supaya gampang dibeli", "ilmu"], ["Cara membaca komisi supaya tidak salah pilih", "ilmu"],
+      ["Jam posting terbaik untuk konten affiliate", "ilmu"], ["Cara riset produk yang sedang naik", "ilmu"], ["Cara menulis caption affiliate yang menjual", "ilmu"],
+      ["Strategi satu produk banyak video", "ilmu"], ["Cara menjawab komentar calon pembeli", "ilmu"], ["Cara memilih hashtag affiliate", "ilmu"],
+      ["Bedah iklan AI: kenapa video ini menarik?", "iklan"], ["Contoh iklan skincare pakai video AI lalu dibedah", "iklan"], ["Contoh iklan fashion AI dan cara meniru polanya", "iklan"],
+      ["Contoh iklan makanan pakai AI: bagian mana yang bikin lapar?", "iklan"], ["Bedah hook iklan produk rumah tangga", "iklan"], ["Contoh iklan gadget AI dan struktur ceritanya", "iklan"],
+      ["Mitos: affiliate harus punya banyak followers", "mitos"], ["Mitos: video AI tidak bisa laku", "mitos"], ["Mitos: harus beli produk dulu sebelum promosi", "mitos"],
+      ["Benarkah posting tiap hari pasti FYP?", "mitos"], ["Mitos: affiliate itu harus jago ngomong", "mitos"], ["Fakta atau mitos: harga murah pasti laris", "mitos"],
+      ["Affiliate dari nol: hari pertama Mia", "studi"], ["Pelajaran dari video affiliate yang sepi penonton", "studi"], ["Yang Mia ubah setelah seminggu posting", "studi"],
+      ["Perjalanan pertama kali dapat komisi", "studi"], ["Uji coba 3 gaya video untuk produk yang sama", "studi"],
+      ["Waktu Mia salah pilih produk", "cerita"], ["Mia mencoba jadi bintang iklan AI", "cerita"], ["Drama keranjang kuning yang terlupa", "cerita"]
+    ],
+    a3: [
+      ["5 ide produk digital yang bisa dibuat pakai AI", "idepro"], ["Ide produk digital untuk pemula tanpa modal", "idepro"], ["Produk digital yang bisa dibuat dalam sehari", "idepro"],
+      ["Ide template yang dicari banyak orang", "idepro"], ["Ide ebook singkat dari keahlianmu sendiri", "idepro"], ["Ide kumpulan prompt yang bisa dijual", "idepro"],
+      ["Ide planner digital untuk ibu rumah tangga", "idepro"], ["Ide produk digital untuk pelajar dan mahasiswa", "idepro"],
+      ["Cara bikin ebook pakai AI dalam satu sore", "proses"], ["Cara bikin template Canva dibantu AI", "proses"], ["Cara bikin kumpulan prompt yang rapi", "proses"],
+      ["Cara bikin cover produk digital pakai AI", "proses"], ["Cara bikin checklist digital yang menarik", "proses"], ["Cara bikin mini course pakai AI", "proses"],
+      ["Cara mengecek kualitas produk buatan AI", "proses"], ["Cara bikin worksheet yang siap cetak", "proses"],
+      ["Cara bikin caption jualan pakai AI", "pasar"], ["Cara bikin video promosi produk digital", "pasar"], ["Cara menulis halaman jualan dibantu AI", "pasar"],
+      ["Cara bikin konten edukasi yang ujungnya jualan", "pasar"], ["Cara menentukan harga produk digital", "pasar"], ["Cara bikin testimoni jujur dari pembeli pertama", "pasar"],
+      ["Cara promosi produk digital tanpa iklan berbayar", "pasar"], ["Cara bikin bonus yang bikin orang jadi beli", "pasar"],
+      ["Kenapa template sederhana justru laris?", "bedah"], ["Bedah ebook yang laku: apa rahasianya?", "bedah"], ["Kenapa produk digital murah lebih cepat terjual?", "bedah"],
+      ["Bedah halaman jualan yang bikin orang percaya", "bedah"], ["Kenapa planner digital selalu dicari?", "bedah"],
+      ["Dari nol sampai terjual: episode 1, menentukan ide", "seri"], ["Dari nol sampai terjual: episode 2, membuat produk", "seri"], ["Dari nol sampai terjual: episode 3, halaman jualan", "seri"],
+      ["Dari nol sampai terjual: episode 4, promosi pertama", "seri"], ["Dari nol sampai terjual: episode 5, pembeli pertama", "seri"],
+      ["Waktu Nara hampir menyerah", "cerita"], ["Nara menjelaskan produk digital ke ibunya", "cerita"], ["Produk pertama Nara yang tidak laku", "cerita"]
+    ],
+    kolab: [
+      ["Rio dan Nara bikin konten bareng di akhir pekan", "pasangan"], ["Nara menantang Rio bikin video AI dalam 10 menit", "pasangan"], ["Rio bantu Nara bikin video promosi produknya", "pasangan"],
+      ["Nara mengajari Rio membuat ebook", "pasangan"], ["Rio dan Nara mencoba alat AI yang sama", "pasangan"], ["Kencan sambil kerja: Rio dan Nara di kafe langganan", "pasangan"],
+      ["Rio dan Nara saling memberi masukan konten", "pasangan"], ["Rio memberi kejutan kecil untuk peluncuran produk Nara", "pasangan"],
+      ["Ngobrol santai: alat AI favorit kami bertiga", "obrolan"], ["Ngobrol: kenapa kami memilih niche masing-masing", "obrolan"], ["Ngobrol: kebiasaan kecil yang bikin konsisten", "obrolan"],
+      ["Ngobrol: konten pertama kami dulu seperti apa", "obrolan"], ["Ngobrol: cara membagi waktu kerja dan istirahat", "obrolan"],
+      ["Tantangan: tebak prompt dari hasil videonya", "tanya"], ["Mia menguji Rio soal affiliate", "tanya"], ["Rio menguji Nara soal video AI", "tanya"],
+      ["Kuis kilat: siapa paling tahu alat AI?", "tanya"], ["Tantangan bikin judul paling menarik dalam 1 menit", "tanya"],
+      ["Rapat konten bulan depan di Markas", "diskusi"], ["Diskusi: konten kolaborasi apa yang paling ditunggu?", "diskusi"], ["Menyusun jadwal posting bertiga", "diskusi"],
+      ["Diskusi: ide seri baru untuk ketiga akun", "diskusi"],
+      ["Skit: Mia jadi juri video AI Rio", "skit"], ["Skit: Rio salah kirim prompt ke grup", "skit"], ["Skit: laptop Nara mogok saat deadline", "skit"],
+      ["Skit: tiga kreator, satu ide yang sama", "skit"], ["Skit: Mia memergoki Rio dan Nara rapat sambil ngemil", "skit"]
+    ]
+  };
+  // SP17: format yang disarankan dari kata-kata di judul yang ditulis sendiri
+  var SARAN_FORMAT = {
+    a1: [["kesalahan", /kesalahan|\bsalah\b|jangan|hindari|kenapa .*(palsu|jelek|gagal)/i], ["beforeafter", /\bvs\b|before|after|sebelum dan sesudah|bandingkan|beda(nya)?/i], ["komentar", /ditanya|pertanyaan|komentar|\btanya\b/i], ["alatbaru", /kenalan|alat ai|\btools?\b|aplikasi baru/i], ["tips", /\btips?\b|trik|rahasia/i], ["cerita", /cerita|kisah|skit|drama|pura-pura/i], ["tutorial", /cara|langkah|tutorial|bikin|membuat|ubah/i]],
+    a2: [["mitos", /mitos|fakta|benarkah/i], ["iklan", /iklan|bedah|contoh/i], ["studi", /dari nol|perjalanan|studi|pelajaran|hari pertama|uji coba|seminggu/i], ["cerita", /cerita|skit|drama/i], ["ilmu", /komisi|etalase|riset|strategi|caption|hashtag|jam posting|memilih produk|pilih produk/i], ["hari2", /./]],
+    a3: [["seri", /dari nol|episode/i], ["bedah", /bedah|kenapa .*(laris|laku|terjual|dicari)/i], ["pasar", /jual|pasar|promosi|caption|harga|testimoni|bonus/i], ["proses", /cara bikin|cara membuat|bikin|membuat/i], ["idepro", /\bide\b/i], ["cerita", /cerita|skit|hampir|ibunya/i]],
+    kolab: [["skit", /skit|lucu|drama/i], ["tanya", /tantang|tebak|kuis|menguji|tanya/i], ["diskusi", /rapat|diskusi|rencana|jadwal/i], ["obrolan", /ngobrol|obrolan/i], ["pasangan", /rio.*nara|nara.*rio|kencan|berdua/i]]
+  };
+  function saranFormat(a, judul) {
+    var t = String(judul || "").trim(); if (!t) return "";
+    var hit = (BANK_JUDUL[a] || []).filter(function (x) { return x[0].toLowerCase() === t.toLowerCase(); })[0];
+    if (hit) return hit[1];
+    var r = (SARAN_FORMAT[a] || []).filter(function (x) { return x[1].test(t); })[0];
+    return r ? r[0] : "";
+  }
+  var judulFilter = "", judulAcak = 0, judulSemua = false, judulAI = [], judulMuat = false, judulGalat = "";
+  function daftarJudul(a) {
+    var semua = judulAI.filter(function (x) { return x.a === a; }).map(function (x) { return [x.j, x.f, true]; }).concat(BANK_JUDUL[a] || []);
+    return judulFilter ? semua.filter(function (x) { return x[1] === judulFilter; }) : semua;
+  }
+  function htmlJudul() {
+    var a = pil.akun, A = AKUN[a], fm = formatPilihan();
+    var h = '<textarea id="sp-ide" maxlength="1500" placeholder="' + (fm && fm.mesin === "serba" ? "Tulis judul atau ceritakan videonya: apa yang terjadi, siapa melakukan apa." : "Tulis judul videomu, atau pilih dari bank judul di bawah.") + '" oninput="SP.setDiam(\'ide\', this.value)" onchange="SP.judulDiketik(this.value)">' + esc(pil.ide) + '</textarea>';
+    var list = daftarJudul(a), total = list.length;
+    h += '<div class="label">📚 Bank judul siap pakai <span class="tag">' + total + ' judul</span></div><div class="chips">';
+    h += '<button class="chip ' + (!judulFilter ? "on" : "") + '" onclick="SP.judulSet(\'filter\',\'\')">Semua</button>';
+    A.format.forEach(function (f) { if ((BANK_JUDUL[a] || []).some(function (x) { return x[1] === f.id; }) || judulAI.some(function (x) { return x.a === a && x.f === f.id; })) h += '<button class="chip ' + (judulFilter === f.id ? "on" : "") + '" onclick="SP.judulSet(\'filter\',\'' + f.id + '\')">' + f.emoji + ' ' + esc(singkat(f)) + '</button>'; });
+    h += '</div>';
+    var tampil = list;
+    if (!judulSemua && list.length > 8) { var mulai = (judulAcak * 8) % list.length; tampil = list.slice(mulai, mulai + 8); if (tampil.length < 8) tampil = tampil.concat(list.slice(0, 8 - tampil.length)); }
+    h += '<div class="bank">';
+    tampil.forEach(function (x) {
+      var f = cariFormat(a, x[1]), i = list.indexOf(x);
+      h += '<button class="bank-j ' + (pil.ide === x[0] ? "on" : "") + '" onclick="SP.pakaiJudul(' + i + ')"><b>' + (x[2] ? "✨ " : "") + esc(x[0]) + '</b><small>' + (f ? f.emoji + ' ' + esc(singkat(f)) : "") + '</small></button>';
+    });
+    h += '</div><div class="chips" style="margin-top:8px">';
+    if (list.length > 8) h += '<button class="chip" onclick="SP.judulSet(\'acak\')">🔀 Judul lain</button><button class="chip" onclick="SP.judulSet(\'semua\')">' + (judulSemua ? "▴ Ringkas" : "📖 Lihat semua (" + total + ")") + '</button>';
+    h += '<button class="chip" onclick="SP.buatJudulAI()" ' + (judulMuat ? "disabled" : "") + '>✨ Buatkan judul baru (AI)</button></div>';
+    if (judulMuat) h += '<p class="catatan">AI sedang membuat judul baru...</p>';
+    if (judulGalat) h += '<div class="peringatan">' + esc(judulGalat) + '</div>';
+    h += '<p class="catatan">Ketuk judul untuk memakainya. Format yang paling cocok ditandai ⭐ Disarankan di langkah berikutnya, dan tetap bisa diganti.</p>';
+    return h;
+  }
+  var SINGKAT = { tutorial: "Tutorial", tips: "Tips", beforeafter: "Before-after", kesalahan: "Kesalahan", alatbaru: "Alat baru", komentar: "Komentar", cerita: "Cerita", hari2: "Hari 2", ilmu: "Ilmu", iklan: "Bedah iklan", mitos: "Mitos", studi: "Studi kasus", idepro: "Ide produk", proses: "Bikin produk", pasar: "Pemasaran", bedah: "Bedah laris", seri: "Seri", pasangan: "Rio & Nara", obrolan: "Obrolan", tanya: "Tantangan", diskusi: "Diskusi", skit: "Skit" };
+  function singkat(f) { return SINGKAT[f.id] || f.judul.split(" ")[0]; }
+  function pakaiJudul(i) {
+    simpanIde();
+    var x = daftarJudul(pil.akun)[i]; if (!x) return;
+    pil.ide = x[0]; pil.saranFormat = x[1];
+    if (!pil.formatManual) terapkanFormat(x[1]);
+    gambar();
+  }
+  // Hanya kotak Format yang diperbarui, supaya ketukan berikutnya (misalnya Mulai) tidak hilang karena halaman digambar ulang.
+  function judulDiketik(v) {
+    pil.ide = v; pil.saranFormat = saranFormat(pil.akun, v);
+    var f0 = pil.format, fig0 = pil.figur.join();
+    if (pil.saranFormat && !pil.formatManual) terapkanFormat(pil.saranFormat);
+    var k = $("sp-fmt"); if (k) { var m = k.querySelector(".num"); k.innerHTML = htmlFormat(m ? +m.textContent : 1); }
+    if (pil.format !== f0 && pil.figur.join() !== fig0) setTimeout(function () { simpanIde(); gambar(); }, 450);
+  }
+  function terapkanFormat(id) {
+    pil.format = id;
+    var f = cariFormat(pil.akun, id);
+    if (f && f.outfit) { for (var oi in f.outfit) pil.outfit[oi] = f.outfit[oi]; pil.serasi = !!f.serasi; }
+    if (f && f.figur) { pil.figur = f.figur.slice(); if (/^ruang:/.test(pil.lokasi) && pil.figur.indexOf(pil.lokasi.slice(6)) < 0) pil.lokasi = "kumpul:markas"; }
+  }
+  function judulSet(k, v) {
+    simpanIde();
+    if (k === "filter") { judulFilter = v; judulAcak = 0; }
+    else if (k === "acak") judulAcak++;
+    else if (k === "semua") judulSemua = !judulSemua;
+    gambar();
+  }
+  async function buatJudulAI() {
+    simpanIde();
+    var a = pil.akun, A = AKUN[a];
+    judulMuat = true; judulGalat = ""; gambar();
+    var daftar = A.format.map(function (f) { return f.id + " = " + f.judul + " (" + f.en + ")"; }).join("\n");
+    var sys = "You write catchy short video titles for an Indonesian creator's own TikTok account. Return ONLY JSON: {\"judul\":[{\"judul\":\"...\",\"format\":\"<format id>\"}]}. Write 8 new titles in casual Indonesian (max 10 words each), each fitting the account niche and one allowed format. No numbers about income or sales, no real brands, no children.";
+    var sudah = daftarJudul(a).map(function (x) { return x[0]; }).slice(0, 80).join("; ");
+    var user = "Account: " + A.label + "\nNiche: " + A.nicheEn + "\nAllowed formats (use the id):\n" + daftar + (judulFilter ? "\nUse only this format: " + judulFilter : "") + "\nDo not repeat these titles: " + sudah;
+    try {
+      var j = ekstrakJson(await aiTeks(sys, user, true));
+      var baru = (j.judul || []).filter(function (d) { return d && d.judul; }).map(function (d) { return { a: a, j: String(d.judul).trim(), f: cariFormat(a, d.format) ? d.format : (judulFilter || A.format[0].id) }; });
+      if (!baru.length) throw new Error("Judul tidak terbaca");
+      judulAI = baru.concat(judulAI); judulAcak = 0;
+    } catch (e) { judulGalat = "Judul gagal dibuat. Coba lagi. (" + (e.message || e) + ")"; }
+    judulMuat = false; gambar();
+  }
+
+  function htmlFormat(n) {
+    var a = pil.akun, A = AKUN[a];
+    var h = '<h3><span class="num">' + n + '</span>Format konten</h3><div class="grid2 sempit1">';
+    A.format.forEach(function (f) { h += '<button class="pilih ' + (pil.format === f.id ? "on" : "") + '" onclick="SP.set(\'format\',\'' + f.id + '\')"><b>' + f.emoji + ' ' + esc(f.judul) + (pil.saranFormat === f.id ? ' <span class="tag">⭐ Disarankan</span>' : '') + '</b><small>' + esc(f.desc) + '</small></button>'; });
+    h += '<button class="pilih ' + (pil.format === "__sendiri" ? "on" : "") + '" onclick="SP.set(\'format\',\'__sendiri\')"><b>✍️ Tulis format sendiri</b><small>Format lain yang kamu inginkan</small></button>';
+    h += '</div>';
+    if (pil.format === "__sendiri") h += '<div style="margin-top:10px"><input type="text" id="sp-format-sendiri" maxlength="150" placeholder="Contoh: review jujur 3 aplikasi edit video" value="' + esc(pil.formatSendiri) + '" oninput="SP.setDiam(\'formatSendiri\', this.value)"></div>';
+    return h;
+  }
   function htmlAkun() {
     var a = pil.akun, A = AKUN[a], n = 0;
     var h = '<div style="display:flex;align-items:center;gap:10px">' + kembaliBtn() + '</div>';
     h += '<h2 style="margin-top:10px">' + A.emoji + ' ' + esc(A.label) + '</h2><p class="sub">' + esc(A.niche) + '</p>';
+    // SP17: judul konten dulu, baru format
+    h += '<div class="kotak"><h3><span class="num">' + (++n) + '</span>Judul konten</h3>' + htmlJudul() + '</div>';
     if (a === "kolab") {
       h += '<div class="kotak"><h3><span class="num">' + (++n) + '</span>Siapa yang tampil?</h3><div class="chips">';
       URUT_FIGUR.forEach(function (id) { var on = pil.figur.indexOf(id) >= 0; h += '<button class="chip ' + (on ? "on" : "") + '" onclick="SP.togFigur(\'' + id + '\')">' + FIGUR[id].emoji + ' ' + FIGUR[id].nama + '</button>'; });
       h += '</div><p class="catatan">Pilih 2 atau 3 orang. Rio dan Nara berpacaran, Mia sahabat mereka.</p></div>';
     }
     // Format
-    h += '<div class="kotak"><h3><span class="num">' + (++n) + '</span>Format konten</h3><div class="grid2 sempit1">';
-    A.format.forEach(function (f) { h += '<button class="pilih ' + (pil.format === f.id ? "on" : "") + '" onclick="SP.set(\'format\',\'' + f.id + '\')"><b>' + f.emoji + ' ' + esc(f.judul) + '</b><small>' + esc(f.desc) + '</small></button>'; });
-    h += '<button class="pilih ' + (pil.format === "__sendiri" ? "on" : "") + '" onclick="SP.set(\'format\',\'__sendiri\')"><b>✍️ Tulis format sendiri</b><small>Format lain yang kamu inginkan</small></button>';
-    h += '</div>';
-    if (pil.format === "__sendiri") h += '<div style="margin-top:10px"><input type="text" id="sp-format-sendiri" maxlength="150" placeholder="Contoh: review jujur 3 aplikasi edit video" value="' + esc(pil.formatSendiri) + '" oninput="SP.setDiam(\'formatSendiri\', this.value)"></div>';
-    h += '</div>';
+    h += '<div class="kotak" id="sp-fmt">' + htmlFormat(++n) + '</div>';
     // Outfit
     h += '<div class="kotak"><h3><span class="num">' + (++n) + '</span>Pakaian</h3>';
     pil.figur.forEach(function (id) {
@@ -420,10 +587,6 @@ var SP = (function () {
     if (pil.ajakan.indexOf("sendiri") >= 0) h += '<div style="margin-top:10px"><input type="text" id="sp-ajakan" maxlength="150" placeholder="Contoh: tulis &quot;MAU&quot; di komentar, nanti aku kirim panduannya" value="' + esc(pil.ajakanSendiri) + '" oninput="SP.setDiam(\'ajakanSendiri\', this.value)"></div>';
     if (pil.ajakan.indexOf("live") >= 0) h += '<div class="label">🕗 Jadwal live <span class="tag">opsional</span></div><input type="text" id="sp-live" maxlength="80" placeholder="Contoh: tiap malam jam 8" value="' + esc(pil.jadwalLive) + '" oninput="SP.setDiam(\'jadwalLive\', this.value)">';
     h += '<p class="catatan">Pilih paling banyak 2. Ajakan wajib diucapkan di scene terakhir dan diperiksa Quality Control. Nama akun tidak diucapkan; nama akun dipakai untuk caption dan teks penutup.</p></div>';
-    // Ide
-    var fm = formatPilihan();
-    h += '<div class="kotak"><h3><span class="num">' + (++n) + '</span>Ide video <span class="tag">opsional</span></h3>';
-    h += '<textarea id="sp-ide" maxlength="1500" placeholder="' + (fm && fm.mesin === "serba" ? "Ceritakan videonya: apa yang terjadi, siapa melakukan apa." : "Sudah punya ide? Tulis di sini. Kosongkan bila ingin AI mengusulkan ide sesuai akun.") + '" oninput="SP.setDiam(\'ide\', this.value)">' + esc(pil.ide) + '</textarea></div>';
     h += '<div id="sp-akun-galat"></div><div style="margin-top:16px"><button class="btn lebar" onclick="SP.mulai()">🎬 Mulai buat video</button></div>';
     h += '<p class="catatan tengah">Setelah ini kamu masuk ke mesin Sugi Studio dengan figur, pakaian, dan lokasi sudah terisi.</p>';
     return h;
@@ -444,13 +607,13 @@ var SP = (function () {
 
   // ---------- Ide Konten ----------
   function htmlIde() {
-    var h = kembaliBtn() + '<h2 style="margin-top:10px">📅 Ide Konten</h2><p class="sub">AI mengusulkan ide sesuai niche akun. Ketuk "Buat video ini" untuk langsung memulai.</p>';
+    var h = kembaliBtn() + '<h2 style="margin-top:10px">📅 Judul Konten</h2><p class="sub">AI mengusulkan judul lengkap dengan ringkasan sesuai niche akun. Ketuk "Buat video ini" untuk langsung memulai. Bank judul siap pakai ada di langkah 1 setiap akun.</p>';
     h += '<div class="kotak"><div class="label" style="margin-top:0">Akun</div><div class="chips">';
     URUT_AKUN.forEach(function (a) { h += '<button class="chip ' + (ideAkun === a ? "on" : "") + '" onclick="SP.ideSet(\'akun\',\'' + a + '\')">' + AKUN[a].emoji + ' ' + esc(AKUN[a].label) + '</button>'; });
-    h += '</div><div class="label">Jumlah ide</div><div class="chips">';
-    [[3, "3 ide (hari ini)"], [7, "7 ide (seminggu)"]].forEach(function (x) { h += '<button class="chip ' + (ideJumlah === x[0] ? "on" : "") + '" onclick="SP.ideSet(\'jumlah\',' + x[0] + ')">' + x[1] + '</button>'; });
+    h += '</div><div class="label">Jumlah judul</div><div class="chips">';
+    [[3, "3 judul (hari ini)"], [7, "7 judul (seminggu)"]].forEach(function (x) { h += '<button class="chip ' + (ideJumlah === x[0] ? "on" : "") + '" onclick="SP.ideSet(\'jumlah\',' + x[0] + ')">' + x[1] + '</button>'; });
     h += '</div><div class="label">Tema khusus <span class="tag">opsional</span></div><input type="text" maxlength="150" placeholder="Contoh: persiapan promo akhir tahun" value="' + esc(ideTema) + '" oninput="SP.ideSet(\'tema\', this.value, true)">';
-    h += '<div style="margin-top:14px"><button class="btn lebar" onclick="SP.buatIde()" ' + (ideMuat ? "disabled" : "") + '>✨ ' + (ideHasil.length ? "Buat ide lain" : "Buat ide") + '</button></div></div>';
+    h += '<div style="margin-top:14px"><button class="btn lebar" onclick="SP.buatIde()" ' + (ideMuat ? "disabled" : "") + '>✨ ' + (ideHasil.length ? "Buat judul lain" : "Buat judul") + '</button></div></div>';
     if (ideMuat) h += '<div class="spin"></div><p class="tengah catatan">AI sedang menyiapkan ide...</p>';
     if (ideGalat) h += '<div class="peringatan">' + esc(ideGalat) + '</div>';
     ideHasil.forEach(function (d, i) {
@@ -1031,6 +1194,7 @@ var SP = (function () {
   // ---------- Isian ----------
   function set(k, v) {
     simpanIde(); pil[k] = v;
+    if (k === "format") pil.formatManual = true;
     if (k === "format") { var f = cariFormat(pil.akun, v); if (f && f.outfit) { for (var oi in f.outfit) pil.outfit[oi] = f.outfit[oi]; pil.serasi = !!f.serasi; } if (f && f.figur) { pil.figur = f.figur.slice(); if (/^ruang:/.test(pil.lokasi) && pil.figur.indexOf(pil.lokasi.slice(6)) < 0) pil.lokasi = "kumpul:markas"; } }
     gambar();
   }
@@ -1097,8 +1261,8 @@ var SP = (function () {
 
   return {
     buka: buka, set: set, setDiam: setDiam, setOutfit: setOutfit, setFoto: setFoto, togFigur: togFigur, unggahFoto: unggahFoto, mulai: mulai,
-    togAjakan: togAjakan, setDetail: setDetail, togSerasi: togSerasi, ideSet: ideSet, buatIde: buatIde, pakaiIde: pakaiIde, lanjut: lanjut, pilihTab: pilihTab, masukAkun: masukAkun, keluarAkun: keluarAkun, bukaSimpanan: bukaSimpanan, hapusSimpanan: hapusSimpanan, tutupNo: tutupNo, tekanDialog: tekanDialog,
-    _uji: { kerja: function () { return kerja; }, akun: function () { return akun; }, awan: function () { return awan; }, sinkron: sinkron, konfig: function () { return konfig(); }, pil: function () { return pil; }, tambahKonteks: tambahKonteks }
+    togAjakan: togAjakan, setDetail: setDetail, togSerasi: togSerasi, ideSet: ideSet, buatIde: buatIde, pakaiIde: pakaiIde, lanjut: lanjut, pilihTab: pilihTab, pakaiJudul: pakaiJudul, judulDiketik: judulDiketik, judulSet: judulSet, buatJudulAI: buatJudulAI, masukAkun: masukAkun, keluarAkun: keluarAkun, bukaSimpanan: bukaSimpanan, hapusSimpanan: hapusSimpanan, tutupNo: tutupNo, tekanDialog: tekanDialog,
+    _uji: { bank: BANK_JUDUL, saranFormat: saranFormat, kerja: function () { return kerja; }, akun: function () { return akun; }, awan: function () { return awan; }, sinkron: sinkron, konfig: function () { return konfig(); }, pil: function () { return pil; }, tambahKonteks: tambahKonteks }
   };
 })();
 </script>

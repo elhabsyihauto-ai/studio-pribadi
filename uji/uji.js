@@ -210,9 +210,9 @@ async function keRingkasan(fr) {
 
     // ===== E. Ide Konten =====
     await page.evaluate(() => SP.buka('ide'));
-    await page.click('button:has-text("Buat ide")');
+    await page.click('button:has-text("Buat judul")');
     await page.waitForSelector('text=Ide akun 3', { timeout: 15000 });
-    cek(await page.locator('.ide').count() === 3, 'Ide Konten: 3 ide tampil');
+    cek(await page.locator('.ide').count() === 3, 'Judul Konten: 3 judul tampil');
     await page.locator('.ide button').nth(1).click();
     cek(await page.locator('.pilih.on:has-text("Tips cepat")').count() === 1 && /Ide akun 2/.test(await page.inputValue('#sp-ide')), 'Buat video ini: format dan ide terisi');
     await page.screenshot({ path: '/tmp/spE.png', fullPage: true });
