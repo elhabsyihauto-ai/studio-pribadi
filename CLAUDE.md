@@ -6,7 +6,7 @@ Aplikasi pribadi pengguna (bukan untuk member) untuk membuat prompt video AI bag
 - **V1.5 (SP1-SP16, simpan otomatis ke akun) di `main` (18 Nov 2026)**, atas persetujuan pengguna ("pindahkan"). Cabang kerja: `ccr-bbb52875-s589vb`. Terbukti di Canvas asli 18 Nov 2026: masuk dengan email admin berhasil, proyek Kreator tersimpan ke akun (☁️ di akun). Proyek juga muncul lagi setelah Canvas ditutup dan dibuka (dikonfirmasi pengguna). SP16 terbukti penuh.
 - V1.4 (SP1-SP15): V1.0 sudah diuji pengguna di Canvas asli: berhasil (AI dari bingkai berjalan, figur Rio terkunci, aturan rekaman layar berjalan).
 - Penomoran temuan berikutnya: **SP18**.
-- **V1.6 (SP17) SELESAI 18 Nov 2026 di cabang `ccr-bbb52875-s589vb`, BELUM di `main`:** tunggu "pindahkan". Judul konten jadi langkah 1 + bank judul siap pakai; rincian di "Cara kerja".
+- **V1.6 (SP17) SUDAH DI `main` (18 Nov 2026)**, atas persetujuan pengguna ("pindahkan"). Judul konten jadi langkah 1 + bank judul siap pakai; rincian di "Cara kerja". Belum diuji pengguna di Canvas.
 - Foto wajah resmi: `figur/rio.jpg`, `figur/nara.jpg` (SP6), `figur/mia.jpg` (SP12, potongan kotak "Depan" dari karakter sheet Mia; ganti bila ada foto besar).
 
 ## Tentang pengguna
