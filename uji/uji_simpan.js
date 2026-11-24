@@ -40,7 +40,7 @@ const proyek = (id, judul, akun) => ({ id: String(id), date: new Date(2026, 10, 
     await pasangFirebase(pg); return pg;
   }
   await page.waitForSelector('text=Studio konten pribadimu', { timeout: 15000 });
-  cek(/Simpan otomatis belum aktif/.test(await page.innerText('#sp-isi')), 'Beranda: tanda simpan otomatis belum aktif + tombol Masuk');
+  cek(/Belum tersimpan ke akun/.test(await page.innerText('#sp-isi')), 'Beranda: tanda simpan otomatis belum aktif + tombol Masuk');
   cek(await page.locator('.kartu:has-text("Proyek Saya")').count() === 1, 'Beranda: kartu Proyek Saya');
   // proyek lokal tanpa masuk
   await page.evaluate(p => localStorage.setItem('sugimation_kreator3_history', JSON.stringify([p])), proyek(101, 'Tutorial foto bicara', 'a1'));
@@ -49,7 +49,7 @@ const proyek = (id, judul, akun) => ({ id: String(id), date: new Date(2026, 10, 
   cek(/Tutorial foto bicara/.test(isi) && /hanya di HP ini/.test(isi), 'Proyek Saya tanpa masuk: proyek di HP tampil, ditandai "hanya di HP ini"', isi.slice(0, 300));
   cek(await page.locator('#sp-kode').count() === 1, 'Proyek Saya: kotak tempel Kode Proyek tetap ada');
   // masuk salah
-  await page.click('.awan button:has-text("Masuk")');
+  await page.click('.awan button:has-text("Masuk")'); await page.click('.chip:has-text("Email admin")');
   await page.fill('#sp-email', ADMIN.email); await page.fill('#sp-sandi', 'salah');
   await page.click('#sp-masuk-btn'); await page.waitForTimeout(300);
   cek(/Email atau sandi salah/.test(await page.innerText('#sp-masuk-st')), 'Sandi salah: pesan jelas dalam bahasa Indonesia');
@@ -90,8 +90,8 @@ const proyek = (id, judul, akun) => ({ id: String(id), date: new Date(2026, 10, 
   ctx = await b.newContext({ viewport: { width: 412, height: 734 } });
   page = await halamanKonteks(ctx);
   await page.waitForSelector('text=Studio konten pribadimu', { timeout: 15000 });
-  cek(/Simpan otomatis belum aktif/.test(await page.innerText('#sp-isi')), 'Canvas dibuka lagi: perlu masuk lagi');
-  await page.click('.awan button:has-text("Masuk")');
+  cek(/Belum tersimpan ke akun/.test(await page.innerText('#sp-isi')), 'Canvas dibuka lagi: perlu masuk lagi');
+  await page.click('.awan button:has-text("Masuk")'); await page.click('.chip:has-text("Email admin")');
   await page.fill('#sp-email', ADMIN.email); await page.fill('#sp-sandi', ADMIN.sandi); await page.click('#sp-masuk-btn');
   await page.waitForSelector('text=Simpan otomatis aktif', { timeout: 5000 });
   isi = await page.innerText('#sp-isi');
@@ -110,7 +110,7 @@ const proyek = (id, judul, akun) => ({ id: String(id), date: new Date(2026, 10, 
   cek(!db['pengguna/UIDADMIN/pribadi/serba_202'] && !/Konten Rio dan Nara/.test(await page.innerText('#sp-isi')), 'Hapus: proyek hilang dari akun dan daftar');
   // keluar
   await page.click('.awan button:has-text("Keluar")'); await page.click('#sp-dialog button:has-text("Keluar")');
-  cek(/Simpan otomatis belum aktif/.test(await page.innerText('#sp-isi')) && !!db['pengguna/UIDADMIN/pribadi/kreator_101'], 'Keluar: simpan otomatis mati, proyek di akun tetap aman');
+  cek(/Belum tersimpan ke akun/.test(await page.innerText('#sp-isi')) && !!db['pengguna/UIDADMIN/pribadi/kreator_101'], 'Keluar: simpan otomatis mati, proyek di akun tetap aman');
   cek(!log.some(x => /PAGEERROR/.test(x)), 'Tanpa galat halaman', log.filter(x => /PAGEERROR/.test(x)).join(' | '));
   await b.close();
   process.exit(ringkas() ? 1 : 0);

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Studio Pribadi by Suhu Digital V1.7 (24 Nov 2026). SP18 dua akun baru: Sugi Studio AI (pengajar video AI, adik kandung Ustad Taysir) dan Ustad Taysir (pendidikan agama anak, metode Taysir); SP19 wajah baru Mia (hijab abu tua, pakaian boleh berganti); SP20 pembagian 5 akun (Sugi Studio AI, Mia khusus baju, Nara khusus tas & sepatu, Ustad Taysir, Rio pembawa acara geng); SP21 bank judul dan format baru semua akun; SP22 aturan khusus Ustad Taysir (bacaan ayat lip-sync suara asli, tanpa tulisan Arab buatan AI, tidak ikut konten jualan). Sebelumnya V1.6 (18 Nov 2026). SP17 judul konten jadi langkah pertama (bank judul siap pakai per akun + judul baru dari AI), format disarankan dari judul. Sebelumnya V1.5 (18 Nov 2026). SP16 simpan otomatis ke akun (masuk dengan email dan sandi admin Satu Pintu; proyek disimpan di pengguna/{uid}/pribadi, terpisah dari Proyek Saya Satu Pintu) dan halaman Proyek Saya. Sebelumnya V1.4 (17 Nov 2026). SP14 sisipan rekaman layar di scene yang menjelaskan langkahnya; SP15 pengingat lampirkan Character Sheet di Google Flow. Sebelumnya V1.3 (17 Nov 2026). SP10 pakaian Rio sesuai karakter sheet + bawaan per akun; SP11 kembar serasi Rio & Nara; SP12 foto wajah resmi Mia + kardigan dengan celana lebar beige; SP13 atur detail pakaian (opsional). Sebelumnya V1.2 (17 Nov 2026). SP6 foto wajah resmi Nara; SP7 tampilan Nara dari karakter sheet (hijab sifon beige, 5 pakaian); SP8 pakaian tambahan Rio; SP9 Rio dan Nara berpacaran (sopan dan hangat), Mia sahabat, format Konten Rio & Nara. Sebelumnya V1.1 (17 Nov 2026). SP1 figur dan lokasi akun di atas halaman Pembicara/Lokasi + lokasi pilihan ikut ke AI; SP2 foto tanpa usia/rambut; SP3 sepatu tetap; SP4 nama akun otomatis; SP5 pilihan ajakan penutup + jadwal live. Sebelumnya V1.0 (16 Nov 2026). Aplikasi pribadi untuk konten tiga akun TikTok (Rio, Mia, Nara + kolaborasi).
+<!-- Studio Pribadi by Suhu Digital V1.8 (24 Nov 2026). SP23 penyimpanan pribadi seperti Satu Pintu: masuk dengan kode pribadi (atau email admin), gambar acuan (Character Sheet, Location Reference) ikut tersimpan per proyek, dan Character Sheet tiap figur serta gambar lokasi tetap disimpan sekali lalu dipakai otomatis di video berikutnya. Sebelumnya V1.7 (24 Nov 2026). SP18 dua akun baru: Sugi Studio AI (pengajar video AI, adik kandung Ustad Taysir) dan Ustad Taysir (pendidikan agama anak, metode Taysir); SP19 wajah baru Mia (hijab abu tua, pakaian boleh berganti); SP20 pembagian 5 akun (Sugi Studio AI, Mia khusus baju, Nara khusus tas & sepatu, Ustad Taysir, Rio pembawa acara geng); SP21 bank judul dan format baru semua akun; SP22 aturan khusus Ustad Taysir (bacaan ayat lip-sync suara asli, tanpa tulisan Arab buatan AI, tidak ikut konten jualan). Sebelumnya V1.6 (18 Nov 2026). SP17 judul konten jadi langkah pertama (bank judul siap pakai per akun + judul baru dari AI), format disarankan dari judul. Sebelumnya V1.5 (18 Nov 2026). SP16 simpan otomatis ke akun (masuk dengan email dan sandi admin Satu Pintu; proyek disimpan di pengguna/{uid}/pribadi, terpisah dari Proyek Saya Satu Pintu) dan halaman Proyek Saya. Sebelumnya V1.4 (17 Nov 2026). SP14 sisipan rekaman layar di scene yang menjelaskan langkahnya; SP15 pengingat lampirkan Character Sheet di Google Flow. Sebelumnya V1.3 (17 Nov 2026). SP10 pakaian Rio sesuai karakter sheet + bawaan per akun; SP11 kembar serasi Rio & Nara; SP12 foto wajah resmi Mia + kardigan dengan celana lebar beige; SP13 atur detail pakaian (opsional). Sebelumnya V1.2 (17 Nov 2026). SP6 foto wajah resmi Nara; SP7 tampilan Nara dari karakter sheet (hijab sifon beige, 5 pakaian); SP8 pakaian tambahan Rio; SP9 Rio dan Nara berpacaran (sopan dan hangat), Mia sahabat, format Konten Rio & Nara. Sebelumnya V1.1 (17 Nov 2026). SP1 figur dan lokasi akun di atas halaman Pembicara/Lokasi + lokasi pilihan ikut ke AI; SP2 foto tanpa usia/rambut; SP3 sepatu tetap; SP4 nama akun otomatis; SP5 pilihan ajakan penutup + jadwal live. Sebelumnya V1.0 (16 Nov 2026). Aplikasi pribadi untuk konten tiga akun TikTok (Rio, Mia, Nara + kolaborasi).
      Mesin pembuat prompt diambil langsung dari Sugi Studio (kreator.html dan serba-bisa.html di repo Sugimation, cabang main),
      jadi setiap perbaikan Sugi otomatis ikut. Setiap video berjalan di bingkai sendiri (maks. 3 bersamaan); AI dari bingkai
      dititipkan ke halaman utama lewat pesan (cara yang terbukti di Satu Pintu). -->
@@ -84,6 +84,8 @@
   .proyek .btn, .proyek .btn2 { padding:8px 12px; font-size:14px; }
   .awan { display:flex; gap:10px; align-items:center; justify-content:space-between; }
   .awan .btn2 { flex:none; padding:8px 14px; }
+  .awan .btn { flex:none; padding:9px 16px; }
+  .awan-belum { border: 2px solid #C9A24D; background: #FFF6E0; }
   .bank { display:grid; gap:8px; margin-top:8px; }
   .bank-j { text-align:left; border:1px solid var(--garis); background:var(--putih); border-radius:12px; padding:10px 12px; font:inherit; color:var(--coklat); cursor:pointer; }
   .bank-j b { display:block; font-size:15px; }
@@ -122,7 +124,7 @@ var GEMINI_MODEL = "gemini-3-flash-preview";
 var GEMINI_API = "https://generativelanguage.googleapis.com/v1beta/models/" + GEMINI_MODEL + ":generateContent?key=" + apiKey;
 
 var SP = (function () {
-  var VERSI = "V1.7";
+  var VERSI = "V1.8";
   var MESIN_URL = "https://raw.githubusercontent.com/elhabsyihauto-ai/Sugimation/main/";
   // Foto figur diambil dari cabang yang sama dengan aplikasinya (pemanggil uji cabang mengisi window.SP_CABANG).
   var ASET_URL = "https://raw.githubusercontent.com/elhabsyihauto-ai/studio-pribadi/" + (window.SP_CABANG || "main") + "/";
@@ -772,7 +774,15 @@ var SP = (function () {
       h += f ? '<img class="bank-foto" src="' + f.url + '" alt="' + F.nama + '">' : '<p class="catatan">Foto wajah resmi belum ada.</p>';
       h += '<ul class="rapi"><li><b>Usia:</b> ' + F.umur + ' tahun' + (F.id === "sugi" ? ' <span class="tag">nama dan usia sementara</span>' : '') + '</li><li><b>Peran:</b> ' + esc(F.peran) + '</li><li><b>Ciri tetap:</b> ' + esc(F.ciri) + '</li><li><b>Wajah (tanpa foto):</b> ' + esc(F.fisik) + '</li><li><b>Suara:</b> ' + esc(F.usiaSuara + ", " + F.warnaSuara.toLowerCase() + ", logat " + F.logat) + '</li></ul>';
       h += '<div class="label">Pakaian</div><ul class="rapi">' + F.outfit.map(function (o) { return '<li>' + o.emoji + ' <b>' + esc(o.label) + ':</b> ' + esc(o.teks) + '</li>'; }).join("") + '</ul>';
-      h += '<div class="label">Ruang kerja</div><p class="catatan" style="margin-top:0">' + esc(RUANG[id].teks) + '</p></div>';
+      h += '<div class="label">Ruang kerja</div><p class="catatan" style="margin-top:0">' + esc(RUANG[id].teks) + '</p>';
+      var simpan = Object.keys(asetFigur).filter(function (k) { return k.indexOf(id + "_") === 0; });
+      h += '<div class="label">🗂️ Character Sheet tersimpan <span class="tag">' + simpan.length + '</span></div>';
+      if (!simpan.length) h += '<p class="catatan" style="margin-top:0">Belum ada. Character Sheet ' + esc(F.nama) + ' disimpan otomatis setelah dibuat di video pertama, lalu dipakai lagi di video berikutnya dengan pakaian yang sama' + (akun ? '' : ' (masuk dulu supaya tidak hilang saat Canvas ditutup)') + '.</p>';
+      simpan.forEach(function (k) {
+        var x = asetFigur[k], o = F.outfit.filter(function (q) { return k.indexOf(id + "_" + q.id + "_") === 0; })[0];
+        h += '<div class="proyek"><img class="foto-mini" style="width:72px;height:40px;object-fit:cover;border-radius:6px" src="data:' + esc(x.mime) + ';base64,' + x.data + '" alt=""><span class="isi"><b>' + esc(o ? o.label : "Pakaian lain") + '</b><small>' + (/_foto_/.test(k) ? "dari foto wajah resmi" : "dari deskripsi") + ' · ' + (x.di ? "☁️ di akun" : "📱 hanya selama Canvas terbuka") + '</small></span><button class="btn2" aria-label="Hapus" onclick="SP.hapusFigurAset(\'' + k + '\')">🗑</button></div>';
+      });
+      h += '</div>';
     });
     h += '<div class="kotak"><h3>🤝 Tempat kumpul (tetap)</h3><ul class="rapi">' + KUMPUL.map(function (k) { return '<li>' + k.emoji + ' ' + esc(k.teks) + '</li>'; }).join("") + '</ul>';
     h += '<div class="label">🔄 Tempat jumpa lain</div><p class="catatan" style="margin-top:0">' + JUMPA.map(function (k) { return k.emoji + " " + k.nama; }).join(" · ") + ' · atau tulis sendiri</p></div>';
@@ -839,15 +849,21 @@ var SP = (function () {
   var KUNCI_RIWAYAT = { kreator: "sugimation_kreator3_history", serba: "sugimation_serbabisa3_history" };
   var APP_MESIN = { kreator: "sugimation-kreator", serba: "sugimation-serba-bisa" };
   var BATAS_UKURAN = 900000;
-  var akun = null, awan = {}, terunggah = {}, terlaluBesar = {}, galatAwan = "", sedangSinkron = false, pemantauAwan = null;
+  var akun = null, awan = {}, terunggah = {}, terlaluBesar = {}, galatAwan = "", sedangSinkron = false, pemantauAwan = null, caraMasuk = "kode";
   function urlAuth(cara) { return "https://identitytoolkit.googleapis.com/v1/accounts:" + cara + "?key=" + encodeURIComponent(FB.apiKey); }
   function urlDok(jalur) { return "https://firestore.googleapis.com/v1/projects/" + encodeURIComponent(FB.projectId) + "/databases/(default)/documents/" + jalur; }
+  var DOMAIN_ANGGOTA = "anggota.sugistudio.app";
+  function rapikanKode(t) {
+    var k = String(t || "").toUpperCase().replace(/\s+/g, "");
+    if (k.indexOf("-") < 0 && k.length > 6) k = k.slice(0, -6) + "-" + k.slice(-6);
+    return k;
+  }
   function pesanGalat(m) {
     m = String(m || "");
-    if (/INVALID_LOGIN_CREDENTIALS|INVALID_PASSWORD|EMAIL_NOT_FOUND|INVALID_EMAIL/.test(m)) return "Email atau sandi salah. Pakai email dan sandi admin Satu Pintu.";
+    if (/INVALID_LOGIN_CREDENTIALS|INVALID_PASSWORD|EMAIL_NOT_FOUND|INVALID_EMAIL/.test(m)) return caraMasuk === "kode" ? "Kode tidak dikenal. Periksa lagi kodenya (contoh: RINA-K7M2Q9), sama dengan kode masuk Satu Pintu." : "Email atau sandi salah. Pakai email dan sandi admin Satu Pintu.";
     if (/TOO_MANY_ATTEMPTS/.test(m)) return "Terlalu banyak percobaan. Tunggu beberapa menit, lalu coba lagi.";
     if (/USER_DISABLED/.test(m)) return "Akun ini dinonaktifkan di Firebase.";
-    if (/^403|PERMISSION_DENIED/.test(m)) return "Akun ini belum diizinkan menyimpan. Pakai akun admin Satu Pintu (yang aturannya sudah ditempel di Firebase).";
+    if (/^403|PERMISSION_DENIED/.test(m)) return caraMasuk === "kode" ? "Kode ini belum aktif atau sudah dicabut. Aktifkan lagi di Kelola Member Satu Pintu, atau masuk dengan email admin." : "Akun ini belum diizinkan menyimpan. Pakai akun admin Satu Pintu (yang aturannya sudah ditempel di Firebase).";
     if (/Failed to fetch|NetworkError|network/i.test(m)) return "Tidak ada koneksi internet. Coba lagi sebentar.";
     return "Gagal: " + m.slice(0, 160);
   }
@@ -932,31 +948,47 @@ var SP = (function () {
     if (berubah && !document.body.classList.contains("di-bingkai") && (halaman === "beranda" || halaman === "lanjut")) gambar();
   }
   function mulaiPemantau() { if (!pemantauAwan) pemantauAwan = setInterval(sinkron, 3000); }
+  function namaMasuk() { return akun ? (akun.kode ? "Kode " + akun.kode : akun.email) : ""; }
   function htmlAwan() {
-    if (!akun) return '<div class="kotak awan"><span><b>☁️ Simpan otomatis belum aktif</b><br><small class="catatan">Tanpa masuk, proyek hilang saat Canvas ditutup.</small></span><button class="btn2" onclick="SP.buka(\'masuk\')">Masuk</button></div>';
-    return '<div class="baik awan"><span>☁️ Simpan otomatis aktif<br><small>' + esc(akun.email) + '</small></span><button class="btn2" onclick="SP.keluarAkun()">Keluar</button></div>' +
+    if (!akun) return '<div class="kotak awan awan-belum"><span><b>☁️ Belum tersimpan ke akun</b><br><small class="catatan">Masuk dengan kode pribadimu (sama dengan Satu Pintu) supaya proyek dan gambar acuan tersimpan dan tidak hilang saat Canvas ditutup.</small></span><button class="btn" onclick="SP.buka(\'masuk\')">Masuk</button></div>';
+    return '<div class="baik awan"><span>☁️ Simpan otomatis aktif<br><small>' + esc(namaMasuk()) + ' · proyek, gambar acuan, dan Character Sheet figur</small></span><button class="btn2" onclick="SP.keluarAkun()">Keluar</button></div>' +
       (galatAwan ? '<div class="peringatan">' + esc(galatAwan) + '</div>' : '');
   }
   function htmlMasuk() {
-    return kembaliBtn() + '<h2 style="margin-top:10px">☁️ Masuk untuk simpan otomatis</h2>' +
-      '<p class="sub">Pakai <b>email dan sandi admin Satu Pintu</b>. Setelah masuk, setiap proyek tersimpan otomatis ke akunmu dan bisa dibuka lagi di Proyek Saya, walaupun Canvas sudah ditutup. Proyek Studio Pribadi disimpan terpisah dari proyek Satu Pintu, jadi tidak tercampur.</p>' +
-      '<div class="kotak"><div class="label">Email</div><input type="email" id="sp-email" autocomplete="username" placeholder="email admin">' +
-      '<div class="label" style="margin-top:10px">Sandi</div><input type="password" id="sp-sandi" autocomplete="current-password" placeholder="sandi">' +
-      '<div id="sp-masuk-st"></div><div style="margin-top:12px"><button class="btn lebar" id="sp-masuk-btn" onclick="SP.masukAkun()">Masuk</button></div>' +
-      '<p class="catatan">Canvas menghapus status masuk setiap kali ditutup, jadi kamu perlu masuk lagi setiap membuka Studio Pribadi. Foto tidak ikut disimpan (sama seperti Kode Proyek).</p></div>';
+    var kode = caraMasuk === "kode";
+    var h = kembaliBtn() + '<h2 style="margin-top:10px">☁️ Masuk untuk simpan otomatis</h2>' +
+      '<p class="sub">Setelah masuk, setiap proyek tersimpan otomatis ke akunmu, lengkap dengan gambar Character Sheet dan Location Reference. Character Sheet tiap figur disimpan sekali dan dipakai lagi di video berikutnya. Proyek Studio Pribadi disimpan terpisah dari proyek Satu Pintu.</p>' +
+      '<div class="chips" style="margin-top:6px"><button class="chip ' + (kode ? "on" : "") + '" onclick="SP.caraMasuk(\'kode\')">🔑 Kode pribadi ⭐</button><button class="chip ' + (!kode ? "on" : "") + '" onclick="SP.caraMasuk(\'email\')">👑 Email admin</button></div>';
+    if (kode) h += '<div class="kotak"><div class="label">Kode pribadi</div><input type="text" id="sp-kode-masuk" autocomplete="off" autocapitalize="characters" placeholder="Contoh: RINA-K7M2Q9" onkeydown="if(event.key===\'Enter\')SP.masukAkun()">' +
+      '<p class="catatan">Kode yang sama dengan kode masuk Sugi Studio Satu Pintu (dibuat di Kelola Member).</p>';
+    else h += '<div class="kotak"><div class="label">Email</div><input type="email" id="sp-email" autocomplete="username" placeholder="email admin">' +
+      '<div class="label" style="margin-top:10px">Sandi</div><input type="password" id="sp-sandi" autocomplete="current-password" placeholder="sandi">';
+    h += '<div id="sp-masuk-st"></div><div style="margin-top:12px"><button class="btn lebar" id="sp-masuk-btn" onclick="SP.masukAkun()">Masuk</button></div>' +
+      '<p class="catatan">Canvas menghapus status masuk setiap kali ditutup, jadi kamu perlu masuk lagi setiap membuka Studio Pribadi. Foto wajah yang kamu unggah sendiri tidak disimpan; Character Sheet buatan AI disimpan.</p></div>';
+    return h;
   }
+  function setCaraMasuk(c) { caraMasuk = c === "email" ? "email" : "kode"; gambar(); }
   async function masukAkun() {
-    var email = ($("sp-email").value || "").trim(), sandi = $("sp-sandi").value || "", st = $("sp-masuk-st"), btn = $("sp-masuk-btn");
-    if (!email || !sandi) { st.innerHTML = '<div class="peringatan">Isi email dan sandi dulu.</div>'; return; }
+    var st = $("sp-masuk-st"), btn = $("sp-masuk-btn"), email, sandi, kode = "";
+    if (caraMasuk === "kode") {
+      kode = rapikanKode(($("sp-kode-masuk") || {}).value);
+      if (!/^[A-Z0-9]{1,12}-[A-Z0-9]{4,10}$/.test(kode)) { st.innerHTML = '<div class="peringatan">Tulis kode pribadimu dulu (contoh: RINA-K7M2Q9).</div>'; return; }
+      email = kode.toLowerCase() + "@" + DOMAIN_ANGGOTA; sandi = kode;
+    } else {
+      email = ($("sp-email").value || "").trim(); sandi = $("sp-sandi").value || "";
+      if (!email || !sandi) { st.innerHTML = '<div class="peringatan">Isi email dan sandi dulu.</div>'; return; }
+    }
     btn.disabled = true; st.innerHTML = '<p class="catatan">Masuk...</p>';
     try {
       var r = await fetch(urlAuth("signInWithPassword"), { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email: email, password: sandi, returnSecureToken: true }) });
       var j = await r.json().catch(function () { return {}; });
       if (!r.ok || !j.idToken) throw new Error((j.error && j.error.message) || ("masuk " + r.status));
       akun = { email: j.email || email, uid: j.localId, idToken: j.idToken, refreshToken: j.refreshToken, habis: Date.now() + (+j.expiresIn || 3600) * 1000 };
-      st.innerHTML = '<p class="catatan">Memuat proyek di akun...</p>';
+      if (kode) akun.kode = kode;
+      st.innerHTML = '<p class="catatan">Memuat proyek dan Character Sheet di akun...</p>';
       await muatAwan();
-      simpanSesi(); galatAwan = ""; mulaiPemantau(); sinkron();
+      await muatFigurAset().catch(function () { });
+      simpanSesi(); galatAwan = ""; mulaiPemantau(); sinkron(); kirimFigurSemua();
       buka("lanjut");
     } catch (e) {
       akun = null; awan = {}; terunggah = {}; simpanSesi();
@@ -964,8 +996,59 @@ var SP = (function () {
     }
   }
   function keluarAkun() {
-    dialog("Keluar dari akun?", "Proyek di akun tetap aman. Proyek baru tidak tersimpan otomatis sampai kamu masuk lagi.", [{ teks: "Keluar", utama: true, aksi: function () { akun = null; awan = {}; terunggah = {}; galatAwan = ""; simpanSesi(); gambar(); } }, { teks: "Batal" }]);
+    dialog("Keluar dari akun?", "Proyek dan gambar di akun tetap aman. Proyek baru tidak tersimpan otomatis sampai kamu masuk lagi.", [{ teks: "Keluar", utama: true, aksi: function () { akun = null; awan = {}; terunggah = {}; galatAwan = ""; simpanSesi(); gambar(); } }, { teks: "Batal" }]);
   }
+  // ---------- SP23: gambar acuan per proyek (cara K162 Satu Pintu) ----------
+  // Bingkai mesin mengirim pesan sugi-aset-simpan / sugi-aset-minta; halaman utama yang menulis/membaca Firestore:
+  // pengguna/{uid}/pribadi/{mesin}_{id}/aset/{kunci}. Tanpa masuk, gambar hanya bertahan selama Canvas terbuka.
+  function idDok(t) { return encodeURIComponent(String(t || "").replace(/[\/#?]/g, "_")).slice(0, 140); }
+  function nilai(f) { return f ? (f.stringValue != null ? f.stringValue : "") : ""; }
+  function jalurAset(mesin, proyek) { return "pengguna/" + akun.uid + "/pribadi/" + mesin + "_" + idDok(proyek) + "/aset"; }
+  async function hapusAsetProyek(kunci) {
+    try {
+      var jl = "pengguna/" + akun.uid + "/pribadi/" + kunci + "/aset", j = await api("GET", jl + "?pageSize=50");
+      var d = j.documents || [];
+      for (var i = 0; i < d.length; i++) await api("DELETE", jl + "/" + String(d[i].name).split("/").pop());
+    } catch (e) { }
+  }
+  // ---------- SP23: Character Sheet tiap figur (+ gambar lokasi tetap) disimpan sekali, dipakai lagi ----------
+  // Kunci figur = id figur + pakaian + cara wajah (foto/deskripsi), jadi pakaian lain = sheet lain. Outfit "baru" (Mia, berganti
+  // tiap video) tidak disimpan. Disimpan di pengguna/{uid}/figur/{kunci}; tanpa masuk, hanya di memori selama Canvas terbuka.
+  var asetFigur = {};
+  function hashTeks(t) { var h = 5381; t = String(t || ""); for (var i = 0; i < t.length; i++) h = ((h * 33) ^ t.charCodeAt(i)) >>> 0; return h.toString(36); }
+  function kunciFigur(id, outfitId, pakaian, foto) { return outfitId === "baru" ? "" : (id + "_" + outfitId + "_" + (foto ? "foto" : "ai") + "_" + hashTeks(pakaian)).replace(/[^A-Za-z0-9_]/g, "_"); }
+  function kunciLokasi(v) { return /^(ruang|kumpul):/.test(v || "") ? "lokasi_" + String(v).replace(/[^A-Za-z0-9]/g, "_") : ""; }
+  async function muatFigurAset() {
+    if (!akun) return;
+    var j = await api("GET", "pengguna/" + akun.uid + "/figur?pageSize=100");
+    (j.documents || []).forEach(function (d) {
+      var f = d.fields || {}, k = String(d.name).split("/").pop();
+      if (nilai(f.data)) asetFigur[k] = { group: nilai(f.group), nama: nilai(f.nama), judul: nilai(f.judul), mime: nilai(f.mime) || "image/jpeg", data: nilai(f.data), di: true };
+    });
+  }
+  function simpanFigurAset(k, g) {
+    asetFigur[k] = { group: g.group, nama: g.nama || "", judul: g.judul || "", mime: g.mime || "image/jpeg", data: g.data, di: false };
+    if (!akun) return;
+    api("PATCH", "pengguna/" + akun.uid + "/figur/" + k, { fields: { group: { stringValue: g.group || "" }, nama: { stringValue: g.nama || "" }, judul: { stringValue: g.judul || "" }, mime: { stringValue: g.mime || "image/jpeg" }, data: { stringValue: g.data }, waktu: { timestampValue: new Date().toISOString() } } })
+      .then(function () { if (asetFigur[k]) asetFigur[k].di = true; })
+      .catch(function (er) { galatAwan = "Character Sheet figur belum tersimpan ke akun (" + pesanGalat(er.message) + ")."; });
+  }
+  function hapusFigurAset(k) {
+    dialog("Hapus gambar tersimpan?", "Video berikutnya akan membuat gambar ini lagi dari awal (lalu menyimpannya lagi).", [{ teks: "Hapus", utama: true, aksi: async function () {
+      try { if (akun && asetFigur[k] && asetFigur[k].di) await api("DELETE", "pengguna/" + akun.uid + "/figur/" + k); } catch (e) { dialog("Gagal menghapus", esc(pesanGalat(e.message)), null); return; }
+      delete asetFigur[k]; gambar();
+    } }, { teks: "Batal" }]);
+  }
+  // Kirim gambar figur/lokasi yang cocok ke bingkai video (dipasang bila Character Sheet / Location Reference-nya belum ada)
+  function kirimFigur(item) {
+    if (!item || !item.w || !item.k || !item.k.figur) return;
+    var list = [];
+    item.k.figur.forEach(function (f) { var x = f.asetKunci && asetFigur[f.asetKunci]; if (x) list.push({ group: "cs", nama: f.nama, mime: x.mime, data: x.data, figur: f.id }); });
+    var lk = item.k.lokasiKunci, xl = lk && asetFigur[lk];
+    if (xl) list.push({ group: "lr", nama: xl.nama, mime: xl.mime, data: xl.data, lokasi: true });
+    try { item.w.postMessage({ jenis: "sp-figur-aset", gambar: list }, "*"); } catch (e) { }
+  }
+  function kirimFigurSemua() { kerja.forEach(kirimFigur); }
   function cariSimpanan(kunci) { return daftarProyek().filter(function (x) { return x.kunci === kunci; })[0] || null; }
   async function bukaSimpanan(kunci) {
     var x = cariSimpanan(kunci); if (!x) return;
@@ -976,7 +1059,7 @@ var SP = (function () {
     var x = cariSimpanan(kunci); if (!x) return;
     dialog("Hapus proyek ini?", "<b>" + esc(x.judul) + "</b><br>Proyek dihapus dari " + (akun ? "akun dan " : "") + "HP ini, dan tidak bisa dikembalikan.", [{ teks: "Hapus", utama: true, aksi: async function () {
       try {
-        if (akun && awan[kunci]) await api("DELETE", "pengguna/" + akun.uid + "/pribadi/" + kunci);
+        if (akun && awan[kunci]) { await hapusAsetProyek(kunci); await api("DELETE", "pengguna/" + akun.uid + "/pribadi/" + kunci); }
       } catch (e) { dialog("Gagal menghapus", esc(pesanGalat(e.message)), null); return; }
       delete awan[kunci]; delete terunggah[kunci];
       try { var arr = JSON.parse(localStorage.getItem(KUNCI_RIWAYAT[x.mesin]) || "[]"); localStorage.setItem(KUNCI_RIWAYAT[x.mesin], JSON.stringify(arr.filter(function (p) { return String(p.id) !== String(x.p.id); }))); } catch (e) { }
@@ -984,7 +1067,7 @@ var SP = (function () {
     } }, { teks: "Batal" }]);
   }
   function pulihkanSesi() {
-    try { var s = JSON.parse(localStorage.getItem("sp_sesi") || "null"); if (s && s.uid && s.refreshToken) { akun = s; mulaiPemantau(); muatAwan().then(function () { gambar(); sinkron(); }).catch(function (e) { galatAwan = pesanGalat(e.message); gambar(); }); } } catch (e) { }
+    try { var s = JSON.parse(localStorage.getItem("sp_sesi") || "null"); if (s && s.uid && s.refreshToken) { akun = s; mulaiPemantau(); muatFigurAset().then(kirimFigurSemua).catch(function () { }); muatAwan().then(function () { gambar(); sinkron(); }).catch(function (e) { galatAwan = pesanGalat(e.message); gambar(); }); } } catch (e) { }
   }
 
   // ---------- Konfigurasi untuk mesin ----------
@@ -995,7 +1078,7 @@ var SP = (function () {
       var F = FIGUR[id], o = pakaianFigur(id);
       var peran = F.peran + pil.figur.filter(function (x) { return x !== id; }).map(function (x) { return "; " + hubungan(id, x) + " " + FIGUR[x].nama; }).join("");
       var foto = fotoDipakai(id);
-      return { id: id, watak: F.watak || null, nama: F.nama, peran: peran, usiaSuara: F.usiaSuara, warnaSuara: F.warnaSuara, logat: F.logat, pakaian: o.teks, ciri: foto ? F.ciriFoto : F.ciri, umur: F.umur, fisik: F.fisik, foto: foto, en: (foto ? F.enFoto : F.en) + "; outfit: " + o.en };
+      return { id: id, asetKunci: kunciFigur(id, pil.outfit[id], o.teks + "|" + (pil.serasi ? "serasi" : ""), !!foto), watak: F.watak || null, nama: F.nama, peran: peran, usiaSuara: F.usiaSuara, warnaSuara: F.warnaSuara, logat: F.logat, pakaian: o.teks, ciri: foto ? F.ciriFoto : F.ciri, umur: F.umur, fisik: F.fisik, foto: foto, en: (foto ? F.enFoto : F.en) + "; outfit: " + o.en };
     });
     var nama = figur.map(function (f) { return f.nama; });
     var ada = function (id) { return pil.figur.indexOf(id) >= 0; };
@@ -1022,7 +1105,7 @@ var SP = (function () {
       (pil.akun === "a5" ? "- Speech in polite, gentle Indonesian (santun). No background music inside the clips (the user adds any audio in CapCut)." : "- Speech in casual Indonesian. No background music inside the clips (the user adds music in CapCut).");
     return {
       mesin: mesin, tema: fm.mesin === "podcast" ? "podcast" : "th", cabang: fm.judul, figur: figur, pemeran: pemeran, lokasi: lok.teks, ide: (pil.ide || "").trim(),
-      label: A.label, konteks: konteks, lokasiTeks: lok.teks, lokasiNama: lok.nama, namaAkun: namaAkunPilihan(),
+      label: A.label, konteks: konteks, lokasiTeks: lok.teks, lokasiNama: lok.nama, namaAkun: namaAkunPilihan(), lokasiKunci: kunciLokasi(pil.lokasi),
       simpan: { detail: pil.detail, serasi: pil.serasi, akun: pil.akun, figur: pil.figur.slice(), format: pil.format, formatSendiri: pil.formatSendiri, outfit: pil.outfit, lokasi: pil.lokasi, lokasiSendiri: pil.lokasiSendiri, foto: pil.foto, ajakan: pil.ajakan, ajakanSendiri: pil.ajakanSendiri, jadwalLive: pil.jadwalLive }
     };
   }
@@ -1073,7 +1156,7 @@ var SP = (function () {
     catch (e) { tampilMuat(""); buka("beranda"); dialog("Mesin gagal dimuat", "Periksa koneksi internet, lalu coba lagi.<br><small>" + esc(e.message || e) + "</small>", [{ teks: "Tutup", utama: true }]); return; }
     k = k || { mesin: mesin };
     if (kodeImpor) k.impor = kodeImpor;
-    var item = { no: ++nomor, judul: judul || "Video", konteks: k.konteks || "", lokasiTeks: k.lokasiTeks || "", f: null, w: null };
+    var item = { no: ++nomor, judul: judul || "Video", konteks: k.konteks || "", lokasiTeks: k.lokasiTeks || "", f: null, w: null, mesin: mesin, k: k };
     var f = document.createElement("iframe");
     f.setAttribute("title", item.judul);
     f.srcdoc = '<!DOCTYPE html><html lang="id"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>' + esc(item.judul) + '</title></head><body></body></html>';
@@ -1101,6 +1184,7 @@ var SP = (function () {
       var b0 = w.onload; w.onload = null;
       if (typeof b0 === "function") { try { b0(); } catch (e) { } }
       try { w.__spMulai(); } catch (e) { galat = e.message; }
+      kirimFigur(item);
       tampilMuat("");
       kini = kerja.indexOf(item); tampilBingkai();
       if (w.__spHilang && w.__spHilang.length) dialog("Perlu pembaruan", "Mesin Sugi Studio berubah, jadi sebagian isian otomatis mungkin tidak berjalan (" + esc(w.__spHilang.join(", ")) + "). Kirim pesan ini ke Claude.", [{ teks: "Mengerti", utama: true }]);
@@ -1194,6 +1278,7 @@ var SP = (function () {
     var item = kerja.filter(function (k) { return k.w === e.source; })[0];
     if (!item) return;
     if (d.jenis === "sp-pulang") { buka("beranda"); return; }
+    if (d.jenis === "sugi-aset-simpan" || d.jenis === "sugi-aset-minta") { asetPesan(item, d, e.source); return; }
     if (d.jenis !== "sugi-minta-ai") return;
     var src = e.source, opsi = d.opsi || {};
     opsi.body = tambahKonteks(opsi.body, konteksKini(item));
@@ -1203,6 +1288,24 @@ var SP = (function () {
       try { src.postMessage({ jenis: "sugi-jawab-ai", id: d.id, galat: String((er && er.message) || er || "Failed to fetch") }, "*"); } catch (x) { }
     });
   });
+
+  function asetPesan(item, d, src) {
+    var balas = function (g) { try { src.postMessage({ jenis: "sugi-aset-isi", proyek: d.proyek, gambar: g }, "*"); } catch (x) { } };
+    if (d.jenis === "sugi-aset-simpan") {
+      if (!d.key || !d.data || String(d.data).length > 900000) return;
+      if (d.figurKunci) simpanFigurAset(d.figurKunci, d);
+      if (!akun || !d.proyek) return;
+      api("PATCH", jalurAset(item.mesin, d.proyek) + "/" + idDok(d.key), { fields: {
+        key: { stringValue: d.key }, group: { stringValue: d.group || "" }, nama: { stringValue: d.nama || "" }, judul: { stringValue: d.judul || "" },
+        mime: { stringValue: d.mime || "image/jpeg" }, data: { stringValue: d.data }, waktu: { timestampValue: new Date().toISOString() } } })
+        .catch(function (er) { galatAwan = "Gambar acuan belum tersimpan ke akun (" + pesanGalat(er.message) + "). Unduh paket aset sebagai cadangan."; });
+      return;
+    }
+    if (!akun || !d.proyek) { balas([]); return; }
+    api("GET", jalurAset(item.mesin, d.proyek) + "?pageSize=50").then(function (j) {
+      balas((j.documents || []).map(function (x) { var f = x.fields || {}; return { key: nilai(f.key), group: nilai(f.group), nama: nilai(f.nama), judul: nilai(f.judul), mime: nilai(f.mime), data: nilai(f.data) }; }));
+    }).catch(function () { balas([]); });
+  }
 
   // Dijalankan di dalam bingkai, setelah mesin Sugi Studio: mengisi figur, pakaian, lokasi, dan mengganti merek.
   function PERSONA() {
@@ -1279,6 +1382,53 @@ var SP = (function () {
     if (typeof openProject === "function") { var o0 = openProject; openProject = function () { var r = o0.apply(this, arguments); try { if (selections && selections.sp && C.figur) pasangFoto(); } catch (e) { } return r; }; }
     goNew = function () { pulang(); };
     goHome = function () { pulang(); };
+    // SP23: gambar acuan disimpan lewat halaman utama (cara K162 Satu Pintu). Figur Studio Pribadi adalah tokoh AI,
+    // jadi Character Sheet dari foto resminya ikut disimpan (Satu Pintu tidak menyimpan sheet dari foto wajah asli pengguna).
+    window.__sugiJembatan = window.__sugiJembatan || { studioPribadi: true };
+    function spNorm(t) { return String(t || "").toLowerCase().replace(/^(ustad|ustaz|pak|bu|mas|mbak)\s+/, "").replace(/[^a-z0-9]+/g, " ").trim(); }
+    function spFigurItem(it) {
+      if (!it || it.group !== "cs" || !C.figur) return null;
+      if (it.photo >= 0 && C.figur[it.photo]) return C.figur[it.photo];   // sheet dari foto figur ke-N = figur ke-N
+      var n = spNorm(it.name);
+      var satu = C.figur.length === 1 && (typeof getImgItems === "function" ? getImgItems() : []).filter(function (x) { return x.group === "cs"; }).length === 1;
+      if (!n) return satu ? C.figur[0] : null;
+      return C.figur.filter(function (f) { var m = spNorm(f.nama); return m && (n === m || n.indexOf(m) >= 0 || m.indexOf(n) >= 0); })[0] || (satu ? C.figur[0] : null);
+    }
+    function spLrItems() { return (typeof getImgItems === "function" ? getImgItems() : []).filter(function (x) { return x.group === "lr"; }); }
+    if (typeof kAsetKirim === "function" && typeof kKecil === "function") {
+      kAsetKirim = async function (key) {
+        if (!/^(?:cs|lr)-/.test(key)) return;
+        var it = getImgItems().filter(function (x) { return x.key === key; })[0], im = imgStore[key];
+        if (!it || !im) return;
+        var fg = spFigurItem(it);
+        if (it.photo >= 0 && !fg) return;   // foto wajah unggahan sendiri tidak disimpan
+        var j = await kKecil(im, 1024);
+        if (j.data.length > 900000) return;
+        var fk = fg && fg.asetKunci ? fg.asetKunci : "";
+        if (!fk && it.group === "lr" && C.lokasiKunci && spLrItems().length === 1) fk = C.lokasiKunci;
+        try { P.postMessage({ jenis: "sugi-aset-simpan", proyek: String(currentProjectId || ""), key: key, group: it.group, nama: it.name || "", judul: it.title || "", mime: j.mime, data: j.data, figurKunci: fk }, "*"); } catch (e) { }
+      };
+    }
+    var spFig = [];
+    function spPasangFigur() {
+      if (!spFig.length || typeof getImgItems !== "function") return;
+      var items = getImgItems(), n = 0, lr = items.filter(function (x) { return x.group === "lr"; });
+      items.forEach(function (it) {
+        if (imgStore[it.key] || !/^(?:cs|lr)$/.test(it.group)) return;
+        var g = null;
+        if (it.group === "cs") { var fg = spFigurItem(it); if (fg) g = spFig.filter(function (x) { return x.figur === fg.id; })[0]; }
+        else if (lr.length === 1) g = spFig.filter(function (x) { return x.lokasi; })[0];
+        if (!g) return;
+        imgStore[it.key] = { mime: g.mime || "image/jpeg", data: g.data }; imgVers[it.key] = [imgStore[it.key]]; imgSel[it.key] = 0; n++;
+      });
+      if (n) { window.__spFigurTerpasang = (window.__spFigurTerpasang || 0) + n; try { if (typeof kAsetSegarkan === "function") kAsetSegarkan(); } catch (e) { } }
+    }
+    window.addEventListener("message", function (e) {
+      var d = e.data || {};
+      if (d.jenis !== "sp-figur-aset" || e.source !== P) return;
+      spFig = d.gambar || []; spPasangFigur();
+    });
+    setInterval(spPasangFigur, 1500);
     try {
       var lw = document.querySelector(".k-logo-w"); if (lw) lw.innerHTML = '<span class="font-serif text-[#3B2A1A]">STUDIO</span> <span class="font-serif text-[#9A7425]">PRIBADI</span>';
       var la = document.querySelector(".k-logo-ai span"); if (la) la.textContent = C.label || "Studio Pribadi";
@@ -1372,8 +1522,8 @@ var SP = (function () {
 
   return {
     buka: buka, set: set, setDiam: setDiam, setOutfit: setOutfit, setFoto: setFoto, togFigur: togFigur, unggahFoto: unggahFoto, mulai: mulai,
-    togAjakan: togAjakan, setDetail: setDetail, togSerasi: togSerasi, ideSet: ideSet, buatIde: buatIde, pakaiIde: pakaiIde, lanjut: lanjut, pilihTab: pilihTab, pakaiJudul: pakaiJudul, judulDiketik: judulDiketik, judulSet: judulSet, buatJudulAI: buatJudulAI, masukAkun: masukAkun, keluarAkun: keluarAkun, bukaSimpanan: bukaSimpanan, hapusSimpanan: hapusSimpanan, tutupNo: tutupNo, tekanDialog: tekanDialog,
-    _uji: { bank: BANK_JUDUL, saranFormat: saranFormat, kerja: function () { return kerja; }, akun: function () { return akun; }, awan: function () { return awan; }, sinkron: sinkron, konfig: function () { return konfig(); }, pil: function () { return pil; }, tambahKonteks: tambahKonteks }
+    togAjakan: togAjakan, setDetail: setDetail, togSerasi: togSerasi, ideSet: ideSet, buatIde: buatIde, pakaiIde: pakaiIde, lanjut: lanjut, pilihTab: pilihTab, pakaiJudul: pakaiJudul, judulDiketik: judulDiketik, judulSet: judulSet, buatJudulAI: buatJudulAI, masukAkun: masukAkun, keluarAkun: keluarAkun, caraMasuk: setCaraMasuk, hapusFigurAset: hapusFigurAset, bukaSimpanan: bukaSimpanan, hapusSimpanan: hapusSimpanan, tutupNo: tutupNo, tekanDialog: tekanDialog,
+    _uji: { bank: BANK_JUDUL, saranFormat: saranFormat, kerja: function () { return kerja; }, akun: function () { return akun; }, awan: function () { return awan; }, sinkron: sinkron, konfig: function () { return konfig(); }, pil: function () { return pil; }, tambahKonteks: tambahKonteks, asetFigur: function () { return asetFigur; }, kunciFigur: kunciFigur }
   };
 })();
 </script>
