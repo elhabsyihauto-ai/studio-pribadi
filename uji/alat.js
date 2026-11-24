@@ -7,8 +7,8 @@ const TINY = fs.readFileSync(DAPUR + '/test/tiny.b64', 'utf8').trim();
 const kode = H.slice(H.indexOf('function storyboard'), H.indexOf('async function newPage'));
 const mockText0 = new Function(kode + '; return mockText;')();
 function mockText(sys, user) {
-    if (/\{"ide":\[\{"judul"/.test(sys) && /"format"/.test(sys)) return JSON.stringify({ ide: [1, 2, 3].map(i => ({ judul: 'Ide akun ' + i, format: i === 2 ? 'tips' : 'tutorial', ringkasan: 'Ringkasan ide ' + i + '.', hook: 'Kalimat pembuka ' + i })) });
-    if (/\{"judul":\[\{"judul"/.test(sys)) return JSON.stringify({ judul: [1, 2, 3, 4, 5, 6, 7, 8].map(i => ({ judul: 'Judul AI baru ' + i, format: i % 2 ? 'idepro' : 'pasar' })) });
+    if (/\{"ide":\[\{"judul"/.test(sys) && /"format"/.test(sys)) return JSON.stringify({ ide: [1, 2, 3].map(i => ({ judul: 'Ide akun ' + i, format: i === 2 ? 'flow' : 'tutorial', ringkasan: 'Ringkasan ide ' + i + '.', hook: 'Kalimat pembuka ' + i })) });
+    if (/\{"judul":\[\{"judul"/.test(sys)) return JSON.stringify({ judul: [1, 2, 3, 4, 5, 6, 7, 8].map(i => ({ judul: 'Judul AI baru ' + i, format: i % 2 ? 'review' : 'padu' })) });
     return mockText0(sys, user);
 }
 const SUGI = process.env.SUGIMATION || (fs.existsSync('/home/claude/sugimation') ? '/home/claude/sugimation' : '/home/user/Sugimation'), SP = require('path').resolve(__dirname, '..');

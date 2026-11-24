@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Studio Pribadi by Suhu Digital V1.6 (18 Nov 2026). SP17 judul konten jadi langkah pertama (bank judul siap pakai per akun + judul baru dari AI), format disarankan dari judul. Sebelumnya V1.5 (18 Nov 2026). SP16 simpan otomatis ke akun (masuk dengan email dan sandi admin Satu Pintu; proyek disimpan di pengguna/{uid}/pribadi, terpisah dari Proyek Saya Satu Pintu) dan halaman Proyek Saya. Sebelumnya V1.4 (17 Nov 2026). SP14 sisipan rekaman layar di scene yang menjelaskan langkahnya; SP15 pengingat lampirkan Character Sheet di Google Flow. Sebelumnya V1.3 (17 Nov 2026). SP10 pakaian Rio sesuai karakter sheet + bawaan per akun; SP11 kembar serasi Rio & Nara; SP12 foto wajah resmi Mia + kardigan dengan celana lebar beige; SP13 atur detail pakaian (opsional). Sebelumnya V1.2 (17 Nov 2026). SP6 foto wajah resmi Nara; SP7 tampilan Nara dari karakter sheet (hijab sifon beige, 5 pakaian); SP8 pakaian tambahan Rio; SP9 Rio dan Nara berpacaran (sopan dan hangat), Mia sahabat, format Konten Rio & Nara. Sebelumnya V1.1 (17 Nov 2026). SP1 figur dan lokasi akun di atas halaman Pembicara/Lokasi + lokasi pilihan ikut ke AI; SP2 foto tanpa usia/rambut; SP3 sepatu tetap; SP4 nama akun otomatis; SP5 pilihan ajakan penutup + jadwal live. Sebelumnya V1.0 (16 Nov 2026). Aplikasi pribadi untuk konten tiga akun TikTok (Rio, Mia, Nara + kolaborasi).
+<!-- Studio Pribadi by Suhu Digital V1.7 (24 Nov 2026). SP18 dua akun baru: Sugi Studio AI (pengajar video AI, adik kandung Ustad Taysir) dan Ustad Taysir (pendidikan agama anak, metode Taysir); SP19 wajah baru Mia (hijab abu tua, pakaian boleh berganti); SP20 pembagian 5 akun (Sugi Studio AI, Mia khusus baju, Nara khusus tas & sepatu, Ustad Taysir, Rio pembawa acara geng); SP21 bank judul dan format baru semua akun; SP22 aturan khusus Ustad Taysir (bacaan ayat lip-sync suara asli, tanpa tulisan Arab buatan AI, tidak ikut konten jualan). Sebelumnya V1.6 (18 Nov 2026). SP17 judul konten jadi langkah pertama (bank judul siap pakai per akun + judul baru dari AI), format disarankan dari judul. Sebelumnya V1.5 (18 Nov 2026). SP16 simpan otomatis ke akun (masuk dengan email dan sandi admin Satu Pintu; proyek disimpan di pengguna/{uid}/pribadi, terpisah dari Proyek Saya Satu Pintu) dan halaman Proyek Saya. Sebelumnya V1.4 (17 Nov 2026). SP14 sisipan rekaman layar di scene yang menjelaskan langkahnya; SP15 pengingat lampirkan Character Sheet di Google Flow. Sebelumnya V1.3 (17 Nov 2026). SP10 pakaian Rio sesuai karakter sheet + bawaan per akun; SP11 kembar serasi Rio & Nara; SP12 foto wajah resmi Mia + kardigan dengan celana lebar beige; SP13 atur detail pakaian (opsional). Sebelumnya V1.2 (17 Nov 2026). SP6 foto wajah resmi Nara; SP7 tampilan Nara dari karakter sheet (hijab sifon beige, 5 pakaian); SP8 pakaian tambahan Rio; SP9 Rio dan Nara berpacaran (sopan dan hangat), Mia sahabat, format Konten Rio & Nara. Sebelumnya V1.1 (17 Nov 2026). SP1 figur dan lokasi akun di atas halaman Pembicara/Lokasi + lokasi pilihan ikut ke AI; SP2 foto tanpa usia/rambut; SP3 sepatu tetap; SP4 nama akun otomatis; SP5 pilihan ajakan penutup + jadwal live. Sebelumnya V1.0 (16 Nov 2026). Aplikasi pribadi untuk konten tiga akun TikTok (Rio, Mia, Nara + kolaborasi).
      Mesin pembuat prompt diambil langsung dari Sugi Studio (kreator.html dan serba-bisa.html di repo Sugimation, cabang main),
      jadi setiap perbaikan Sugi otomatis ikut. Setiap video berjalan di bingkai sendiri (maks. 3 bersamaan); AI dari bingkai
      dititipkan ke halaman utama lewat pesan (cara yang terbukti di Satu Pintu). -->
@@ -122,17 +122,18 @@ var GEMINI_MODEL = "gemini-3-flash-preview";
 var GEMINI_API = "https://generativelanguage.googleapis.com/v1beta/models/" + GEMINI_MODEL + ":generateContent?key=" + apiKey;
 
 var SP = (function () {
-  var VERSI = "V1.6";
+  var VERSI = "V1.7";
   var MESIN_URL = "https://raw.githubusercontent.com/elhabsyihauto-ai/Sugimation/main/";
-  var ASET_URL = "https://raw.githubusercontent.com/elhabsyihauto-ai/studio-pribadi/main/";
+  // Foto figur diambil dari cabang yang sama dengan aplikasinya (pemanggil uji cabang mengisi window.SP_CABANG).
+  var ASET_URL = "https://raw.githubusercontent.com/elhabsyihauto-ai/studio-pribadi/" + (window.SP_CABANG || "main") + "/";
   var BATAS = 3;
 
   // ================= BANK FIGUR (terkunci) =================
   var FIGUR = {
     rio: {
-      nama: "Rio", emoji: "🎬", umur: 27, akun: "a1", foto: "figur/rio.jpg",
-      ringkas: "Pria 27 tahun · kreator dan pengajar video AI",
-      peran: "pemilik akun tutorial video AI, mengajar dengan sabar dan jelas",
+      nama: "Rio", emoji: "🎬", umur: 27, akun: "a1", foto: "figur/rio.jpg", pria: true,
+      ringkas: "Pria 27 tahun · pendiri dan pembawa acara geng",
+      peran: "pendiri dan pembawa acara geng Suhu Digital: kabar AI singkat, di balik layar, dan pola pikir kreator",
       usiaSuara: "20-an", warnaSuara: "Bulat dan jelas (seperti penyiar)", logat: "Indonesia netral",
       ciri: "usia 27 tahun; rambut hitam pendek, bagian atas sedikit bervolume dan disisir ke samping; senyum lebar yang ramah",
       fisik: "pria Asia Tenggara, wajah agak bulat dengan rahang lembut, mata cokelat tua yang hangat, alis tebal rapi, bayangan janggut tipis",
@@ -150,24 +151,25 @@ var SP = (function () {
     },
     mia: {
       nama: "Mia", emoji: "🛍️", umur: 30, akun: "a2", foto: "figur/mia.jpg",
-      ringkas: "Wanita sekitar 30 tahun, berhijab · pengajar affiliate",
-      peran: "pemilik akun Affiliate AI Academy, mengajar affiliate dengan video AI",
+      ringkas: "Wanita sekitar 30 tahun, berhijab abu tua · fashion baju & affiliate",
+      peran: "pemilik akun fashion baju (keseharian fashionable) dan pengajar kelas affiliate lewat live",
       usiaSuara: "30-an", warnaSuara: "Lembut dan halus", logat: "Indonesia netral",
-      ciri: "usia sekitar 30 tahun; selalu berhijab yang menutup kepala dan leher (bawaan: georgette abu tua); kesan percaya diri, ramah, profesional",
-      fisik: "wanita Indonesia berwajah ramah, senyum hangat, riasan natural",
-      ciriFoto: "selalu berhijab yang menutup kepala dan leher (bawaan: georgette abu tua); kesan percaya diri, ramah, profesional",
-      enFoto: "Mia: the adult woman from the user's reference photo (face and age come ONLY from the photo; never describe them); always wears a dark-grey georgette hijab covering head and neck; confident, friendly, professional; soft clear voice, neutral Indonesian accent",
-      en: "Mia: fictional Indonesian woman about 30 years old, always wears a dark-grey georgette hijab that fully covers her hair and neck, warm smile, natural make-up; confident, friendly, professional; soft clear voice, neutral Indonesian accent",
+      ciri: "usia sekitar 30 tahun; wajah oval, alis tebal rapi, mata cokelat-hazel, senyum tipis yang tenang; selalu berhijab sifon abu tua yang menutup kepala dan leher (ciri tetap); pakaian berganti setiap video karena akunnya akun fashion",
+      fisik: "wanita dewasa berwajah oval lembut, kulit cerah hangat, mata cokelat-hazel, alis tebal rapi, bibir merah muda alami, riasan natural",
+      ciriFoto: "selalu berhijab sifon abu tua yang menutup kepala dan leher (ciri tetap); senyum tipis yang tenang; pakaian berganti setiap video",
+      enFoto: "Mia: the adult woman from the user's reference photo (face and age come ONLY from the photo; never describe them); ALWAYS wears a dark-grey chiffon hijab covering head and neck (her fixed trademark); calm small smile; confident, friendly, fashionable; soft clear voice, neutral Indonesian accent. Her identity is her face and hijab only: her outfit changes from video to video, and no clip-on microphone is part of her look",
+      en: "Mia: fictional adult Indonesian woman about 30 years old, soft oval face, warm fair skin, hazel-brown eyes, thick neat eyebrows, natural pink lips, natural make-up, ALWAYS wears a dark-grey chiffon hijab that fully covers her hair and neck (her fixed trademark); calm small smile; confident, friendly, fashionable; soft clear voice, neutral Indonesian accent. Her identity is her face and hijab only: her outfit changes from video to video",
       outfit: [
-        { "id": "kardigan", "emoji": "💜", "label": "Kardigan lavender", "saran": true, "b": {"hijab": "hijab georgette abu tua yang menutup kepala dan leher", "atasan": "kardigan rajut lavender di atas kaos krem", "bawahan": "celana panjang lebar warna beige", "sepatu": "sneakers putih", "aksesori": "jam tangan perak berpermukaan putih"}, "e": {"hijab": "dark-grey georgette hijab covering head and neck", "atasan": "lavender knit cardigan over a cream T-shirt", "bawahan": "wide beige trousers", "sepatu": "white sneakers", "aksesori": "silver watch with a white dial"}},
-        { "id": "blazer", "emoji": "🧥", "label": "Blazer navy", "b": {"hijab": "hijab georgette abu tua yang menutup kepala dan leher", "atasan": "blazer navy dengan dalaman krem polos", "bawahan": "celana panjang bahan krem", "sepatu": "sepatu flat krem", "aksesori": "jam tangan perak berpermukaan putih"}, "e": {"hijab": "dark-grey georgette hijab covering head and neck", "atasan": "navy blazer over a plain cream top", "bawahan": "cream tailored trousers", "sepatu": "cream flat shoes", "aksesori": "silver watch with a white dial"}},
-        { "id": "dress", "emoji": "👗", "label": "Dress anggun", "b": {"hijab": "hijab georgette abu tua yang menutup kepala dan leher", "atasan": "dress panjang anggun yang sopan warna dusty pink", "bawahan": "", "sepatu": "sepatu flat warna nude", "aksesori": "jam tangan perak berpermukaan putih"}, "e": {"hijab": "dark-grey georgette hijab covering head and neck", "atasan": "long, elegant modest dress in dusty pink", "bawahan": "", "sepatu": "nude flat shoes", "aksesori": "silver watch with a white dial"}}
+        { "id": "blazer", "emoji": "🧥", "label": "Blazer navy", "saran": true, "b": {"hijab": "hijab sifon abu tua yang menutup kepala dan leher", "atasan": "blazer navy lengan sedikit digulung di atas atasan krem polos", "bawahan": "celana panjang lurus hitam", "sepatu": "sepatu loafer navy", "aksesori": "jam tangan rose gold bertali tipis"}, "e": {"hijab": "dark-grey chiffon hijab covering head and neck", "atasan": "navy blazer with lightly pushed-up sleeves over a plain cream top", "bawahan": "straight black trousers", "sepatu": "navy loafers", "aksesori": "thin rose-gold wristwatch"}},
+        { "id": "baru", "emoji": "👗", "label": "Outfit baru (sesuai baju video ini)", "b": {"hijab": "hijab sifon abu tua yang menutup kepala dan leher", "atasan": "outfit modest yang modis, sesuai baju yang dibahas di video ini (dipilih AI, lalu sama di semua scene)", "bawahan": "", "sepatu": "sepatu yang serasi", "aksesori": "jam tangan rose gold bertali tipis"}, "e": {"hijab": "dark-grey chiffon hijab covering head and neck", "atasan": "a fashionable modest outfit that matches the clothing featured in this video (choose ONE exact outfit with colors and write it in Master Character, then keep it identical in every scene)", "bawahan": "", "sepatu": "matching shoes", "aksesori": "thin rose-gold wristwatch"}},
+        { "id": "kardigan", "emoji": "💜", "label": "Kardigan lavender", "b": {"hijab": "hijab sifon abu tua yang menutup kepala dan leher", "atasan": "kardigan rajut lavender di atas kaos krem", "bawahan": "celana panjang lebar warna beige", "sepatu": "sneakers putih", "aksesori": "jam tangan rose gold bertali tipis"}, "e": {"hijab": "dark-grey chiffon hijab covering head and neck", "atasan": "lavender knit cardigan over a cream T-shirt", "bawahan": "wide beige trousers", "sepatu": "white sneakers", "aksesori": "thin rose-gold wristwatch"}},
+        { "id": "dress", "emoji": "🌸", "label": "Dress anggun", "b": {"hijab": "hijab sifon abu tua yang menutup kepala dan leher", "atasan": "dress panjang anggun yang sopan warna dusty pink", "bawahan": "", "sepatu": "sepatu flat warna nude", "aksesori": "jam tangan rose gold bertali tipis"}, "e": {"hijab": "dark-grey chiffon hijab covering head and neck", "atasan": "long, elegant modest dress in dusty pink", "bawahan": "", "sepatu": "nude flat shoes", "aksesori": "thin rose-gold wristwatch"}}
       ]
     },
     nara: {
       nama: "Nara", emoji: "💡", umur: 26, akun: "a3", foto: "figur/nara.jpg",
-      ringkas: "Wanita 26 tahun, berhijab · kreator produk digital",
-      peran: "kreator produk digital yang memakai AI untuk membuat dan memasarkan produknya",
+      ringkas: "Wanita 26 tahun, berhijab · spesialis tas & sepatu",
+      peran: "kreator affiliate khusus tas dan sepatu, memadupadankan dan mengulas tas serta sepatu dengan jujur",
       usiaSuara: "20-an", warnaSuara: "Lembut dan halus", logat: "Indonesia netral",
       ciri: "usia 26 tahun; selalu berhijab yang menutup kepala dan leher (warna hijab mengikuti pakaian); jam tangan perak; senyum lembut",
       fisik: "wanita Indonesia, wajah oval lembut, mata cokelat besar dengan bulu mata lentik, pipi merona alami, bibir merah muda alami, riasan tipis natural",
@@ -181,27 +183,71 @@ var SP = (function () {
         { "id": "rumah", "emoji": "🏠", "label": "Rumah", "b": {"hijab": "hijab instan beige", "atasan": "sweter rajut pink dusty", "bawahan": "jeans biru", "sepatu": "sandal rumah krem", "aksesori": "jam tangan perak"}, "e": {"hijab": "beige slip-on hijab", "atasan": "dusty-pink knit sweater", "bawahan": "blue jeans", "sepatu": "cream house slippers", "aksesori": "silver watch"}},
         { "id": "olahraga", "emoji": "🏃‍♀️", "label": "Olahraga", "b": {"hijab": "hijab olahraga navy", "atasan": "jaket olahraga hitam bergaris putih", "bawahan": "celana training hitam", "sepatu": "sepatu lari putih", "aksesori": "topi hitam"}, "e": {"hijab": "navy sports hijab", "atasan": "black track jacket with white stripes", "bawahan": "black track pants", "sepatu": "white running shoes", "aksesori": "black cap"}}
       ]
+    },
+    sugi: {
+      nama: "Fikri", emoji: "🎓", umur: 25, akun: "a4", foto: "figur/sugi.jpg", pria: true, watak: ["Ramah/hangat", "Percaya diri"],
+      ringkas: "Pria 25 tahun · pengajar video AI Sugi Studio",
+      peran: "pembawa acara akun Sugi Studio AI, mengajar cara membuat video AI dengan santai dan jelas",
+      usiaSuara: "20-an", warnaSuara: "Hangat dan jelas", logat: "Indonesia santai",
+      ciri: "usia 25 tahun; rambut hitam bergelombang agak panjang ke atas; tanpa peci; bakal janggut tipis tanpa kumis tebal; senyum santai",
+      fisik: "pria Indonesia muda, kulit sawo matang terang, wajah oval tegas, mata cokelat tua, alis tebal",
+      ciriFoto: "tanpa peci; senyum santai",
+      enFoto: "Fikri: the adult man from the user's reference photo (face and age come ONLY from the photo; never describe them); never a peci or cap unless the outfit says so; relaxed smile; warm, confident, easy-going; clear warm voice, casual Indonesian. No earbuds unless the scene needs them",
+      en: "Fikri: fictional 25-year-old Indonesian man, light tan skin, firm oval face, dark-brown eyes, thick eyebrows, longer wavy black hair swept up, light stubble and no thick moustache, never a peci; relaxed smile; warm, confident, easy-going; clear warm voice, casual Indonesian. No earbuds unless the scene needs them",
+      outfit: [
+        { "id": "hoodie", "emoji": "🖤", "label": "Hoodie hitam", "saran": true, "b": {"atasan": "hoodie hitam polos tanpa logo", "bawahan": "celana jogger abu tua", "sepatu": "sneakers putih", "aksesori": ""}, "e": {"atasan": "plain black hoodie with no logo", "bawahan": "dark-grey joggers", "sepatu": "white sneakers", "aksesori": ""}},
+        { "id": "kemeja", "emoji": "👕", "label": "Kemeja kasual", "b": {"atasan": "kemeja flanel hijau tua dibiarkan terbuka di atas kaos hitam", "bawahan": "jeans biru tua", "sepatu": "sneakers putih", "aksesori": ""}, "e": {"atasan": "open dark-green flannel shirt over a black T-shirt", "bawahan": "dark-blue jeans", "sepatu": "white sneakers", "aksesori": ""}},
+        { "id": "rapi", "emoji": "👔", "label": "Rapi untuk live", "b": {"atasan": "kemeja hitam polos lengan panjang", "bawahan": "celana chino abu tua", "sepatu": "sepatu kulit hitam", "aksesori": "jam tangan hitam"}, "e": {"atasan": "plain black long-sleeve shirt", "bawahan": "dark-grey chinos", "sepatu": "black leather shoes", "aksesori": "black wristwatch"}}
+      ]
+    },
+    taysir: {
+      nama: "Ustad Taysir", emoji: "🕌", umur: 30, akun: "a5", foto: "figur/taysir.jpg", pria: true, watak: ["Ramah/hangat", "Kalem"],
+      ringkas: "Pria sekitar 30 tahun, berpeci · ustaz pendidikan anak dan metode Taysir",
+      peran: "ustaz pengajar pendidikan agama untuk anak dan baca Al-Qur'an metode Taysir; santun, sabar, dan lembut",
+      usiaSuara: "30-an", warnaSuara: "Lembut, hangat, dan tenang", logat: "Indonesia santun",
+      ciri: "usia sekitar 30 tahun; selalu memakai peci hitam polos; kumis tipis dan janggut pendek di dagu; rambut hitam pendek rapi; senyum tenang",
+      fisik: "pria Indonesia dewasa, kulit sawo matang terang, wajah oval, alis tebal, mata cokelat tua",
+      ciriFoto: "selalu memakai peci hitam polos; kumis tipis dan janggut pendek di dagu; senyum tenang",
+      enFoto: "Ustad Taysir: the adult man from the user's reference photo (face and age come ONLY from the photo; never describe them); ALWAYS a plain black peci, thin moustache and short chin beard; calm gentle smile; warm, calm, patient teacher; soft warm calm voice, polite Indonesian",
+      en: "Ustad Taysir: fictional Indonesian man about 30 years old, light tan skin, oval face, thick eyebrows, dark-brown eyes, short neat black hair, thin moustache and short chin beard, ALWAYS a plain black peci; calm gentle smile; warm, calm, patient teacher; soft warm calm voice, polite Indonesian",
+      outfit: [
+        { "id": "koko", "emoji": "🤍", "label": "Koko putih", "saran": true, "b": {"atasan": "baju koko putih kerah berdiri berkancing dengan saku kiri", "bawahan": "celana panjang hitam", "sepatu": "sandal kulit cokelat tua", "aksesori": "peci hitam polos"}, "e": {"atasan": "white band-collar koko shirt with buttons and a left chest pocket", "bawahan": "black trousers", "sepatu": "dark-brown leather sandals", "aksesori": "plain black peci"}},
+        { "id": "kokowarna", "emoji": "🟫", "label": "Koko krem", "b": {"atasan": "baju koko krem polos kerah berdiri", "bawahan": "celana panjang cokelat tua", "sepatu": "sandal kulit cokelat tua", "aksesori": "peci hitam polos"}, "e": {"atasan": "plain cream band-collar koko shirt", "bawahan": "dark-brown trousers", "sepatu": "dark-brown leather sandals", "aksesori": "plain black peci"}},
+        { "id": "gamis", "emoji": "🕋", "label": "Gamis putih", "b": {"atasan": "gamis putih panjang sampai mata kaki", "bawahan": "", "sepatu": "sandal kulit cokelat tua", "aksesori": "peci hitam polos"}, "e": {"atasan": "long white ankle-length thobe", "bawahan": "", "sepatu": "dark-brown leather sandals", "aksesori": "plain black peci"}},
+        { "id": "sarung", "emoji": "🧎", "label": "Koko + sarung (musala)", "b": {"atasan": "baju koko putih kerah berdiri", "bawahan": "sarung kotak-kotak hijau tua", "sepatu": "kaus kaki hitam di atas karpet musala", "aksesori": "peci hitam polos"}, "e": {"atasan": "white band-collar koko shirt", "bawahan": "dark-green checked sarong", "sepatu": "black socks on the prayer-room carpet", "aksesori": "plain black peci"}}
+      ]
     }
   };
-  var URUT_FIGUR = ["rio", "mia", "nara"];
+  var URUT_FIGUR = ["rio", "mia", "nara", "sugi", "taysir"];
   // SP13: pakaian disusun dari bagian-bagian (hijab, atasan, bawahan, sepatu, aksesori)
   var BAGIAN = [["hijab", "Hijab", "Contoh: hijab segi empat hitam"], ["atasan", "Atasan", "Contoh: kemeja batik cokelat"], ["bawahan", "Bawahan", "Contoh: celana kain hitam"], ["sepatu", "Sepatu", "Contoh: sepatu kets abu-abu"], ["aksesori", "Aksesori", "Contoh: kacamata hitam, tas selempang"], ["warna", "Warna utama", "Contoh: serba putih dan krem"]];
   var BAGIAN_EN = { hijab: "hijab", atasan: "top", bawahan: "bottom", sepatu: "shoes", aksesori: "accessories", warna: "main colors" };
   function gabungBagian(b) { return ["hijab", "atasan", "bawahan", "sepatu", "aksesori", "warna"].map(function (k) { return b[k]; }).filter(function (x) { return x && String(x).trim(); }).join(", "); }
-  URUT_FIGUR.forEach(function (id) { FIGUR[id].outfit.forEach(function (o) { o.teks = gabungBagian(o.b); o.en = gabungBagian(o.e); }); });
+  URUT_FIGUR.forEach(function (id) { FIGUR[id].id = id; FIGUR[id].outfit.forEach(function (o) { o.teks = gabungBagian(o.b); o.en = gabungBagian(o.e); }); });
   // SP9: Rio dan Nara berpacaran (sopan dan hangat), Mia sahabat mereka
-  function hubungan(a, b) { return (a === "rio" && b === "nara") || (a === "nara" && b === "rio") ? "pacar" : "sahabat"; }
+  function hubungan(a, b) {
+    if ((a === "rio" && b === "nara") || (a === "nara" && b === "rio")) return "pacar";
+    if (a === "taysir" && b === "sugi") return "kakak kandung";
+    if (a === "sugi" && b === "taysir") return "adik kandung";
+    if (a === "taysir" || b === "taysir") return "kenalan yang dihormati";
+    return "sahabat";
+  }
+  // SP18: kakak-adik mirip, jadi pembeda wajib ditulis bila tampil bersama
+  var ATURAN_SAUDARA = "Ustad Taysir and Fikri are brothers (Ustad Taysir is the older brother) and look alike, so keep them clearly different in every scene: Ustad Taysir ALWAYS wears a plain black peci, has a thin moustache and a short chin beard, short neat hair, and a koko shirt; Fikri NEVER wears a peci, has longer wavy hair swept up, only light stubble, and his own outfit. Write these differences in each Identity Anchor so their faces never swap.";
+  var ATURAN_TAYSIR_KOLAB = "Ustad Taysir only joins family, manners (adab), or wholesome chats: he never takes part in selling, affiliate, product promotion, or income talk; any product talk in this video comes from the others, never from him.";
   var ATURAN_PASANGAN = "Rio and Nara are a couple (boyfriend and girlfriend); Mia is their close friend. Rio and Nara's interaction is always polite and warm: they may sit side by side, encourage each other, and joke together, but they never hug, kiss, hold or touch each other romantically, or act intimate; keep a modest distance.";
 
   // ================= LOKASI =================
   var RUANG = {
     rio: { emoji: "🖥️", nama: "Ruang kerja Rio", teks: "Ruang kerja Rio (lokasi tetap): meja kayu gelap dengan dua monitor, lampu meja kuning hangat, rak buku, satu tanaman; nuansa hangat dan serius; isi layar monitor tidak terbaca" },
-    mia: { emoji: "📦", nama: "Ruang kerja Mia", teks: "Ruang kerja Mia (lokasi tetap): meja putih, rak berisi kotak produk polos tanpa merek, jendela besar dengan cahaya pagi, aksen warna lavender lembut" },
-    nara: { emoji: "🎨", nama: "Studio kreatif Nara", teks: "Studio kreatif Nara (lokasi tetap): meja dengan tablet gambar, papan ide berisi kertas tempel yang tulisannya tidak terbaca, tanaman gantung, lampu gantung rotan; nuansa ceria" }
+    mia: { emoji: "👗", nama: "Ruang kerja Mia", teks: "Ruang kerja Mia (lokasi tetap): meja putih, rak gantung berisi baju terlipat dan tergantung tanpa merek, cermin berdiri besar, jendela besar dengan cahaya pagi, aksen warna lavender lembut" },
+    nara: { emoji: "👜", nama: "Studio Nara", teks: "Studio Nara (lokasi tetap): rak display putih berisi tas dan sepatu tanpa merek, meja kayu terang, tanaman gantung, lampu gantung rotan; nuansa ceria" },
+    sugi: { emoji: "💻", nama: "Ruang kerja Sugi Studio", teks: "Ruang kerja Sugi Studio (lokasi tetap): rak kayu terang berisi buku dan pot tanaman kecil, meja kerja dengan laptop dan lampu meja, kursi kerja hitam, dinding putih dengan aksen panel biru; isi layar tidak terbaca" },
+    taysir: { emoji: "📿", nama: "Ruang belajar Ustad Taysir", teks: "Ruang belajar Ustad Taysir (lokasi tetap): ruang belajar dan musala rumah dengan panel kisi kayu bermotif geometris Islami bercahaya hangat, rak kitab bersampul polos tanpa tulisan terbaca, karpet musala polos, meja kecil rendah, tanaman hijau di sudut" }
   };
   var KUMPUL = [
-    { id: "markas", emoji: "🛋️", nama: "Markas", teks: "Markas Rio, Nara, dan Mia (lokasi tetap): ruang bersama dengan meja panjang, sofa, dan papan tulis kosong" },
-    { id: "kafe", emoji: "☕", nama: "Kafe langganan", teks: "Kafe langganan Rio, Nara, dan Mia (lokasi tetap): kafe kecil berdinding bata dengan meja kayu dekat jendela" },
+    { id: "markas", emoji: "🛋️", nama: "Markas", teks: "Markas geng Suhu Digital (lokasi tetap): ruang bersama dengan meja panjang, sofa, dan papan tulis kosong" },
+    { id: "kafe", emoji: "☕", nama: "Kafe langganan", teks: "Kafe langganan geng Suhu Digital (lokasi tetap): kafe kecil berdinding bata dengan meja kayu dekat jendela" },
     { id: "teras", emoji: "🌇", nama: "Teras atap", teks: "Teras atap (lokasi tetap): teras di atap gedung pada sore hari dengan pemandangan kota" }
   ];
   var JUMPA = [
@@ -210,72 +256,118 @@ var SP = (function () {
   ];
 
   // ================= AKUN DAN FORMAT =================
+  // SP22: bacaan ayat/doa berbahasa Arab TIDAK disuarakan AI; lip-sync ke rekaman bacaan manusia sungguhan
+  var ATURAN_AYAT = "Every Qur'an verse or Arabic prayer is NEVER voiced by AI. Put each recitation in its own scene and add the line \"LIP-SYNC RECITATION: [which verse or prayer, in Indonesian]\" to that scene: close-up or medium close-up, Ustad Taysir's face toward the camera, mouth never covered by hands or objects, one or two verses per clip. The video prompt of that scene contains NO verse or Arabic text and says: lip-sync only to the uploaded recitation audio; do not generate any voice, music, or melody. The user records a real human recitation and uploads it. The AI voice is used only for the Indonesian explanation in other scenes. In the editing guide, tell the user which recitation to record for which scene.";
+  // ================= AKUN DAN FORMAT (SP20) =================
+  // id tetap supaya proyek lama tetap terbuka: a1 Rio, a2 Mia, a3 Nara; baru: a4 Sugi Studio AI, a5 Ustad Taysir.
   var AKUN = {
-    a1: { outfitBawaan: { rio: "casual" }, label: "Akun 1 · Rio", nama: "Akun 1", namaAkun: "Rio | Suhu Digital", emoji: "🎬", figur: ["rio"], niche: "Tutorial ilmu AI, terutama membuat video AI",
-      nicheEn: "tutorials about AI tools, especially how to make AI videos",
+    a4: { label: "Akun 1 · Sugi Studio AI", nama: "Akun 1", namaAkun: "Sugi Studio AI", emoji: "🎓", figur: ["sugi"], niche: "Edukasi membuat video AI, live jualan kelas video AI dan aplikasi Sugi",
+      nicheEn: "teaching how to make AI videos step by step (the HOW), plus lives that sell an AI video class and the Sugi Studio app",
+      aturan: "Fikri teaches the practical HOW (steps, prompts, fixes). No promises of income or follower numbers. The app may be named \"Sugi Studio\".",
       format: [
-        { id: "tutorial", emoji: "📘", judul: "Tutorial langkah demi langkah", desc: "Rio menjelaskan tiap langkah; layar aplikasi dari rekaman layarmu", mesin: "th", layar: true, en: "step-by-step tutorial: Rio explains each step on camera" },
-        { id: "tips", emoji: "⚡", judul: "Tips cepat", desc: "Satu tips penting dalam 30–60 detik", mesin: "th", en: "one quick, practical tip" },
-        { id: "beforeafter", emoji: "🔁", judul: "Before–after", desc: "Prompt biasa vs prompt bagus, hasilnya dibandingkan", mesin: "th", layar: true, en: "before-vs-after: a weak prompt versus a strong prompt and the difference in results" },
-        { id: "kesalahan", emoji: "⚠️", judul: "Kesalahan pemula", desc: "Kesalahan umum dan cara memperbaikinya", mesin: "th", en: "common beginner mistakes when making AI videos and how to fix them" },
-        { id: "alatbaru", emoji: "🆕", judul: "Kenalan alat AI baru", desc: "Mengenalkan alat AI dan kegunaannya", mesin: "th", layar: true, en: "introducing a new AI tool and what it is useful for" },
-        { id: "komentar", emoji: "💬", judul: "Jawab pertanyaan komentar", desc: "Menjawab pertanyaan penonton", mesin: "th", en: "answering one viewer question from the comments" },
+        { id: "tutorial", emoji: "📘", judul: "Tutorial 1 menit", desc: "Fikri menjelaskan tiap langkah; layar aplikasi dari rekaman layarmu", mesin: "th", layar: true, en: "a one-minute step-by-step tutorial: Fikri explains each step on camera" },
+        { id: "beforeafter", emoji: "🔁", judul: "Sebelum-sesudah", desc: "Prompt biasa vs prompt Sugi, hasilnya dibandingkan", mesin: "th", layar: true, en: "before-vs-after: an ordinary prompt versus a Sugi Studio prompt and the difference in results" },
+        { id: "kesalahan", emoji: "🩹", judul: "Bedah kesalahan video AI", desc: "Tangan aneh, wajah berubah, benda hilang + cara memperbaiki", mesin: "th", layar: true, en: "breaking down a common AI video mistake (odd hands, changing face, vanishing object) and how to fix it" },
+        { id: "gaya3", emoji: "🎨", judul: "1 ide jadi 3 gaya video", desc: "Ide yang sama dibuat drama, iklan, dan edukasi", mesin: "th", layar: true, en: "one idea turned into three video styles (drama, ad, education)" },
+        { id: "karya", emoji: "🏆", judul: "Hasil karya member", desc: "Memamerkan karya member (dengan izin)", mesin: "th", layar: true, en: "showcasing a member's AI video (shown as a screen recording, with permission) and what makes it good" },
+        { id: "tantangan", emoji: "🔥", judul: "Tantangan mingguan", desc: "\"Tema minggu ini\" untuk penonton", mesin: "th", en: "announcing this week's AI video challenge theme and how to join" },
+        { id: "flow", emoji: "🎞️", judul: "Tips Flow singkat", desc: "Frame terakhir, Buat Ulang, lampirkan acuan", mesin: "th", layar: true, en: "one short Google Flow tip (last frame, regenerate, attaching references)" },
+        { id: "jadwal", emoji: "📣", judul: "Teaser jadwal live", desc: "Mengajak menonton live kelas video AI", mesin: "th", en: "a short teaser for the next live AI video class" },
+        { id: "fitur", emoji: "🆕", judul: "Demo fitur baru Sugi", desc: "Mengenalkan fitur baru aplikasi Sugi Studio", mesin: "th", layar: true, en: "demonstrating one new feature of the Sugi Studio app" },
+        { id: "tanyalive", emoji: "💬", judul: "Jawab pertanyaan penonton live", desc: "Pertanyaan dari live dijawab dalam video", mesin: "th", en: "answering one question a viewer asked during the live" },
         { id: "cerita", emoji: "🎭", judul: "Cerita atau skit bebas", desc: "Ceritakan idemu, AI menyesuaikan", mesin: "serba", en: "a short story or skit" }
       ] },
-    a2: { label: "Akun 2 · Mia", nama: "Akun 2", namaAkun: "Mia | Affiliate Pakai AI (@suhudigital123)", emoji: "🛍️", figur: ["mia"], niche: "Tutorial affiliate dengan video AI dan ilmu affiliate",
-      nicheEn: "affiliate marketing tutorials using AI videos, plus practical affiliate knowledge",
-      aturan: "Mia speaks and explains on camera in EVERY scene; never a scene that only shows tools or products without Mia explaining.",
+    a2: { outfitBawaan: { mia: "blazer" }, label: "Akun 2 · Mia", nama: "Akun 2", namaAkun: "Mia | Cuan Afiliasi AI (@suhudigital123)", emoji: "🛍️", figur: ["mia"], niche: "Keseharian fashionable, khusus baju; live kelas affiliate",
+      nicheEn: "fashionable daily life featuring ONLY clothing (tops, dresses, outerwear, modest wear) as affiliate products, plus lives that teach an affiliate class",
+      aturan: "Mia speaks and explains on camera in EVERY scene. The featured product is ALWAYS clothing, never bags or shoes (that is Nara's account). Mia's face and dark-grey hijab never change; her outfit may change per video and stays identical within this video. No invented sales numbers, income, or testimonials.",
       format: [
-        { id: "hari2", emoji: "⭐", judul: "Format Hari 2", desc: "Mia berdialog dan menjelaskan di setiap scene", mesin: "th", en: "Mia talks to the viewer and explains in every scene" },
-        { id: "ilmu", emoji: "🎓", judul: "Ilmu affiliate", desc: "Memilih produk, komisi, etalase, strategi", mesin: "th", en: "practical affiliate knowledge (choosing products, commission, showcase, strategy)" },
-        { id: "iklan", emoji: "🛍️", judul: "Contoh iklan produk + bedah", desc: "Mia menunjukkan contoh iklan video AI lalu membedahnya", mesin: "th", layar: true, en: "Mia shows an example AI product-ad video and breaks down why it works" },
+        { id: "ootd", emoji: "👗", judul: "Outfit hari ini", desc: "Keseharian Mia memakai baju yang dipromosikan", mesin: "th", outfit: { mia: "baru" }, en: "Mia's fashionable day wearing the featured clothing item, talking to the viewer" },
+        { id: "mixmatch", emoji: "🔄", judul: "1 baju 3 gaya", desc: "Satu baju dipadukan untuk beberapa suasana", mesin: "th", outfit: { mia: "baru" }, en: "one clothing item styled for three occasions (explained by Mia; each styling may be its own scene)" },
+        { id: "review", emoji: "🔍", judul: "Review baju jujur", desc: "Bahan, ukuran, kelebihan, kekurangan", mesin: "th", outfit: { mia: "baru" }, en: "an honest clothing review: fabric, fit and sizing, pros and cons (no invented claims)" },
+        { id: "ilmu", emoji: "🎓", judul: "Ilmu affiliate", desc: "Memilih produk baju, komisi, etalase, strategi", mesin: "th", en: "practical affiliate knowledge for clothing (choosing items, commission, showcase, strategy)" },
+        { id: "iklan", emoji: "🛍️", judul: "Contoh iklan baju + bedah", desc: "Mia menunjukkan contoh iklan video AI lalu membedahnya", mesin: "th", layar: true, en: "Mia shows an example AI clothing-ad video and breaks down why it works" },
         { id: "mitos", emoji: "🤔", judul: "Mitos vs fakta affiliate", desc: "Meluruskan anggapan yang keliru", mesin: "th", en: "affiliate myths versus facts" },
         { id: "studi", emoji: "📈", judul: "Studi kasus / dari nol", desc: "Perjalanan dan pelajaran nyata", mesin: "th", en: "a case study or a from-zero journey with honest lessons (no invented income claims)" },
+        { id: "jadwal", emoji: "📣", judul: "Ajakan live kelas affiliate", desc: "Teaser dan jadwal live", mesin: "th", en: "a short teaser inviting viewers to Mia's live affiliate class" },
         { id: "cerita", emoji: "🎭", judul: "Cerita atau skit bebas", desc: "Ceritakan idemu, AI menyesuaikan", mesin: "serba", en: "a short story or skit" }
       ] },
-    a3: { label: "Akun 3 · Nara", nama: "Akun 3", namaAkun: "Nara | Produk Digital AI", emoji: "💡", figur: ["nara"], niche: "Produk digital dan ilmu AI: membuat dan memasarkan produk digital dengan AI",
-      nicheEn: "digital products and AI: creating digital products with AI and marketing them with AI",
+    a3: { label: "Akun 3 · Nara", nama: "Akun 3", namaAkun: "Nara | Spesialis Tas & Sepatu", emoji: "👜", figur: ["nara"], niche: "Affiliate khusus tas dan sepatu (tanpa live)",
+      nicheEn: "affiliate content ONLY about bags and shoes: styling, honest reviews, how to choose and care for them",
+      aturan: "The featured product is ALWAYS a bag or a pair of shoes, never clothing (that is Mia's account). Show the product exactly as in the attached product photo when there is one. Nara has no live stream. No invented prices, sales numbers, claims, or testimonials.",
       format: [
-        { id: "idepro", emoji: "💡", judul: "Ide produk digital", desc: "Ide produk yang bisa dibuat dengan AI", mesin: "th", en: "digital product ideas that can be made with AI" },
-        { id: "proses", emoji: "🛠️", judul: "Bikin produk pakai AI", desc: "Ebook, template, kumpulan prompt", mesin: "th", layar: true, en: "the process of making a digital product (ebook, template, prompt pack) with AI" },
-        { id: "pasar", emoji: "📣", judul: "Memasarkan dengan AI", desc: "Caption, konten, dan promosi dibantu AI", mesin: "th", layar: true, en: "marketing a digital product with the help of AI" },
-        { id: "bedah", emoji: "🔍", judul: "Bedah produk digital laris", desc: "Kenapa produk itu laku", mesin: "th", en: "breaking down why a kind of digital product sells (no real brands)" },
-        { id: "seri", emoji: "🧭", judul: "Seri dari nol sampai terjual", desc: "Cerita bersambung membangun produk", mesin: "th", en: "an episode of a from-zero-to-first-sale series" },
+        { id: "padu", emoji: "✨", judul: "Padu padan tas & sepatu", desc: "Tas dan sepatu dipadukan dengan pakaian", mesin: "th", en: "styling: pairing the featured bag or shoes with an outfit" },
+        { id: "review", emoji: "🔍", judul: "Review jujur", desc: "Bahan, ukuran, muat apa saja, kelebihan dan kekurangan", mesin: "th", en: "an honest review of a bag or shoes: material, size, what fits inside or comfort, pros and cons" },
+        { id: "unboxing", emoji: "📦", judul: "Unboxing", desc: "Membuka paket tas atau sepatu", mesin: "th", en: "unboxing a bag or a pair of shoes and showing details" },
+        { id: "pilih", emoji: "🧭", judul: "Cara memilih", desc: "Tips memilih tas atau sepatu yang pas", mesin: "th", en: "tips for choosing the right bag or shoes" },
+        { id: "satu", emoji: "🗓️", judul: "1 tas untuk banyak acara", desc: "Satu tas/sepatu dipakai ke beberapa acara", mesin: "th", en: "one bag or pair of shoes worn for several occasions" },
+        { id: "rawat", emoji: "🧽", judul: "Cara merawat", desc: "Merawat tas dan sepatu supaya awet", mesin: "th", en: "how to care for bags and shoes so they last" },
         { id: "cerita", emoji: "🎭", judul: "Cerita atau skit bebas", desc: "Ceritakan idemu, AI menyesuaikan", mesin: "serba", en: "a short story or skit" }
       ] },
-    kolab: { outfitBawaan: { rio: "kasual", nara: "kasual" }, label: "Kolaborasi", nama: "Kolaborasi", emoji: "🤝", figur: ["rio", "mia", "nara"], niche: "Rio & Nara berpacaran, Mia sahabat mereka; saling mendukung antar-akun",
-      nicheEn: "Rio and Nara (a couple) and their close friend Mia, three creators from three accounts who support each other (AI video, affiliate, digital products)",
+    a5: { label: "Akun 4 · Ustad Taysir", nama: "Akun 4", namaAkun: "Ustad Taysir", emoji: "🕌", figur: ["taysir"], niche: "Pendidikan agama, khusus pendidikan anak; live baca Al-Qur'an metode Taysir",
+      nicheEn: "Islamic education focused on children (for parents and kids), plus lives teaching Qur'an reading with the Taysir method",
+      aturan: "Polite, gentle, warm tone; correct and mainstream teaching only (no invented hadith, rulings, or sources). Never generate Arabic letters or Qur'an text in any image, screen, or object (Arabic text is added in editing). No promises of instant results (never \"pasti lancar dalam 3 hari\"). Stories of prophets or companions never show the prophet or companion: use scenery, nature, objects, or hands only. Real student stories only from the user; never invent testimonials. No selling except politely inviting to his own Qur'an class. Children in examples are only talked about, never shown on screen.",
+      format: [
+        { id: "adab", emoji: "🤲", judul: "Satu adab sehari", desc: "Adab anak: makan, tidur, salam", mesin: "th", en: "one daily manner (adab) for children and how parents teach it" },
+        { id: "doa", emoji: "📿", judul: "Doa harian pendek", desc: "Doa pendek + cara mengajarkannya ke anak", mesin: "th", ayat: true, en: "a short daily prayer and how to teach it to a child (the Arabic prayer is a lip-sync recitation)" },
+        { id: "kisah", emoji: "🌿", judul: "Kisah teladan versi anak", desc: "Ilustrasi AI sebagai sisipan, tanpa sosok nabi/sahabat", mesin: "th", en: "a child-friendly exemplary story told by Ustad Taysir, with AI illustration inserts of scenery and objects only (never a prophet or companion)" },
+        { id: "ortu", emoji: "👨‍👩‍👧", judul: "Tips orang tua", desc: "Anak susah salat, main gawai, menegur dengan lembut", mesin: "th", en: "a gentle parenting tip (prayer habits, screen time, correcting kindly)" },
+        { id: "taysir", emoji: "📖", judul: "Pelajaran metode Taysir", desc: "Satu huruf atau satu hukum bacaan (lip-sync)", mesin: "th", ayat: true, en: "a short lesson of the Taysir Qur'an reading method: one letter or one reading rule, with lip-sync recitation" },
+        { id: "salahbaca", emoji: "⚠️", judul: "Kesalahan baca yang sering terjadi", desc: "Bacaan keliru + bacaan yang benar (lip-sync)", mesin: "th", ayat: true, en: "a common Qur'an reading mistake and the correct reading, with lip-sync recitation" },
+        { id: "tanyaortu", emoji: "💬", judul: "Tanya-jawab orang tua", desc: "Menjawab satu pertanyaan orang tua", mesin: "th", en: "answering one parent's question" },
+        { id: "jadwal", emoji: "📣", judul: "Ajakan live baca Al-Qur'an", desc: "Jadwal dan ajakan live metode Taysir", mesin: "th", en: "a gentle invitation to the live Qur'an reading class (Taysir method) and its schedule" },
+        { id: "murid", emoji: "🌱", judul: "Kisah perubahan murid", desc: "Hanya yang nyata dan diizinkan (tulis ceritanya)", mesin: "th", en: "a real student's progress story provided by the user, with permission (never invented)" },
+        { id: "jumat", emoji: "🕌", judul: "Renungan Jumat", desc: "Renungan singkat untuk keluarga", mesin: "th", en: "a short Friday reflection for families" }
+      ] },
+    a1: { outfitBawaan: { rio: "casual" }, label: "Akun 5 · Rio", nama: "Akun 5", namaAkun: "Rio | Suhu Digital", emoji: "🎬", figur: ["rio"], niche: "Pendiri dan pembawa acara geng: kabar AI singkat, di balik layar, pola pikir kreator, kerja bareng geng (tanpa live)",
+      nicheEn: "the founder and host of a creator crew: short AI news, behind the scenes, the creator mindset (the WHY, not step-by-step tutorials), and collaborations",
+      aturan: "Rio has no live stream. He explains the WHY and the story, not step-by-step tutorials (those belong to the Sugi Studio AI account). When it fits, he points viewers to the Sugi Studio AI live (AI video class) or Mia's live (affiliate class).",
+      format: [
+        { id: "kabar", emoji: "📰", judul: "Kabar AI singkat", desc: "Satu kabar AI dan artinya bagi kreator", mesin: "th", en: "one short piece of AI news and what it means for creators (no invented facts)" },
+        { id: "balik", emoji: "🎬", judul: "Di balik layar", desc: "Proses kerja geng, rapat, gagal dan berhasil", mesin: "th", en: "behind the scenes of the crew's work" },
+        { id: "pikir", emoji: "🧠", judul: "Pola pikir kreator", desc: "Konsisten, mental, alasan di balik keputusan", mesin: "th", en: "creator mindset: consistency, motivation, the reasons behind decisions" },
+        { id: "geng", emoji: "🤝", judul: "Kenalan geng", desc: "Mengenalkan akun lain dan live Sugi Studio & Mia", mesin: "th", en: "introducing the other crew accounts and pointing viewers to the Sugi Studio AI live and Mia's live" },
+        { id: "komentar", emoji: "💬", judul: "Jawab komentar", desc: "Menjawab pertanyaan penonton soal dunia kreator", mesin: "th", en: "answering one viewer question about the creator life" },
+        { id: "cerita", emoji: "🎭", judul: "Cerita atau skit bebas", desc: "Ceritakan idemu, AI menyesuaikan", mesin: "serba", en: "a short story or skit" }
+      ] },
+    kolab: { outfitBawaan: { rio: "kasual", nara: "kasual" }, label: "Kolaborasi", nama: "Kolaborasi", emoji: "🤝", figur: ["rio", "mia", "nara"], niche: "Geng Suhu Digital: Rio & Nara berpacaran, Mia dan Fikri sahabat, Ustad Taysir kakak Fikri",
+      nicheEn: "the Suhu Digital crew: Rio (host) and Nara (a couple), their close friends Mia and Fikri, and Fikri's older brother Ustad Taysir; creators from five accounts who support each other (AI video, clothing affiliate, bags and shoes, Islamic education for children)",
       aturan: "Warm, supportive banter; each host speaks from their own niche. This is not a podcast studio unless the location is a studio: no podcast microphones.",
       format: [
         { id: "pasangan", emoji: "💑", judul: "Konten Rio & Nara", desc: "Kerja bareng, ngonten bareng, saling dukung bisnis", mesin: "serba", figur: ["rio", "nara"], outfit: { rio: "kasual", nara: "kasual" }, serasi: true, en: "a wholesome couple video: Rio and Nara work together, create content together, or support each other's business" },
+        { id: "kakakadik", emoji: "👬", judul: "Kakak-adik: Ustad Taysir & Fikri", desc: "Konten keluarga, adab, \"kakakku ustaz, aku tukang AI\"", mesin: "serba", figur: ["taysir", "sugi"], en: "a warm family video of two brothers: Ustad Taysir and his younger brother Fikri (family life, manners, light humor about an ustaz and an AI creator); no selling" },
         { id: "obrolan", emoji: "☕", judul: "Obrolan sahabat", desc: "Ngobrol santai saling berbagi", mesin: "podcast", en: "a relaxed chat between friends who share tips from their own niches" },
         { id: "tanya", emoji: "🙋", judul: "Saling tanya / saling tantang", desc: "Satu bertanya, yang lain menjawab atau ditantang", mesin: "podcast", en: "the friends quiz or challenge each other" },
         { id: "diskusi", emoji: "🧠", judul: "Diskusi rencana konten", desc: "Rapat santai di Markas", mesin: "podcast", en: "a casual planning discussion about content" },
-        { id: "skit", emoji: "🎭", judul: "Skit Rio, Nara & Mia", desc: "Cerita lucu atau menyentuh", mesin: "serba", en: "a short skit starring the hosts" }
+        { id: "skit", emoji: "🎭", judul: "Skit geng", desc: "Cerita lucu atau menyentuh", mesin: "serba", en: "a short skit starring the hosts" }
       ] }
   };
-  var URUT_AKUN = ["a1", "a2", "a3", "kolab"];
+  var URUT_AKUN = ["a4", "a2", "a3", "a5", "a1", "kolab"];
   // SP5: ajakan di akhir video (maks. 2, atau AI tentukan), per akun
   var AJAKAN = [
     { id: "ai", emoji: "🤖", label: "AI tentukan sesuai isi video", en: "choose ONE fitting call to action yourself (follow, comment, or save)" },
     { id: "follow", emoji: "➕", label: "Follow untuk tips berikutnya", en: "invite viewers to follow the account for the next tips" },
     { id: "komen", emoji: "💬", label: "Komentar / jawab pertanyaan", en: "invite viewers to comment or answer a short question in the comments" },
     { id: "simpan", emoji: "🔖", label: "Simpan dan bagikan", en: "invite viewers to save the video and share it with a friend" },
-    { id: "live", emoji: "🔴", label: "Tonton live", en: "invite viewers to watch the next live" },
-    { id: "kelas", emoji: "🎓", label: "Ikut kelas / cek link di bio", akun: ["a1"], en: "invite viewers to join the class through the link in bio" },
-    { id: "keranjang", emoji: "🛒", label: "Cek keranjang kuning / etalase", akun: ["a2"], en: "invite viewers to check the yellow basket or showcase" },
-    { id: "produk", emoji: "🛍️", label: "Cek produk digital di bio", akun: ["a3"], en: "invite viewers to check the digital product through the link in bio" },
+    { id: "live", emoji: "🔴", label: "Tonton live", akun: ["a4", "a2", "a5"], en: "invite viewers to watch the next live" },
+    { id: "kelas", emoji: "🎓", label: "Ikut kelas video AI / cek link di bio", akun: ["a4"], en: "invite viewers to join the AI video class or try the Sugi Studio app through the link in bio" },
+    { id: "keranjang", emoji: "🛒", label: "Cek keranjang kuning / etalase", akun: ["a2", "a3"], en: "invite viewers to check the yellow basket or showcase" },
+    { id: "kelasaff", emoji: "🎓", label: "Ikut kelas affiliate di live", akun: ["a2"], en: "invite viewers to join the affiliate class in the next live" },
+    { id: "kelastaysir", emoji: "📖", label: "Daftar kelas baca Al-Qur'an metode Taysir", akun: ["a5"], en: "politely invite parents to register for the Qur'an reading class (Taysir method) through the link in bio" },
+    { id: "livesugi", emoji: "🎬", label: "Tonton live Sugi Studio AI", akun: ["a1", "kolab"], en: "invite viewers to watch the Sugi Studio AI live (AI video class)" },
+    { id: "livemia", emoji: "🛍️", label: "Tonton live Mia (kelas affiliate)", akun: ["a1", "kolab"], en: "invite viewers to watch Mia's live (affiliate class)" },
+    { id: "produk", emoji: "🛍️", label: "Cek produk digital di bio", akun: [], en: "invite viewers to check the digital product through the link in bio" },
     { id: "episode", emoji: "⏭️", label: "Tunggu episode berikutnya", en: "invite viewers to wait for the next episode" }
   ];
   function ajakanAkun(a) { return AJAKAN.filter(function (x) { return !x.akun || x.akun.indexOf(a) >= 0; }); }
 
   // ================= KEADAAN =================
   var halaman = "beranda", pil = null, fotoResmi = {}, fotoSementara = {}, mesinCache = {};
-  var ideAkun = "a1", ideJumlah = 3, ideTema = "", ideHasil = [], ideMuat = false, ideGalat = "";
+  var ideAkun = "a4", ideJumlah = 3, ideTema = "", ideHasil = [], ideMuat = false, ideGalat = "";
   var kerja = [], kini = -1, nomor = 0;
 
   function $(id) { return document.getElementById(id); }
   function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
+  function detailKosong() { var d = {}; URUT_FIGUR.forEach(function (id) { d[id] = {}; }); return d; }
   function figurAkun(a) { return a === "kolab" && pil ? pil.figur : AKUN[a].figur; }
   function cariFormat(a, id) { return AKUN[a].format.filter(function (f) { return f.id === id; })[0] || null; }
   var BLOK = /\b(1[0-7]|[1-9])\s*(th|tahun|thn)\b|\banak[- ]?anak\b|\bbalita\b|\bremaja\b|\bABG\b|\bbocah\b|\bpelajar SMP\b|\bSD\b/i;
@@ -336,7 +428,7 @@ var SP = (function () {
     h += '<div class="grid2 sempit1" style="margin-top:10px">';
     h += '<button class="kartu" onclick="SP.buka(\'ide\')"><span class="ikon">📅</span><span><b>Judul Konten</b><small>Bank judul siap pakai + judul baru dari AI, per akun</small></span></button>';
     h += '<button class="kartu" onclick="SP.buka(\'lanjut\')"><span class="ikon">📂</span><span><b>Proyek Saya</b><small>' + (akun ? 'Proyek tersimpan di akun, atau tempel Kode Proyek' : 'Proyek di HP ini, atau tempel Kode Proyek') + '</small></span></button>';
-    h += '<button class="kartu" onclick="SP.buka(\'bank\')"><span class="ikon">👥</span><span><b>Bank Figur & Lokasi</b><small>Lihat data Rio, Mia, Nara, dan tempatnya</small></span></button>';
+    h += '<button class="kartu" onclick="SP.buka(\'bank\')"><span class="ikon">👥</span><span><b>Bank Figur & Lokasi</b><small>Lihat data kelima figur dan tempatnya</small></span></button>';
     h += '</div>';
     if (kerja.length) h += '<div class="baik">▶ ' + kerja.length + ' video sedang dibuka. Ketuk tab di atas untuk melanjutkan.</div>';
     h += '<p class="catatan tengah" style="margin-top:22px">Studio Pribadi ' + VERSI + ' · mesin Sugi Studio (Kreator & Serba Bisa) · paling banyak ' + BATAS + ' video bersamaan</p>';
@@ -346,7 +438,7 @@ var SP = (function () {
   // ---------- Halaman akun (pengaturan video) ----------
   function mulaiPilihan(a, formatId, ide) {
     judulFilter = ""; judulAcak = 0; judulSemua = false; judulGalat = "";
-    pil = { detail: { rio: {}, mia: {}, nara: {} }, serasi: false, akun: a, figur: AKUN[a].figur.slice(), format: formatId || "", formatSendiri: "", outfit: {}, foto: {}, lokasi: "", lokasiSendiri: "", ide: ide || "", ajakan: ["ai"], ajakanSendiri: "", jadwalLive: "" };
+    pil = { detail: detailKosong(), serasi: false, akun: a, figur: AKUN[a].figur.slice(), format: formatId || "", formatSendiri: "", outfit: {}, foto: {}, lokasi: "", lokasiSendiri: "", ide: ide || "", ajakan: ["ai"], ajakanSendiri: "", jadwalLive: "" };
     if (formatId && !cariFormat(a, formatId)) { pil.format = "__sendiri"; pil.formatSendiri = formatId; }
     URUT_FIGUR.forEach(function (id) {
       var o = FIGUR[id].outfit.filter(function (x) { return x.saran; })[0];
@@ -358,76 +450,86 @@ var SP = (function () {
   }
   // ================= SP17: BANK JUDUL KONTEN (siap pakai, per akun; f = format yang disarankan) =================
   var BANK_JUDUL = {
-    a1: [
-      ["Cara bikin foto bicara pakai AI dalam 2 langkah", "tutorial"], ["Ubah satu foto jadi video talking head", "tutorial"], ["Cara bikin video AI pertamamu dari nol", "tutorial"],
-      ["Cara bikin prompt video yang langsung jadi", "tutorial"], ["Cara bikin karakter AI yang wajahnya konsisten", "tutorial"], ["Cara bikin video AI 9:16 untuk TikTok", "tutorial"],
-      ["Cara menyambung klip AI supaya tidak patah", "tutorial"], ["Cara bikin suara AI yang terdengar natural", "tutorial"], ["Cara ganti background video tanpa green screen", "tutorial"],
-      ["Cara bikin video iklan produk pakai AI", "tutorial"], ["Cara pakai gambar awal supaya video AI rapi", "tutorial"], ["Cara bikin video AI tanpa tampil di kamera", "tutorial"],
-      ["Cara bikin subtitle otomatis untuk video AI", "tutorial"], ["Cara bikin video AI lip-sync yang pas", "tutorial"], ["Cara edit hasil video AI di HP", "tutorial"],
-      ["1 trik bikin wajah AI tidak berubah", "tips"], ["Rahasia prompt video yang jarang orang tahu", "tips"], ["Tips bikin gerakan AI terlihat alami", "tips"],
-      ["Satu kata yang bikin video AI lebih sinematik", "tips"], ["Tips cahaya supaya video AI tidak plastik", "tips"], ["Trik bikin tangan AI tidak aneh", "tips"],
-      ["Tips memilih durasi klip AI yang pas", "tips"], ["Trik bikin AI menuruti arah kamera", "tips"], ["Tips bikin video AI tanpa musik yang bentrok", "tips"],
-      ["Prompt biasa vs prompt detail: bedanya jauh", "beforeafter"], ["Video AI tanpa Character Sheet vs dengan Character Sheet", "beforeafter"], ["Sebelum dan sesudah pakai Realism Lock", "beforeafter"],
-      ["Kamera bebas vs kamera terkunci: mana lebih rapi?", "beforeafter"], ["Hasil AI tanpa gambar awal vs dengan gambar awal", "beforeafter"], ["Suara AI datar vs suara AI berintonasi", "beforeafter"],
-      ["5 kesalahan pemula saat bikin video AI", "kesalahan"], ["Jangan tulis prompt seperti ini", "kesalahan"], ["Kesalahan yang bikin wajah AI berubah-ubah", "kesalahan"],
-      ["Kenapa video AI-mu kelihatan palsu?", "kesalahan"], ["Kesalahan memilih durasi yang bikin ucapan terpotong", "kesalahan"], ["Hindari 3 hal ini di prompt video", "kesalahan"],
-      ["Kenalan dengan alat AI pembuat video dari teks", "alatbaru"], ["Alat AI untuk bikin suara dari naskah", "alatbaru"], ["Alat AI untuk menghapus background dalam sekejap", "alatbaru"],
-      ["Alat AI gratis untuk pemula video", "alatbaru"], ["Alat AI untuk bikin thumbnail menarik", "alatbaru"],
-      ["Ditanya: video AI boleh dimonetisasi?", "komentar"], ["Ditanya: HP kentang bisa bikin video AI?", "komentar"], ["Ditanya: kenapa wajah AI-ku beda di tiap klip?", "komentar"],
-      ["Ditanya: berapa lama bikin satu video AI?", "komentar"], ["Ditanya: mulai dari mana kalau belum pernah?", "komentar"],
-      ["Hari pertama aku belajar video AI", "cerita"], ["Waktu video AI-ku gagal total", "cerita"], ["Pura-pura jadi sutradara film AI", "cerita"]
+    a4: [
+      ["Bikin video bicara dari 1 foto dalam 1 menit", "tutorial"], ["Cara bikin video AI pertamamu dari nol", "tutorial"], ["Cara bikin karakter AI yang wajahnya konsisten", "tutorial"],
+      ["Cara bikin video AI 9:16 untuk TikTok", "tutorial"], ["Cara bikin suara AI yang terdengar natural", "tutorial"], ["Cara bikin video iklan produk pakai AI", "tutorial"],
+      ["Cara pakai gambar awal supaya video AI rapi", "tutorial"], ["Cara bikin video AI lip-sync yang pas", "tutorial"], ["Cara edit hasil video AI di HP", "tutorial"],
+      ["Prompt biasa vs prompt Sugi: bedanya jauh", "beforeafter"], ["Tanpa Character Sheet vs dengan Character Sheet", "beforeafter"], ["Hasil AI tanpa gambar awal vs dengan gambar awal", "beforeafter"],
+      ["Suara AI datar vs suara AI berintonasi", "beforeafter"], ["Kamera bebas vs kamera terkunci: mana lebih rapi?", "beforeafter"],
+      ["Kenapa tangan di video AI-mu aneh, dan cara memperbaikinya", "kesalahan"], ["Wajah AI berubah-ubah? Ini penyebabnya", "kesalahan"], ["Benda tiba-tiba hilang di video AI: begini cara mencegahnya", "kesalahan"],
+      ["Warna video AI bergeser antar-scene? Perbaiki begini", "kesalahan"], ["Ucapan AI terpotong di akhir klip: penyebab dan solusinya", "kesalahan"],
+      ["1 ide jadi 3 gaya video: drama, iklan, edukasi", "gaya3"], ["Satu cerita, tiga gaya: mana yang paling kamu suka?", "gaya3"], ["Ide sederhana jadi 3 video berbeda pakai Sugi", "gaya3"],
+      ["Karya member minggu ini: lihat hasilnya", "karya"], ["Bedah karya member: kenapa video ini berhasil", "karya"], ["Dari pemula jadi bisa: karya member Sugi", "karya"],
+      ["Tantangan minggu ini: bikin video AI tema hujan", "tantangan"], ["Tantangan: bikin iklan 15 detik pakai AI", "tantangan"], ["Tema minggu ini: cerita dalam 3 scene", "tantangan"],
+      ["Tips Flow: pakai frame terakhir supaya klip nyambung", "flow"], ["Tips Flow: kapan harus Buat Ulang", "flow"], ["Tips Flow: lampirkan acuan supaya wajah sama", "flow"], ["Tips Flow: urutan gambar acuan yang benar", "flow"],
+      ["Malam ini live: bikin video AI bareng dari nol", "jadwal"], ["Live kelas video AI: siapkan HP-mu", "jadwal"], ["Jadwal live minggu ini dan materinya", "jadwal"],
+      ["Fitur baru Sugi: Papan Cerita", "fitur"], ["Fitur baru Sugi: periksa naskah dulu sebelum lanjut", "fitur"], ["Fitur baru Sugi: Lembar Produk 4 sisi", "fitur"], ["Fitur baru Sugi: ubah pilihan dan buat ulang", "fitur"],
+      ["Ditanya di live: HP kentang bisa bikin video AI?", "tanyalive"], ["Ditanya di live: berapa lama bikin satu video AI?", "tanyalive"], ["Ditanya di live: kenapa wajah AI-ku beda di tiap klip?", "tanyalive"],
+      ["Waktu video AI-ku gagal total di depan klien", "cerita"], ["Pura-pura jadi sutradara film AI", "cerita"]
     ],
     a2: [
-      ["Cara mulai affiliate tanpa modal pakai video AI", "hari2"], ["Bikin video affiliate tanpa tampil wajah", "hari2"], ["Satu video AI untuk banyak produk affiliate", "hari2"],
-      ["Rutinitas posting affiliate harian pakai AI", "hari2"], ["Cara bikin konten affiliate saat tidak sempat syuting", "hari2"], ["Bikin video unboxing pakai AI", "hari2"],
-      ["Cara bikin hook affiliate di 2 detik pertama", "hari2"], ["Cara bikin video review produk pakai AI", "hari2"], ["Video affiliate 15 detik yang bikin orang klik", "hari2"],
-      ["Cara memilih produk affiliate yang laris", "ilmu"], ["Cara menata etalase supaya gampang dibeli", "ilmu"], ["Cara membaca komisi supaya tidak salah pilih", "ilmu"],
-      ["Jam posting terbaik untuk konten affiliate", "ilmu"], ["Cara riset produk yang sedang naik", "ilmu"], ["Cara menulis caption affiliate yang menjual", "ilmu"],
-      ["Strategi satu produk banyak video", "ilmu"], ["Cara menjawab komentar calon pembeli", "ilmu"], ["Cara memilih hashtag affiliate", "ilmu"],
-      ["Bedah iklan AI: kenapa video ini menarik?", "iklan"], ["Contoh iklan skincare pakai video AI lalu dibedah", "iklan"], ["Contoh iklan fashion AI dan cara meniru polanya", "iklan"],
-      ["Contoh iklan makanan pakai AI: bagian mana yang bikin lapar?", "iklan"], ["Bedah hook iklan produk rumah tangga", "iklan"], ["Contoh iklan gadget AI dan struktur ceritanya", "iklan"],
-      ["Mitos: affiliate harus punya banyak followers", "mitos"], ["Mitos: video AI tidak bisa laku", "mitos"], ["Mitos: harus beli produk dulu sebelum promosi", "mitos"],
-      ["Benarkah posting tiap hari pasti FYP?", "mitos"], ["Mitos: affiliate itu harus jago ngomong", "mitos"], ["Fakta atau mitos: harga murah pasti laris", "mitos"],
-      ["Affiliate dari nol: hari pertama Mia", "studi"], ["Pelajaran dari video affiliate yang sepi penonton", "studi"], ["Yang Mia ubah setelah seminggu posting", "studi"],
-      ["Perjalanan pertama kali dapat komisi", "studi"], ["Uji coba 3 gaya video untuk produk yang sama", "studi"],
-      ["Waktu Mia salah pilih produk", "cerita"], ["Mia mencoba jadi bintang iklan AI", "cerita"], ["Drama keranjang kuning yang terlupa", "cerita"]
+      ["Outfit kerja hari ini: blazer yang bikin percaya diri", "ootd"], ["Outfit santai akhir pekan yang tetap rapi", "ootd"], ["Outfit kondangan modest yang anggun", "ootd"],
+      ["Outfit ngantor saat hujan", "ootd"], ["Satu hari pakai tunik baru: nyaman nggak?", "ootd"], ["Outfit ke kafe yang simpel tapi modis", "ootd"],
+      ["1 kemeja putih, 3 gaya berbeda", "mixmatch"], ["1 blazer untuk kerja, nongkrong, dan acara", "mixmatch"], ["1 rok plisket, 3 suasana", "mixmatch"], ["1 cardigan untuk seminggu", "mixmatch"],
+      ["Review jujur gamis kekinian: bahannya gimana?", "review"], ["Review jujur kemeja oversize: ukurannya pas?", "review"], ["Review jujur celana kulot: panas atau adem?", "review"], ["Kelebihan dan kekurangan blazer ini", "review"],
+      ["Cara memilih baju affiliate yang laris", "ilmu"], ["Cara menata etalase baju supaya gampang dibeli", "ilmu"], ["Cara membaca komisi supaya tidak salah pilih", "ilmu"],
+      ["Cara menjawab komentar soal ukuran baju", "ilmu"], ["Cara menulis caption baju yang menjual", "ilmu"], ["Strategi satu baju banyak video", "ilmu"],
+      ["Bedah iklan baju AI: kenapa video ini menarik?", "iklan"], ["Contoh iklan gamis pakai video AI lalu dibedah", "iklan"], ["Bedah hook iklan fashion 3 detik pertama", "iklan"],
+      ["Mitos: affiliate baju harus punya banyak followers", "mitos"], ["Mitos: harus beli baju dulu sebelum promosi", "mitos"], ["Fakta atau mitos: baju murah pasti laris", "mitos"],
+      ["Affiliate baju dari nol: hari pertama Mia", "studi"], ["Yang Mia ubah setelah seminggu posting baju", "studi"], ["Uji coba 3 gaya video untuk baju yang sama", "studi"],
+      ["Malam ini live kelas affiliate: bawa pertanyaanmu", "jadwal"], ["Live kelas affiliate minggu ini: materinya apa?", "jadwal"],
+      ["Waktu Mia salah ukuran baju", "cerita"], ["Drama keranjang kuning yang terlupa", "cerita"]
     ],
     a3: [
-      ["5 ide produk digital yang bisa dibuat pakai AI", "idepro"], ["Ide produk digital untuk pemula tanpa modal", "idepro"], ["Produk digital yang bisa dibuat dalam sehari", "idepro"],
-      ["Ide template yang dicari banyak orang", "idepro"], ["Ide ebook singkat dari keahlianmu sendiri", "idepro"], ["Ide kumpulan prompt yang bisa dijual", "idepro"],
-      ["Ide planner digital untuk ibu rumah tangga", "idepro"], ["Ide produk digital untuk pelajar dan mahasiswa", "idepro"],
-      ["Cara bikin ebook pakai AI dalam satu sore", "proses"], ["Cara bikin template Canva dibantu AI", "proses"], ["Cara bikin kumpulan prompt yang rapi", "proses"],
-      ["Cara bikin cover produk digital pakai AI", "proses"], ["Cara bikin checklist digital yang menarik", "proses"], ["Cara bikin mini course pakai AI", "proses"],
-      ["Cara mengecek kualitas produk buatan AI", "proses"], ["Cara bikin worksheet yang siap cetak", "proses"],
-      ["Cara bikin caption jualan pakai AI", "pasar"], ["Cara bikin video promosi produk digital", "pasar"], ["Cara menulis halaman jualan dibantu AI", "pasar"],
-      ["Cara bikin konten edukasi yang ujungnya jualan", "pasar"], ["Cara menentukan harga produk digital", "pasar"], ["Cara bikin testimoni jujur dari pembeli pertama", "pasar"],
-      ["Cara promosi produk digital tanpa iklan berbayar", "pasar"], ["Cara bikin bonus yang bikin orang jadi beli", "pasar"],
-      ["Kenapa template sederhana justru laris?", "bedah"], ["Bedah ebook yang laku: apa rahasianya?", "bedah"], ["Kenapa produk digital murah lebih cepat terjual?", "bedah"],
-      ["Bedah halaman jualan yang bikin orang percaya", "bedah"], ["Kenapa planner digital selalu dicari?", "bedah"],
-      ["Dari nol sampai terjual: episode 1, menentukan ide", "seri"], ["Dari nol sampai terjual: episode 2, membuat produk", "seri"], ["Dari nol sampai terjual: episode 3, halaman jualan", "seri"],
-      ["Dari nol sampai terjual: episode 4, promosi pertama", "seri"], ["Dari nol sampai terjual: episode 5, pembeli pertama", "seri"],
-      ["Waktu Nara hampir menyerah", "cerita"], ["Nara menjelaskan produk digital ke ibunya", "cerita"], ["Produk pertama Nara yang tidak laku", "cerita"]
+      ["Tas selempang ini cocok untuk 3 outfit", "padu"], ["Padu padan sneakers putih untuk ke kantor", "padu"], ["Tas kerja yang serasi dengan sepatu flat", "padu"],
+      ["Warna tas yang cocok untuk baju gelap", "padu"], ["Sepatu loafer: cocok dipakai dengan apa saja?", "padu"],
+      ["Review jujur tas kerja: muat laptop nggak?", "review"], ["Review jujur sneakers: nyaman dipakai jalan seharian?", "review"], ["Review jujur tas mini: muat apa saja?", "review"], ["Kelebihan dan kekurangan sepatu ini", "review"],
+      ["Unboxing tas baru: detailnya rapi nggak?", "unboxing"], ["Unboxing sepatu: cek jahitan dan solnya", "unboxing"], ["Unboxing tas kanvas untuk kuliah", "unboxing"],
+      ["Cara memilih ukuran sepatu belanja online", "pilih"], ["Cara memilih tas kerja yang awet", "pilih"], ["Tas untuk tubuh mungil: pilih yang mana?", "pilih"], ["Cara memilih sepatu untuk kaki lebar", "pilih"],
+      ["1 tas untuk kerja, kondangan, dan jalan-jalan", "satu"], ["1 sepatu untuk 5 acara berbeda", "satu"], ["Tas hitam: teman segala acara", "satu"],
+      ["Cara merawat tas kulit supaya awet", "rawat"], ["Cara membersihkan sneakers putih", "rawat"], ["Cara menyimpan tas supaya bentuknya tidak rusak", "rawat"], ["Sepatu bau? Ini cara merawatnya", "rawat"],
+      ["Waktu Nara salah pilih ukuran sepatu", "cerita"], ["Isi tas Nara hari ini", "cerita"]
+    ],
+    a5: [
+      ["Adab makan untuk anak: mulai dari bismillah", "adab"], ["Adab sebelum tidur yang bisa diajarkan sejak kecil", "adab"], ["Mengajarkan anak mengucap salam", "adab"],
+      ["Adab kepada orang tua: mulai dari hal kecil", "adab"], ["Adab di masjid untuk anak", "adab"],
+      ["Doa sebelum makan dan cara mengajarkannya ke anak", "doa"], ["Doa sebelum tidur untuk anak", "doa"], ["Doa keluar rumah: ajarkan anak sejak dini", "doa"], ["Doa untuk kedua orang tua", "doa"],
+      ["Kisah teladan: kejujuran yang membawa berkah", "kisah"], ["Kisah teladan: berbagi walau sedikit", "kisah"], ["Kisah teladan: sabar menghadapi ujian", "kisah"],
+      ["Anak susah salat? Coba cara lembut ini", "ortu"], ["Anak terlalu lama main gawai: cara menegur dengan lembut", "ortu"], ["Cara menegur anak tanpa membentak", "ortu"], ["Membiasakan anak mengaji tanpa paksaan", "ortu"],
+      ["Metode Taysir: mengenal huruf alif sampai tsa", "taysir"], ["Metode Taysir: hukum nun mati yang paling sering", "taysir"], ["Metode Taysir: cara membaca mad thabi'i", "taysir"], ["Metode Taysir: belajar makhraj dengan mudah", "taysir"],
+      ["Kesalahan baca yang sering terjadi di surat Al-Fatihah", "salahbaca"], ["Bacaan yang sering tertukar: ha dan kha", "salahbaca"], ["Panjang pendek yang sering keliru", "salahbaca"],
+      ["Ditanya orang tua: umur berapa anak mulai mengaji?", "tanyaortu"], ["Ditanya orang tua: bagaimana kalau anak bosan mengaji?", "tanyaortu"], ["Ditanya: bolehkah belajar mengaji lewat live?", "tanyaortu"],
+      ["Malam ini live baca Al-Qur'an metode Taysir", "jadwal"], ["Jadwal live mengaji minggu ini", "jadwal"],
+      ["Kisah murid yang dulu takut mengaji", "murid"], ["Perjalanan murid belajar huruf hijaiyah", "murid"],
+      ["Renungan Jumat: syukur dalam keluarga", "jumat"], ["Renungan Jumat: sabar mendidik anak", "jumat"], ["Renungan Jumat: rumah yang tenang", "jumat"]
+    ],
+    a1: [
+      ["Kabar AI minggu ini: apa artinya untuk kreator?", "kabar"], ["Alat AI baru muncul lagi: perlu panik?", "kabar"], ["Kabar AI singkat: video makin mudah dibuat", "kabar"], ["Satu kabar AI yang wajib kreator tahu", "kabar"],
+      ["Di balik layar: rapat konten geng Suhu Digital", "balik"], ["Di balik layar: video yang gagal sebelum yang berhasil", "balik"], ["Di balik layar: satu hari membuat konten", "balik"], ["Di balik layar: menyiapkan live Sugi Studio", "balik"],
+      ["Kenapa aku tidak berhenti walau video sepi", "pikir"], ["Konsisten itu bukan soal semangat", "pikir"], ["Jangan bandingkan hari pertamamu dengan tahun kelima orang lain", "pikir"], ["Kenapa aku memilih AI untuk berkarya", "pikir"], ["Kreator yang bertahan itu yang mau belajar", "pikir"],
+      ["Kenalan geng: siapa saja di balik Suhu Digital", "geng"], ["Mau belajar bikin video AI? Tonton live Sugi Studio", "geng"], ["Mau belajar affiliate? Mampir ke live Mia", "geng"], ["Lima akun, satu geng: kenapa kami berbagi niche", "geng"],
+      ["Ditanya: mulai jadi kreator dari mana?", "komentar"], ["Ditanya: bagaimana kalau kehabisan ide?", "komentar"], ["Ditanya: perlu alat mahal untuk mulai?", "komentar"],
+      ["Hari pertama aku jadi kreator", "cerita"], ["Waktu Rio salah kirim prompt ke grup", "cerita"]
     ],
     kolab: [
-      ["Rio dan Nara bikin konten bareng di akhir pekan", "pasangan"], ["Nara menantang Rio bikin video AI dalam 10 menit", "pasangan"], ["Rio bantu Nara bikin video promosi produknya", "pasangan"],
-      ["Nara mengajari Rio membuat ebook", "pasangan"], ["Rio dan Nara mencoba alat AI yang sama", "pasangan"], ["Kencan sambil kerja: Rio dan Nara di kafe langganan", "pasangan"],
-      ["Rio dan Nara saling memberi masukan konten", "pasangan"], ["Rio memberi kejutan kecil untuk peluncuran produk Nara", "pasangan"],
-      ["Ngobrol santai: alat AI favorit kami bertiga", "obrolan"], ["Ngobrol: kenapa kami memilih niche masing-masing", "obrolan"], ["Ngobrol: kebiasaan kecil yang bikin konsisten", "obrolan"],
-      ["Ngobrol: konten pertama kami dulu seperti apa", "obrolan"], ["Ngobrol: cara membagi waktu kerja dan istirahat", "obrolan"],
-      ["Tantangan: tebak prompt dari hasil videonya", "tanya"], ["Mia menguji Rio soal affiliate", "tanya"], ["Rio menguji Nara soal video AI", "tanya"],
-      ["Kuis kilat: siapa paling tahu alat AI?", "tanya"], ["Tantangan bikin judul paling menarik dalam 1 menit", "tanya"],
-      ["Rapat konten bulan depan di Markas", "diskusi"], ["Diskusi: konten kolaborasi apa yang paling ditunggu?", "diskusi"], ["Menyusun jadwal posting bertiga", "diskusi"],
-      ["Diskusi: ide seri baru untuk ketiga akun", "diskusi"],
-      ["Skit: Mia jadi juri video AI Rio", "skit"], ["Skit: Rio salah kirim prompt ke grup", "skit"], ["Skit: laptop Nara mogok saat deadline", "skit"],
-      ["Skit: tiga kreator, satu ide yang sama", "skit"], ["Skit: Mia memergoki Rio dan Nara rapat sambil ngemil", "skit"]
+      ["Rio dan Nara bikin konten bareng di akhir pekan", "pasangan"], ["Nara menantang Rio memilih tas untuk acara", "pasangan"], ["Rio bantu Nara bikin video review sepatu", "pasangan"],
+      ["Rio dan Nara saling memberi masukan konten", "pasangan"], ["Kencan sambil kerja: Rio dan Nara di kafe langganan", "pasangan"],
+      ["Kakakku ustaz, aku tukang AI", "kakakadik"], ["Ustad Taysir belajar bikin video AI dari adiknya", "kakakadik"], ["Fikri belajar adab makan dari kakaknya", "kakakadik"],
+      ["Kakak-adik: nasihat kecil sebelum berangkat kerja", "kakakadik"], ["Kakak-adik sahur bersama", "kakakadik"],
+      ["Ngobrol santai: alat AI favorit kami", "obrolan"], ["Ngobrol: kenapa kami memilih niche masing-masing", "obrolan"], ["Ngobrol: kebiasaan kecil yang bikin konsisten", "obrolan"], ["Ngobrol: konten pertama kami dulu seperti apa", "obrolan"],
+      ["Tantangan: tebak prompt dari hasil videonya", "tanya"], ["Mia menguji Fikri soal fashion", "tanya"], ["Fikri menguji Rio soal video AI", "tanya"], ["Kuis kilat: siapa paling tahu alat AI?", "tanya"],
+      ["Rapat konten bulan depan di Markas", "diskusi"], ["Diskusi: konten kolaborasi apa yang paling ditunggu?", "diskusi"], ["Menyusun jadwal live bersama", "diskusi"],
+      ["Skit: Mia jadi juri video AI Fikri", "skit"], ["Skit: laptop Nara mogok saat deadline", "skit"], ["Skit: lima kreator, satu ide yang sama", "skit"], ["Skit: Mia memergoki Rio dan Nara rapat sambil ngemil", "skit"]
     ]
   };
   // SP17: format yang disarankan dari kata-kata di judul yang ditulis sendiri
   var SARAN_FORMAT = {
-    a1: [["kesalahan", /kesalahan|\bsalah\b|jangan|hindari|kenapa .*(palsu|jelek|gagal)/i], ["beforeafter", /\bvs\b|before|after|sebelum dan sesudah|bandingkan|beda(nya)?/i], ["komentar", /ditanya|pertanyaan|komentar|\btanya\b/i], ["alatbaru", /kenalan|alat ai|\btools?\b|aplikasi baru/i], ["tips", /\btips?\b|trik|rahasia/i], ["cerita", /cerita|kisah|skit|drama|pura-pura/i], ["tutorial", /cara|langkah|tutorial|bikin|membuat|ubah/i]],
-    a2: [["mitos", /mitos|fakta|benarkah/i], ["iklan", /iklan|bedah|contoh/i], ["studi", /dari nol|perjalanan|studi|pelajaran|hari pertama|uji coba|seminggu/i], ["cerita", /cerita|skit|drama/i], ["ilmu", /komisi|etalase|riset|strategi|caption|hashtag|jam posting|memilih produk|pilih produk/i], ["hari2", /./]],
-    a3: [["seri", /dari nol|episode/i], ["bedah", /bedah|kenapa .*(laris|laku|terjual|dicari)/i], ["pasar", /jual|pasar|promosi|caption|harga|testimoni|bonus/i], ["proses", /cara bikin|cara membuat|bikin|membuat/i], ["idepro", /\bide\b/i], ["cerita", /cerita|skit|hampir|ibunya/i]],
-    kolab: [["skit", /skit|lucu|drama/i], ["tanya", /tantang|tebak|kuis|menguji|tanya/i], ["diskusi", /rapat|diskusi|rencana|jadwal/i], ["obrolan", /ngobrol|obrolan/i], ["pasangan", /rio.*nara|nara.*rio|kencan|berdua/i]]
+    a4: [["kesalahan", /kesalahan|\bsalah\b|kenapa|aneh|penyebab|perbaiki|hilang|berubah/i], ["beforeafter", /\bvs\b|before|after|sebelum.*sesudah|bandingkan|beda(nya)?/i], ["gaya3", /3 gaya|tiga gaya|1 ide/i], ["karya", /karya|member/i], ["tantangan", /tantangan|tema minggu/i], ["flow", /\bflow\b|frame terakhir|buat ulang/i], ["jadwal", /\blive\b.*(malam|jadwal|kelas)|jadwal/i], ["fitur", /fitur/i], ["tanyalive", /ditanya|pertanyaan|\btanya\b/i], ["cerita", /cerita|kisah|skit|drama|pura-pura/i], ["tutorial", /cara|langkah|tutorial|bikin|membuat|ubah/i]],
+    a2: [["mixmatch", /\b3 gaya|tiga gaya|mix|padu|1 (baju|kemeja|blazer|rok|cardigan)/i], ["review", /review|ulasan|kelebihan|kekurangan|bahan|ukuran/i], ["mitos", /mitos|fakta|benarkah/i], ["iklan", /iklan|bedah|contoh/i], ["studi", /dari nol|perjalanan|studi|pelajaran|hari pertama|uji coba|seminggu/i], ["jadwal", /\blive\b|jadwal|kelas/i], ["cerita", /cerita|skit|drama/i], ["ilmu", /komisi|etalase|riset|strategi|caption|hashtag|memilih|pilih/i], ["ootd", /./]],
+    a3: [["rawat", /rawat|bersih|simpan|awet|bau/i], ["unboxing", /unboxing|buka paket/i], ["review", /review|ulasan|kelebihan|kekurangan|muat|nyaman/i], ["satu", /\b1 (tas|sepatu)|satu (tas|sepatu)|segala acara|\d+ acara/i], ["pilih", /cara memilih|pilih|ukuran/i], ["cerita", /cerita|skit|isi tas/i], ["padu", /./]],
+    a5: [["jumat", /jumat|renungan/i], ["salahbaca", /kesalahan baca|keliru|tertukar|salah baca/i], ["taysir", /taysir|huruf|hukum|makhraj|tajwid|\bmad\b/i], ["doa", /\bdoa\b/i], ["kisah", /kisah teladan|teladan/i], ["murid", /murid/i], ["jadwal", /\blive\b|jadwal/i], ["tanyaortu", /ditanya|pertanyaan|\btanya\b/i], ["ortu", /anak susah|gawai|menegur|membiasakan|orang tua/i], ["adab", /./]],
+    a1: [["kabar", /kabar|berita|baru muncul|update/i], ["balik", /di balik layar|behind/i], ["geng", /geng|kenalan|live sugi|live mia|lima akun/i], ["komentar", /ditanya|pertanyaan|komentar|\btanya\b/i], ["cerita", /cerita|kisah|skit|drama/i], ["pikir", /./]],
+    kolab: [["skit", /skit|lucu|drama/i], ["kakakadik", /kakak|adik|ustad|ustaz/i], ["tanya", /tantang|tebak|kuis|menguji/i], ["diskusi", /rapat|diskusi|rencana|jadwal/i], ["obrolan", /ngobrol|obrolan/i], ["pasangan", /rio.*nara|nara.*rio|kencan|berdua/i]]
   };
   function saranFormat(a, judul) {
     var t = String(judul || "").trim(); if (!t) return "";
@@ -464,7 +566,7 @@ var SP = (function () {
     h += '<p class="catatan">Ketuk judul untuk memakainya. Format yang paling cocok ditandai ⭐ Disarankan di langkah berikutnya, dan tetap bisa diganti.</p>';
     return h;
   }
-  var SINGKAT = { tutorial: "Tutorial", tips: "Tips", beforeafter: "Before-after", kesalahan: "Kesalahan", alatbaru: "Alat baru", komentar: "Komentar", cerita: "Cerita", hari2: "Hari 2", ilmu: "Ilmu", iklan: "Bedah iklan", mitos: "Mitos", studi: "Studi kasus", idepro: "Ide produk", proses: "Bikin produk", pasar: "Pemasaran", bedah: "Bedah laris", seri: "Seri", pasangan: "Rio & Nara", obrolan: "Obrolan", tanya: "Tantangan", diskusi: "Diskusi", skit: "Skit" };
+  var SINGKAT = { tutorial: "Tutorial", tips: "Tips", beforeafter: "Before-after", kesalahan: "Bedah kesalahan", alatbaru: "Alat baru", komentar: "Komentar", cerita: "Cerita", gaya3: "1 ide 3 gaya", karya: "Karya member", tantangan: "Tantangan", flow: "Tips Flow", jadwal: "Teaser live", fitur: "Fitur Sugi", tanyalive: "Tanya live", ootd: "Outfit", mixmatch: "Mix & match", review: "Review", ilmu: "Ilmu", iklan: "Bedah iklan", mitos: "Mitos", studi: "Studi kasus", padu: "Padu padan", unboxing: "Unboxing", pilih: "Cara memilih", satu: "1 untuk banyak acara", rawat: "Perawatan", adab: "Adab", doa: "Doa", kisah: "Kisah teladan", ortu: "Tips orang tua", taysir: "Metode Taysir", salahbaca: "Salah baca", tanyaortu: "Tanya-jawab", murid: "Kisah murid", jumat: "Renungan", kabar: "Kabar AI", balik: "Di balik layar", pikir: "Pola pikir", geng: "Kenalan geng", pasangan: "Rio & Nara", kakakadik: "Kakak-adik", obrolan: "Obrolan", tanya: "Tantangan", diskusi: "Diskusi", skit: "Skit" };
   function singkat(f) { return SINGKAT[f.id] || f.judul.split(" ")[0]; }
   function pakaiJudul(i) {
     simpanIde();
@@ -529,7 +631,7 @@ var SP = (function () {
     if (a === "kolab") {
       h += '<div class="kotak"><h3><span class="num">' + (++n) + '</span>Siapa yang tampil?</h3><div class="chips">';
       URUT_FIGUR.forEach(function (id) { var on = pil.figur.indexOf(id) >= 0; h += '<button class="chip ' + (on ? "on" : "") + '" onclick="SP.togFigur(\'' + id + '\')">' + FIGUR[id].emoji + ' ' + FIGUR[id].nama + '</button>'; });
-      h += '</div><p class="catatan">Pilih 2 atau 3 orang. Rio dan Nara berpacaran, Mia sahabat mereka.</p></div>';
+      h += '</div><p class="catatan">Pilih 2 sampai 5 orang. Rio dan Nara berpacaran; Mia dan Fikri sahabat mereka; Fikri adik kandung Ustad Taysir. Ustad Taysir jarang ikut kolaborasi dan tidak ikut konten jualan atau affiliate.</p></div>';
     }
     // Format
     h += '<div class="kotak" id="sp-fmt">' + htmlFormat(++n) + '</div>';
@@ -549,7 +651,7 @@ var SP = (function () {
       var F = FIGUR[id];
       h += '<div class="figurbaris"><div class="label">' + F.emoji + ' ' + F.nama + '</div>';
       BAGIAN.forEach(function (bg) {
-        if (bg[0] === "hijab" && id === "rio") return;
+        if (bg[0] === "hijab" && FIGUR[id].pria) return;
         h += '<input type="text" class="sp-detail" data-f="' + id + '" data-k="' + bg[0] + '" maxlength="120" style="margin-top:6px" placeholder="' + bg[1] + ' · ' + esc(bg[2]) + '" value="' + esc((pil.detail[id] || {})[bg[0]] || "") + '" oninput="SP.setDetail(\'' + id + '\',\'' + bg[0] + '\', this.value)">';
       });
       h += '</div>';
@@ -585,7 +687,7 @@ var SP = (function () {
     ajakanAkun(a).forEach(function (x) { h += '<button class="chip ' + (pil.ajakan.indexOf(x.id) >= 0 ? "on" : "") + '" onclick="SP.togAjakan(\'' + x.id + '\')">' + x.emoji + ' ' + esc(x.label) + (x.id === "ai" ? " ⭐" : "") + '</button>'; });
     h += '<button class="chip ' + (pil.ajakan.indexOf("sendiri") >= 0 ? "on" : "") + '" onclick="SP.togAjakan(\'sendiri\')">✍️ Tulis ajakan sendiri</button></div>';
     if (pil.ajakan.indexOf("sendiri") >= 0) h += '<div style="margin-top:10px"><input type="text" id="sp-ajakan" maxlength="150" placeholder="Contoh: tulis &quot;MAU&quot; di komentar, nanti aku kirim panduannya" value="' + esc(pil.ajakanSendiri) + '" oninput="SP.setDiam(\'ajakanSendiri\', this.value)"></div>';
-    if (pil.ajakan.indexOf("live") >= 0) h += '<div class="label">🕗 Jadwal live <span class="tag">opsional</span></div><input type="text" id="sp-live" maxlength="80" placeholder="Contoh: tiap malam jam 8" value="' + esc(pil.jadwalLive) + '" oninput="SP.setDiam(\'jadwalLive\', this.value)">';
+    if (pil.ajakan.some(function (x) { return /^live/.test(x); })) h += '<div class="label">🕗 Jadwal live <span class="tag">opsional</span></div><input type="text" id="sp-live" maxlength="80" placeholder="Contoh: tiap malam jam 8" value="' + esc(pil.jadwalLive) + '" oninput="SP.setDiam(\'jadwalLive\', this.value)">';
     h += '<p class="catatan">Pilih paling banyak 2. Ajakan wajib diucapkan di scene terakhir dan diperiksa Quality Control. Nama akun tidak diucapkan; nama akun dipakai untuk caption dan teks penutup.</p></div>';
     h += '<div id="sp-akun-galat"></div><div style="margin-top:16px"><button class="btn lebar" onclick="SP.mulai()">🎬 Mulai buat video</button></div>';
     h += '<p class="catatan tengah">Setelah ini kamu masuk ke mesin Sugi Studio dengan figur, pakaian, dan lokasi sudah terisi.</p>';
@@ -663,12 +765,12 @@ var SP = (function () {
   // ---------- Bank Figur ----------
   function htmlBank() {
     var h = kembaliBtn() + '<h2 style="margin-top:10px">👥 Bank Figur & Lokasi</h2><p class="sub">Data ini dikunci dan dipakai otomatis di setiap video. Untuk mengubahnya, kirim perubahan ke Claude.</p>';
-    h += '<div class="kotak"><h3>💑 Hubungan</h3><p style="margin:0;font-size:14px">Rio dan Nara berpacaran; Mia sahabat mereka. Interaksi Rio dan Nara selalu sopan dan hangat: boleh duduk berdampingan, saling menyemangati, dan bercanda; tidak berpelukan, mencium, atau bermesraan.</p></div>';
+    h += '<div class="kotak"><h3>💑 Hubungan</h3><p style="margin:0;font-size:14px">Rio dan Nara berpacaran; Mia dan Fikri sahabat mereka. Interaksi Rio dan Nara selalu sopan dan hangat: boleh duduk berdampingan, saling menyemangati, dan bercanda; tidak berpelukan, mencium, atau bermesraan. Fikri (Sugi Studio AI) adik kandung Ustad Taysir; bila tampil bersama, Ustad selalu berpeci dan berjanggut pendek, Fikri tanpa peci dan berambut bergelombang. Ustad Taysir jarang ikut kolaborasi dan tidak ikut konten jualan.</p></div>';
     URUT_FIGUR.forEach(function (id) {
       var F = FIGUR[id], f = fotoResmi[id];
       h += '<div class="kotak"><h3>' + F.emoji + ' ' + F.nama + ' <span class="tag">' + esc(AKUN[F.akun].nama) + '</span></h3>';
       h += f ? '<img class="bank-foto" src="' + f.url + '" alt="' + F.nama + '">' : '<p class="catatan">Foto wajah resmi belum ada.</p>';
-      h += '<ul class="rapi"><li><b>Usia:</b> ' + F.umur + ' tahun</li><li><b>Peran:</b> ' + esc(F.peran) + '</li><li><b>Ciri tetap:</b> ' + esc(F.ciri) + '</li><li><b>Wajah (tanpa foto):</b> ' + esc(F.fisik) + '</li><li><b>Suara:</b> ' + esc(F.usiaSuara + ", " + F.warnaSuara.toLowerCase() + ", logat " + F.logat) + '</li></ul>';
+      h += '<ul class="rapi"><li><b>Usia:</b> ' + F.umur + ' tahun' + (F.id === "sugi" ? ' <span class="tag">nama dan usia sementara</span>' : '') + '</li><li><b>Peran:</b> ' + esc(F.peran) + '</li><li><b>Ciri tetap:</b> ' + esc(F.ciri) + '</li><li><b>Wajah (tanpa foto):</b> ' + esc(F.fisik) + '</li><li><b>Suara:</b> ' + esc(F.usiaSuara + ", " + F.warnaSuara.toLowerCase() + ", logat " + F.logat) + '</li></ul>';
       h += '<div class="label">Pakaian</div><ul class="rapi">' + F.outfit.map(function (o) { return '<li>' + o.emoji + ' <b>' + esc(o.label) + ':</b> ' + esc(o.teks) + '</li>'; }).join("") + '</ul>';
       h += '<div class="label">Ruang kerja</div><p class="catatan" style="margin-top:0">' + esc(RUANG[id].teks) + '</p></div>';
     });
@@ -893,14 +995,17 @@ var SP = (function () {
       var F = FIGUR[id], o = pakaianFigur(id);
       var peran = F.peran + pil.figur.filter(function (x) { return x !== id; }).map(function (x) { return "; " + hubungan(id, x) + " " + FIGUR[x].nama; }).join("");
       var foto = fotoDipakai(id);
-      return { id: id, nama: F.nama, peran: peran, usiaSuara: F.usiaSuara, warnaSuara: F.warnaSuara, logat: F.logat, pakaian: o.teks, ciri: foto ? F.ciriFoto : F.ciri, umur: F.umur, fisik: F.fisik, foto: foto, en: (foto ? F.enFoto : F.en) + "; outfit: " + o.en };
+      return { id: id, watak: F.watak || null, nama: F.nama, peran: peran, usiaSuara: F.usiaSuara, warnaSuara: F.warnaSuara, logat: F.logat, pakaian: o.teks, ciri: foto ? F.ciriFoto : F.ciri, umur: F.umur, fisik: F.fisik, foto: foto, en: (foto ? F.enFoto : F.en) + "; outfit: " + o.en };
     });
     var nama = figur.map(function (f) { return f.nama; });
+    var ada = function (id) { return pil.figur.indexOf(id) >= 0; };
     var pemeran = figur.length === 1
       ? figur[0].nama + " (" + FIGUR[figur[0].id].ringkas + "), figur tetap " + A.nama
-      : (pil.figur.indexOf("rio") >= 0 && pil.figur.indexOf("nara") >= 0
-        ? "Rio dan Nara (pasangan)" + (pil.figur.indexOf("mia") >= 0 ? " bersama Mia (sahabat mereka)" : "") + ", figur tetap"
-        : nama.slice(0, -1).join(", ") + " dan " + nama[nama.length - 1] + ", dua sahabat (figur tetap)");
+      : (ada("rio") && ada("nara") && figur.length <= 3
+        ? "Rio dan Nara (pasangan)" + (ada("mia") ? " bersama Mia (sahabat mereka)" : ada("sugi") ? " bersama Fikri (sahabat mereka)" : ada("taysir") ? " bersama Ustad Taysir" : "") + ", figur tetap"
+        : ada("sugi") && ada("taysir") && figur.length === 2
+          ? "Ustad Taysir dan adik kandungnya Fikri (kakak-adik, figur tetap)"
+          : nama.slice(0, -1).join(", ") + " dan " + nama[nama.length - 1] + " (figur tetap)");
     var konteks = "STUDIO PRIBADI - PERSONAL CHANNEL CONTEXT (follow strictly; where it conflicts with the theme direction, this wins):\n" +
       "- Channel: the user's own TikTok account \"" + A.label + "\", niche: " + A.nicheEn + ". Content format: " + fm.judul + " - " + fm.en + ".\n" +
       "- Recurring AI host" + (figur.length > 1 ? "s" : "") + " (adults):\n" + figur.map(function (f) { return "  * " + f.en; }).join("\n") + "\n" +
@@ -909,9 +1014,12 @@ var SP = (function () {
       "- CLOSING CALL TO ACTION (required by the user; spoken by the host in the FINAL scene, never replaced by a series closing or quiz; Quality Control must quote it): " + teksAjakan() + ". Never say the account name aloud.\n" +
       (A.aturan ? "- " + A.aturan + "\n" : "") +
       (pil.figur.indexOf("rio") >= 0 && pil.figur.indexOf("nara") >= 0 ? "- RELATIONSHIP: " + ATURAN_PASANGAN + "\n" : "") +
+      (pil.figur.indexOf("sugi") >= 0 && pil.figur.indexOf("taysir") >= 0 ? "- BROTHERS: " + ATURAN_SAUDARA + "\n" : "") +
+      (pil.akun === "kolab" && pil.figur.indexOf("taysir") >= 0 ? "- USTAD TAYSIR: " + ATURAN_TAYSIR_KOLAB + "\n" : "") +
+      (fm.ayat ? "- RECITATION RULE: " + ATURAN_AYAT + "\n" : "") +
       (pil.serasi && pil.figur.indexOf("rio") >= 0 && pil.figur.indexOf("nara") >= 0 ? "- MATCHING OUTFITS: Rio and Nara wear coordinated couple outfits in harmonious navy, white, and beige tones, exactly as listed for each of them.\n" : "") +
       (fm.layar ? "- SCREEN RULE: AI video cannot show readable app screens. Keep the host on camera explaining. Whenever the viewer must see an app or a screen, add a separate line \"INSERT SCREEN RECORDING: [what to record, in Indonesian]\" to the scene whose spoken line explains that exact step (split it per step when different steps are explained in different scenes; never put it only in a summary, quiz, or closing scene), and mention it in the editing guide, so the user can overlay a real screen recording in CapCut. Screens inside the shot stay unreadable.\n" : "") +
-      "- Speech in casual Indonesian. No background music inside the clips (the user adds music in CapCut).";
+      (pil.akun === "a5" ? "- Speech in polite, gentle Indonesian (santun). No background music inside the clips (the user adds any audio in CapCut)." : "- Speech in casual Indonesian. No background music inside the clips (the user adds music in CapCut).");
     return {
       mesin: mesin, tema: fm.mesin === "podcast" ? "podcast" : "th", cabang: fm.judul, figur: figur, pemeran: pemeran, lokasi: lok.teks, ide: (pil.ide || "").trim(),
       label: A.label, konteks: konteks, lokasiTeks: lok.teks, lokasiNama: lok.nama, namaAkun: namaAkunPilihan(),
@@ -926,11 +1034,13 @@ var SP = (function () {
     var g = $("sp-akun-galat");
     function salah(t) { g.innerHTML = '<div class="peringatan">' + t + '</div>'; g.scrollIntoView({ block: "center" }); }
     if (pil.akun === "kolab" && pil.figur.length < 2) return salah("Pilih minimal 2 sahabat untuk kolaborasi.");
+    if (pil.akun === "kolab" && pil.figur.indexOf("taysir") >= 0 && ["pasangan", "tanya"].indexOf(pil.format) >= 0) return salah("Ustad Taysir tidak ikut format ini. Pilih format lain (misalnya Kakak-adik, Obrolan, atau Diskusi), atau lepas Ustad Taysir.");
     var fm = formatPilihan();
     if (!fm) return salah(pil.format === "__sendiri" ? "Tulis dulu format yang kamu inginkan." : "Pilih format kontennya dulu.");
     if (pil.lokasi === "sendiri" && !(pil.lokasiSendiri || "").trim()) return salah("Tulis dulu lokasinya.");
     if (pil.ajakan.indexOf("sendiri") >= 0 && !(pil.ajakanSendiri || "").trim()) return salah("Tulis dulu ajakanmu, atau pilih ajakan lain.");
     var cek = [pil.ide, pil.formatSendiri, pil.lokasiSendiri, pil.ajakanSendiri].concat(pil.figur.map(function (id) { return gabungBagian(pil.detail[id] || {}); })).join(" ");
+    cek = cek.replace(/\b(untuk|bagi|buat|kepada|mengajarkan|mengajari|mendidik)\s+(para\s+)?anak(-anak)?\b/gi, " ");
     if (BLOK.test(cek)) return salah("Semua tokoh harus orang dewasa (18+). Silakan ubah tulisannya.");
     var k = konfig();
     var judul = AKUN[pil.akun].emoji + " " + (pil.akun === "kolab" ? pil.figur.map(function (x) { return FIGUR[x].nama; }).join("+") : FIGUR[pil.figur[0]].nama) + " · " + fm.judul;
@@ -1119,6 +1229,7 @@ var SP = (function () {
       selections.jumlahTokoh = C.figur.length === 1 ? "1 tokoh" : C.figur.length + " tokoh";
       selections.tokoh = C.figur.map(function (f) {
         var t = { nama: f.nama, peran: f.peran, usiaSuara: f.usiaSuara, warnaSuara: f.warnaSuara, logat: f.logat, pakaian: f.pakaian, ciri: f.ciri };
+        if (f.watak && f.watak.length) t.watak = f.watak.slice(0, 2);
         if (!f.foto) { t.umur = String(f.umur); t.fisik = f.fisik; }
         return t;
       });
@@ -1207,7 +1318,7 @@ var SP = (function () {
     var F = FIGUR[id], o = F.outfit.filter(function (x) { return x.id === pil.outfit[id]; })[0] || F.outfit[0];
     var d = (pil.detail && pil.detail[id]) || {}, b = {}, ubah = [];
     Object.keys(o.b).forEach(function (k) { b[k] = o.b[k]; });
-    BAGIAN.forEach(function (bg) { var v = (d[bg[0]] || "").trim(); if (v && !(bg[0] === "hijab" && id === "rio")) { b[bg[0]] = v; ubah.push(BAGIAN_EN[bg[0]] + ": " + v); } });
+    BAGIAN.forEach(function (bg) { var v = (d[bg[0]] || "").trim(); if (v && !(bg[0] === "hijab" && FIGUR[id].pria)) { b[bg[0]] = v; ubah.push(BAGIAN_EN[bg[0]] + ": " + v); } });
     var en = o.en + (ubah.length ? " — USER CHANGES that REPLACE the matching items (write them in English): " + ubah.join("; ") : "");
     return { label: o.label, teks: gabungBagian(b), en: en, ubah: ubah.length };
   }
@@ -1232,7 +1343,7 @@ var SP = (function () {
     var bag = pil.ajakan.map(function (id) {
       if (id === "sendiri") { var t = (pil.ajakanSendiri || "").trim(); return t ? "say this call to action in natural Indonesian (you may shorten it to fit, keep its meaning): \"" + t + "\"" : ""; }
       var x = AJAKAN.filter(function (a) { return a.id === id; })[0]; if (!x) return "";
-      return x.en + (id === "live" && (pil.jadwalLive || "").trim() ? " (schedule: " + pil.jadwalLive.trim() + ")" : "");
+      return x.en + (/^live/.test(id) && (pil.jadwalLive || "").trim() ? " (schedule: " + pil.jadwalLive.trim() + ")" : "");
     }).filter(Boolean);
     return bag.join("; and ");
   }

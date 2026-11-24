@@ -74,9 +74,9 @@ const proyek = (id, judul, akun) => ({ id: String(id), date: new Date(2026, 10, 
   await page.evaluate(p => localStorage.setItem('sugimation_serbabisa3_history', JSON.stringify([p])), Object.assign(proyek(202, 'Konten Rio dan Nara', 'kolab'), { phase1ResultText: 'Master' }));
   await page.waitForTimeout(3500);
   cek(!!db['pengguna/UIDADMIN/pribadi/serba_202'], 'Proyek Serba Bisa baru ikut terunggah');
-  // buka proyek dari bingkai sungguhan: buat video Rio lalu tunggu tersimpan
+  // buka proyek dari bingkai sungguhan: buat video Sugi Studio AI lalu tunggu tersimpan
   await page.evaluate(() => SP.buka('beranda'));
-  await page.click('text=Akun 1 · Rio'); await page.click('text=Tutorial langkah demi langkah');
+  await page.click('text=Akun 1 · Sugi Studio AI'); await page.click('text=Tutorial 1 menit');
   await page.fill('#sp-ide', 'Cara bikin foto bicara pakai AI');
   await page.click('button:has-text("Mulai buat video")');
   await page.waitForFunction(() => { const f = document.querySelector('#sp-bingkai iframe.kini'); return f && f.contentWindow.__spSiap; }, null, { timeout: 30000 });
@@ -84,7 +84,7 @@ const proyek = (id, judul, akun) => ({ id: String(id), date: new Date(2026, 10, 
   await fr.evaluate(() => { phaseUndText = 'Pemahaman'; selections[1] = 'Cara bikin foto bicara pakai AI'; saveToHistory(); });
   await page.waitForTimeout(3500);
   const kunciBaru = Object.keys(db).find(k => /kreator_/.test(k) && !/_101$/.test(k));
-  cek(!!kunciBaru && JSON.parse(db[kunciBaru].data.stringValue).selections.sp.akun === 'a1', 'Proyek dari bingkai mesin tersimpan otomatis, lengkap dengan data akun Studio Pribadi', kunciBaru);
+  cek(!!kunciBaru && JSON.parse(db[kunciBaru].data.stringValue).selections.sp.akun === 'a4', 'Proyek dari bingkai mesin tersimpan otomatis, lengkap dengan data akun Studio Pribadi', kunciBaru);
   // Canvas ditutup: konteks baru (localStorage kosong), masuk lagi, proyek kembali
   await ctx.close();
   ctx = await b.newContext({ viewport: { width: 412, height: 734 } });
@@ -102,7 +102,7 @@ const proyek = (id, judul, akun) => ({ id: String(id), date: new Date(2026, 10, 
   await page.waitForTimeout(800);
   const fr2 = await bingkai(page);
   const st = await fr2.evaluate(() => ({ s1: selections[1], sp: selections.sp && selections.sp.akun, und: phaseUndText }));
-  cek(st.s1 === 'Cara bikin foto bicara pakai AI' && st.sp === 'a1' && st.und === 'Pemahaman', 'Buka dari Proyek Saya: proyek terbuka di bingkai lengkap dengan akun Rio', JSON.stringify(st));
+  cek(st.s1 === 'Cara bikin foto bicara pakai AI' && st.sp === 'a4' && st.und === 'Pemahaman', 'Buka dari Proyek Saya: proyek terbuka di bingkai lengkap dengan akun Sugi Studio AI', JSON.stringify(st));
   // hapus
   await page.evaluate(() => SP.buka('lanjut'));
   await page.locator('.proyek:has-text("Konten Rio dan Nara") button[aria-label="Hapus"]').click();

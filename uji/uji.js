@@ -19,8 +19,8 @@ async function keRingkasan(fr) {
     const page = await halaman(b, log);
     await page.waitForSelector('text=Studio konten pribadimu', { timeout: 15000 });
     await page.waitForFunction(() => document.querySelector('.kartu .ikon img'), null, { timeout: 8000 }).catch(() => { });
-    await page.waitForFunction(() => document.querySelectorAll('.kartu .ikon img').length >= 3, null, { timeout: 8000 }).catch(() => { });
-    cek(await page.locator('.kartu .ikon img').count() === 3, 'Beranda: foto Rio, Mia, dan Nara tampil (SP6, SP12)');
+    await page.waitForFunction(() => document.querySelectorAll('.kartu .ikon img').length >= 5, null, { timeout: 8000 }).catch(() => { });
+    cek(await page.locator('.kartu .ikon img').count() === 5, 'Beranda: foto kelima figur tampil (SP6, SP12, SP18)');
     // SP7: halaman Nara
     await page.click('text=Akun 3 · Nara');
     cek(await page.locator('.figurbaris .chip').filter({ hasText: /Kasual|Traveling|Formal|Rumah|Olahraga/ }).count() === 5 && await page.locator('.chip.on:has-text("Kasual")').count() === 1, 'SP7 Nara: 5 pakaian, bawaan Kasual');
@@ -29,32 +29,32 @@ async function keRingkasan(fr) {
     await page.evaluate(() => SP.buka('beranda'));
     cek(!(await page.evaluate(() => document.body.innerText)).includes('undefined'), 'Beranda tanpa teks rusak');
 
-    // ===== A. Rio, tutorial, sampai hasil =====
-    await page.click('text=Akun 1 · Rio');
-    await page.click('text=Tutorial langkah demi langkah');
-    cek(await page.locator('.chip.on:has-text("Smart casual")').count() === 1, 'Akun 1: outfit bawaan Smart casual');
-    cek(await page.locator('.chip.on:has-text("Ruang kerja Rio")').count() === 1, 'Akun 1: lokasi bawaan Ruang kerja Rio');
+    // ===== A. Sugi Studio AI (Fikri), tutorial, sampai hasil =====
+    await page.click('text=Akun 1 · Sugi Studio AI');
+    await page.click('text=Tutorial 1 menit');
+    cek(await page.locator('.chip.on:has-text("Hoodie hitam")').count() === 1, 'Akun 1: outfit bawaan Hoodie hitam');
+    cek(await page.locator('.chip.on:has-text("Ruang kerja Sugi Studio")').count() === 1, 'Akun 1: lokasi bawaan Ruang kerja Sugi Studio');
     cek(await page.locator('.chip.on:has-text("Foto wajah resmi")').count() === 1, 'Akun 1: foto wajah resmi dipilih');
     await page.click('button:has-text("Mulai buat video")');
     let fr = await tungguBingkai(page);
     const st = await fr.evaluate(() => ({ v: step1View, nama: (selections.tokoh || [])[0] && selections.tokoh[0].nama, foto: !!ownPhotos[0], lok: selections.lokasi, sp: selections.sp, logo: document.querySelector('.k-logo-w').textContent }));
-    cek(st.v === 'pemeran' && st.nama === 'Rio' && st.foto, 'Bingkai: halaman Pembicara, Rio terisi, foto terpasang', JSON.stringify(st));
-    cek(/Ruang kerja Rio/.test(st.lok) && st.sp && st.sp.akun === 'a1', 'Bingkai: lokasi dan data akun tersimpan di proyek');
+    cek(st.v === 'pemeran' && st.nama === 'Fikri' && st.foto, 'Bingkai: halaman Pembicara, Fikri terisi, foto terpasang', JSON.stringify(st));
+    cek(/Ruang kerja Sugi Studio/.test(st.lok) && st.sp && st.sp.akun === 'a4', 'Bingkai: lokasi dan data akun tersimpan di proyek');
     cek(/STUDIO PRIBADI/.test(st.logo), 'Bingkai: logo Studio Pribadi');
-    cek(await fr.locator('#sp-pem-lanjut:has-text("Lanjut dengan Rio")').count() === 1, 'SP1 Pembicara: kartu Rio di atas dengan tombol lanjut');
-    // ketuk "1 pria" lalu kembali ke Rio
+    cek(await fr.locator('#sp-pem-lanjut:has-text("Lanjut dengan Fikri")').count() === 1, 'SP1 Pembicara: kartu Fikri di atas dengan tombol lanjut');
+    // ketuk "1 pria" lalu kembali ke Fikri
     await T(fr, '1 pria').click(); await fr.waitForTimeout(200);
     if (await judul(fr) !== 'Pembicara') await fr.locator('#app-container button:has-text("Kembali")').first().click().catch(() => {});
     await fr.waitForTimeout(200);
     const pem1 = await fr.evaluate(() => selections.pemeran);
-    cek(await fr.locator('#sp-pem-lanjut:has-text("Pakai Rio")').count() === 1 || pem1 === '1 pria', 'SP1 pilih "1 pria": tombol kembali ke figur akun muncul', pem1);
+    cek(await fr.locator('#sp-pem-lanjut:has-text("Pakai Fikri")').count() === 1 || pem1 === '1 pria', 'SP1 pilih "1 pria": tombol kembali ke figur akun muncul', pem1);
     await fr.click('#sp-pem-lanjut');
-    cek(await judul(fr) === 'Lokasi' && (await fr.evaluate(() => selections.tokoh[0].nama)) === 'Rio' && /Rio/.test(await fr.evaluate(() => selections.pemeran)), 'SP1 tombol figur: kembali ke Rio dan lanjut ke Lokasi', await judul(fr));
+    cek(await judul(fr) === 'Lokasi' && (await fr.evaluate(() => selections.tokoh[0].nama)) === 'Fikri' && /Fikri/.test(await fr.evaluate(() => selections.pemeran)), 'SP1 tombol figur: kembali ke Fikri dan lanjut ke Lokasi', await judul(fr));
     cek(await fr.locator('#sp-lok-lanjut:has-text("Lanjut dengan lokasi ini")').count() === 1, 'SP1 Lokasi: kartu lokasi akun di atas');
     await fr.click('#sp-lok-lanjut');
     await fr.waitForSelector('text=Ide 1', { timeout: 15000 });
     let p = global.prompts.filter(x => !x.img).pop();
-    cek(p && /STUDIO PRIBADI - PERSONAL CHANNEL CONTEXT/.test(p.sys) && /Rio: the adult man from the user's reference photo/.test(p.sys), 'Ide dari mesin: konteks akun + figur Rio ikut');
+    cek(p && /STUDIO PRIBADI - PERSONAL CHANNEL CONTEXT/.test(p.sys) && /Fikri: the adult man from the user's reference photo/.test(p.sys), 'Ide dari mesin: konteks akun + figur Fikri ikut');
     cek(p && /SCREEN RULE/.test(p.sys), 'Format tutorial: aturan sisipan rekaman layar ikut');
     await fr.click('text=Ide 1'); await fr.click('#btn-lanjut');
     const cepat = fr.locator('#app-container button:has-text("Cepat")'); if (await cepat.count()) await cepat.first().click();
@@ -65,23 +65,23 @@ async function keRingkasan(fr) {
     await fr.waitForFunction(() => !isProcessingQueue && phaseQcText.length > 0, null, { timeout: 120000 });
     const teks = global.prompts.filter(x => !x.img);
     const master = teks.find(x => /Master Character/.test(x.sys) && /Master Voice/.test(x.sys));
-    cek(master && /Ruang kerja Rio/.test(master.user + master.sys), 'Master Aset menerima lokasi Ruang kerja Rio');
-    cek(master && /Rio/.test(master.user) && /kemeja polos biru muda/.test(master.user), 'Master Aset menerima nama dan pakaian Rio');
-    cek(master && /sepatu loafer kulit cokelat tua/.test(master.user) && /dark-brown leather loafers/.test(master.sys), 'SP3 sepatu Rio ikut (pakaian + konteks)');
-    cek(master && !/usia 27|rambut hitam/.test(master.user) && !/27-year-old|short black hair/.test(master.sys), 'SP2 pakai foto: usia dan rambut tidak dikirim');
-    cek(master && /Nama akun atau channel: Rio \| Suhu Digital/.test(master.user), 'SP4 nama akun Rio | Suhu Digital terisi');
+    cek(master && /Ruang kerja Sugi Studio/.test(master.user + master.sys), 'Master Aset menerima lokasi Ruang kerja Sugi Studio');
+    cek(master && /Fikri/.test(master.user) && /hoodie hitam polos tanpa logo/.test(master.user), 'Master Aset menerima nama dan pakaian Fikri');
+    cek(master && /sneakers putih/.test(master.user) && /white sneakers/.test(master.sys), 'SP3 sepatu Fikri ikut (pakaian + konteks)');
+    cek(master && !/usia 25|rambut hitam/.test(master.user) && !/25-year-old|wavy black hair/.test(master.sys), 'SP2 pakai foto: usia dan rambut tidak dikirim');
+    cek(master && /Nama akun atau channel: Sugi Studio AI/.test(master.user), 'SP4 nama akun Sugi Studio AI terisi');
     cek(master && /CLOSING CALL TO ACTION[^\n]*choose ONE fitting call to action/.test(master.sys), 'SP5 ajakan bawaan: AI tentukan');
-    cek(master && /Location: Ruang kerja Rio/.test(master.sys), 'SP1 konteks lokasi = lokasi akun');
+    cek(master && /Location: Ruang kerja Sugi Studio/.test(master.sys), 'SP1 konteks lokasi = lokasi akun');
     cek(teks.every(x => /STUDIO PRIBADI/.test(x.sys) || /^You shorten/.test(x.sys)), 'Semua perintah AI teks membawa konteks akun', teks.filter(x => !/STUDIO PRIBADI/.test(x.sys)).map(x => x.sys.slice(0, 60)).join(' | '));
     cek(teks.filter(x => (x.sys.match(/STUDIO PRIBADI - PERSONAL/g) || []).length > 1).length === 0, 'Konteks tidak dobel');
     await fr.locator('button:has-text("Buat Gambar")').first().click().catch(() => { });
     await fr.waitForTimeout(1500);
     const img = global.prompts.filter(x => x.img);
-    cek(img.length > 0 && !img.some(x => /STUDIO PRIBADI/.test(x.sys + x.user)) && img[0].refs > 0, 'AI gambar: foto Rio terlampir, tanpa tambahan konteks', 'img=' + img.length + ' refs=' + (img[0] || {}).refs);
-    cek(teks.some(x => x.refs > 0), 'Foto Rio dikirim ke AI (Character Sheet / Master)');
+    cek(img.length > 0 && !img.some(x => /STUDIO PRIBADI/.test(x.sys + x.user)) && img[0].refs > 0, 'AI gambar: foto Fikri terlampir, tanpa tambahan konteks', 'img=' + img.length + ' refs=' + (img[0] || {}).refs);
+    cek(teks.some(x => x.refs > 0), 'Foto Fikri dikirim ke AI (Character Sheet / Master)');
     cek(/scene whose spoken line explains that exact step/.test(master.sys), 'SP14 rekaman layar di scene yang menjelaskan langkahnya');
     const ingat = await fr.locator('.sp-ingat').count();
-    cek(ingat > 0 && /lampirkan Character Sheet Rio/.test(await fr.locator('.sp-ingat').first().innerText()), 'SP15 pengingat lampirkan Character Sheet di bawah Prompt Video', ingat);
+    cek(ingat > 0 && /lampirkan Character Sheet Fikri/.test(await fr.locator('.sp-ingat').first().innerText()), 'SP15 pengingat lampirkan Character Sheet di bawah Prompt Video', ingat);
     const kode = await fr.evaluate(() => makeProjectCode());
     cek(/^SGM[01]:/.test(kode), 'Kode Proyek dibuat');
     await page.screenshot({ path: '/tmp/spA.png' });
@@ -94,10 +94,10 @@ async function keRingkasan(fr) {
 
     // ===== B. Mia, ide sudah ditulis =====
     await page.click('text=Akun 2 · Mia');
-    await page.click('text=Format Hari 2');
+    await page.click('text=Ilmu affiliate');
     cek(await page.locator('.chip.on:has-text("Foto wajah resmi")').count() === 1, 'SP12 Mia: foto wajah resmi dipilih');
-    cek(/celana panjang lebar warna beige/.test(await page.locator('.figurbaris .catatan').first().innerText()), 'SP12 Mia: kardigan lavender dengan celana lebar beige');
-    cek(await page.locator('.chip:has-text("Cek keranjang kuning")').count() === 1 && await page.locator('.chip:has-text("Ikut kelas")').count() === 0, 'SP5 Mia: pilihan keranjang kuning ada, kelas tidak');
+    cek(/blazer navy[^]*celana panjang lurus hitam[^]*rose gold/.test(await page.locator('.figurbaris .catatan').first().innerText()), 'SP19 Mia: bawaan blazer navy, celana hitam, jam rose gold (sheet baru)');
+    cek(await page.locator('.chip:has-text("Cek keranjang kuning")').count() === 1 && await page.locator('.chip:has-text("Ikut kelas video AI")').count() === 0 && await page.locator('.chip:has-text("kelas affiliate")').count() === 1, 'SP5 Mia: keranjang kuning + kelas affiliate ada, kelas video AI tidak');
     await page.click('.chip:has-text("Cek keranjang kuning")');
     await page.click('.chip:has-text("Tonton live")');
     await page.fill('#sp-live', 'tiap malam jam 8');
@@ -117,7 +117,7 @@ async function keRingkasan(fr) {
     await fr.waitForTimeout(300);
     const stB2 = await fr.evaluate(() => ({ v: step1View, s: selections[1] }));
     cek(stB2.v === 'story' && /produk affiliate/.test(stB2.s), 'Ide tertulis: langsung ke halaman cerita (tanpa ide AI)', JSON.stringify(stB2));
-    cek(await fr.evaluate(() => selections.namaUsaha) === 'Mia | Affiliate Pakai AI (@suhudigital123)', 'SP4 nama akun Mia');
+    cek(await fr.evaluate(() => selections.namaUsaha) === 'Mia | Cuan Afiliasi AI (@suhudigital123)', 'SP4 nama akun Mia');
     global.prompts = [];
     await fr.evaluate(() => { selections.lokasi = 'Taman kota sore hari'; return fetchGemini({ contents: [{ parts: [{ text: 'tes' }] }], systemInstruction: { parts: [{ text: 'You are a test.' }] } }); });
     const pB = global.prompts[0].sys;
@@ -144,7 +144,7 @@ async function keRingkasan(fr) {
     // ===== F. Batas 3 video =====
     await page.click('#sp-tab .tab:has-text("Beranda")');
     await page.click('text=Akun 3 · Nara');
-    await page.click('text=Ide produk digital');
+    await page.click('text=Padu padan tas & sepatu');
     await page.click('button:has-text("Mulai buat video")');
     await page.waitForTimeout(400);
     cek(await page.locator('#sp-dialog:visible').count() === 1 && /Sudah 3 video/.test(await page.locator('#sp-dialog').innerText()), 'Video ke-4 ditolak dengan pesan');
@@ -163,7 +163,7 @@ async function keRingkasan(fr) {
     await page.locator('#sp-tab .tab:has-text("Rio+Mia+Nara") .x').click(); await page.click('#sp-dialog button:has-text("Tutup video")');
     await page.evaluate(() => SP.buka('beranda'));
     await page.click('text=Kolaborasi');
-    await page.click('text=Skit Rio, Nara & Mia');
+    await page.click('text=Skit geng');
     await page.click('.chip:has-text("Mia")'); // Mia keluar, tinggal Rio + Nara
     await page.fill('#sp-ide', 'Rio dan Nara berebut kursi terakhir di kafe.');
     await page.click('button:has-text("Mulai buat video")');
@@ -172,17 +172,17 @@ async function keRingkasan(fr) {
     cek(/serba/.test(stD.app) && stD.v === 'story' && /kursi terakhir/.test(stD.s) && stD.nm === 'Rio,Nara', 'Skit: mesin Serba Bisa, cerita terisi, Rio + Nara', JSON.stringify(stD));
 
     // ===== Lanjutkan Proyek dari kode =====
-    await page.locator('#sp-tab .tab:has-text("Rio · Tutorial") .x').click(); await page.click('#sp-dialog button:has-text("Tutup video")');
+    await page.locator('#sp-tab .tab:has-text("Fikri · Tutorial") .x').click(); await page.click('#sp-dialog button:has-text("Tutup video")');
     await page.evaluate(() => SP.buka('lanjut'));
     await page.fill('#sp-kode', kode);
     await page.click('button:has-text("Buka proyek")');
     fr = await tungguBingkai(page);
     await fr.waitForTimeout(500);
     const stE = await fr.evaluate(() => ({ sp: selections.sp && selections.sp.akun, foto: !!ownPhotos[0], hasil: !!phase1ResultText, view: currentView }));
-    cek(stE.sp === 'a1' && stE.foto && stE.hasil, 'Kode Proyek: proyek Rio terbuka lagi lengkap dengan foto', JSON.stringify(stE));
+    cek(stE.sp === 'a4' && stE.foto && stE.hasil, 'Kode Proyek: proyek Fikri terbuka lagi lengkap dengan foto', JSON.stringify(stE));
     global.prompts = [];
     await fr.evaluate(() => fetchGemini({ contents: [{ parts: [{ text: 'tes' }] }], systemInstruction: { parts: [{ text: 'You are a test.' }] } }));
-    cek(/Rio: the adult man from the user's reference photo/.test(global.prompts[0].sys), 'Kode Proyek: konteks akun ikut lagi');
+    cek(/Fikri: the adult man from the user's reference photo/.test(global.prompts[0].sys), 'Kode Proyek: konteks akun ikut lagi');
 
     // ===== SP9: format Konten Rio & Nara =====
     await page.evaluate(() => SP.buka('akun', { akun: 'kolab' }));
@@ -201,7 +201,7 @@ async function keRingkasan(fr) {
     const kD = await page.evaluate(() => SP._uji.konfig());
     cek(/kemeja batik cokelat/.test(kD.figur[0].pakaian) && !/kemeja denim navy/.test(kD.figur[0].pakaian) && /celana khaki/.test(kD.figur[0].pakaian) && /sneakers putih/.test(kD.figur[0].pakaian), 'SP13 detail atasan mengganti atasan saja', kD.figur[0].pakaian);
     cek(/USER CHANGES[^"]*top: kemeja batik cokelat/.test(kD.figur[0].en) && kD.figur[1].pakaian === kP.figur[1].pakaian, 'SP13 perubahan ikut ke AI; Nara tetap gaya khas');
-    cek(await page.locator('input.sp-detail[data-f="rio"][data-k="hijab"]').count() === 0 && await page.locator('input.sp-detail[data-f="nara"][data-k="hijab"]').count() === 1, 'SP13 kolom hijab hanya untuk Mia dan Nara');
+    cek(await page.locator('input.sp-detail[data-f="rio"][data-k="hijab"]').count() === 0 && await page.locator('input.sp-detail[data-f="nara"][data-k="hijab"]').count() === 1, 'SP13 kolom hijab hanya untuk figur wanita');
     await page.fill('input.sp-detail[data-f="rio"][data-k="atasan"]', '');
     cek((await page.evaluate(() => SP._uji.konfig())).figur[0].pakaian === kosong, 'SP13 dikosongkan: kembali ke gaya khas');
     await page.evaluate(() => SP.buka('akun', { akun: 'a1' }));
@@ -214,7 +214,7 @@ async function keRingkasan(fr) {
     await page.waitForSelector('text=Ide akun 3', { timeout: 15000 });
     cek(await page.locator('.ide').count() === 3, 'Judul Konten: 3 judul tampil');
     await page.locator('.ide button').nth(1).click();
-    cek(await page.locator('.pilih.on:has-text("Tips cepat")').count() === 1 && /Ide akun 2/.test(await page.inputValue('#sp-ide')), 'Buat video ini: format dan ide terisi');
+    cek(await page.locator('.pilih.on:has-text("Tips Flow singkat")').count() === 1 && /Ide akun 2/.test(await page.inputValue('#sp-ide')), 'Buat video ini: format dan ide terisi');
     await page.screenshot({ path: '/tmp/spE.png', fullPage: true });
 
     console.log('\nLOG:', log.filter(x => !/404/.test(x)).slice(0, 10));
